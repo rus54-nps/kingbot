@@ -4,11 +4,11 @@ import { bear, coin, highVoltage, rocket, trophy, notcoin } from './images';
 import Arrow from './icons/Arrow';
 
 function App() {
-  const [points, setPoints] = useState(2);
-  const [energy, setEnergy] = useState(4444);
+  const [points, setPoints] = useState(0);
+  const [energy, setEnergy] = useState(6000);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number} []>([]);
   const pointsToAdd = 1;
-  const energyToReduce = 10;
+  const energyToReduce = 15;
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setEnergy((prevEnergy) => Math.min(prevEnergy + 10, 8000));
+      setEnergy((prevEnergy) => Math.min(prevEnergy + 3, 6000));
     }, 100);  // Регенит 10 энергии в сек
 
     return () => clearInterval(interval);
@@ -69,7 +69,7 @@ function App() {
                 <img src={highVoltage} width={44} height={44} alt="HighVoltage" />
                 <div className="ml-2 text-left">
                   <span className="text-white text-2xl font-bold block">{energy}</span>
-                  <span className="text-white text-large opacity-75">/ 8000</span>
+                  <span className="text-white text-large opacity-75">/ 6000</span>
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@ function App() {
             </div>
           </div>
           <div className="w-fill bg-[#f9c035] rounded-full mt-4">
-            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{width: `${(energy / 8000) * 100}%` }}></div>
+            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{width: `${(energy / 6000) * 100}%` }}></div>
           </div>
       </div>
 

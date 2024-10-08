@@ -7,18 +7,18 @@ body {
 }
 
 .bg-gradient-main {
-    background: linear-gradient(to top, #2c2d7a, #30ff30);
+    background: linear-gradient(to top, #29051d, #610d56);
 }
 
 .bg-gradient-overlay {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgb(105, 18, 18) 40%, rgba(0, 212, 255, 0) 100%);
+    background: linear-gradient(180deg, rgb(36, 12, 65) 0%, rgb(28, 9, 73) 40%, rgba(0, 212, 255, 0) 100%);
 }
 
 .radial-gradient-overlay {
     position:absolute;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(250, 214, 92, 0.8) 0%, rgba(18, 29, 124, 0) 60%);
+    background: radial-gradient(circle, rgba(108, 25, 116, 0.8) 0%, rgba(18, 29, 124, 0) 60%);
 }
 
 @keyframes float {
