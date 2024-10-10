@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
-import './App.css'
+import './App.css';
 import { bear, coin, highVoltage, rocket, trophy, notcoin } from './images';
 import Arrow from './icons/Arrow';
 
 function App() {
-  const [points, setPoints] = useState(0);
+  const [points, setPoints] = useState(() => {
+    // Загрузка количества монет из localStorage при инициализации
+    const savedPoints = localStorage.getItem('points');
+    return savedPoints ? parseInt(savedPoints, 10) : 0;
+  });
+  
   const [energy, setEnergy] = useState(6000);
-  const [clicks, setClicks] = useState<{ id: number, x: number, y: number} []>([]);
+  const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
+  const [currentPage, setCurrentPage] = useState('home');
   const pointsToAdd = 1;
   const energyToReduce = 15;
 
@@ -18,9 +24,15 @@ function App() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    setPoints(points + pointsToAdd);
+    setPoints((prevPoints) => {
+      const newPoints = prevPoints + pointsToAdd;
+      // Сохраняем новое количество монет в localStorage
+      localStorage.setItem('points', newPoints.toString());
+      return newPoints;
+    });
+
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
-    setClicks([...clicks, {id: Date.now(), x, y}])
+    setClicks([...clicks, { id: Date.now(), x, y }]);
   };
 
   const handleAnimationEnd = (id: number) => {
@@ -30,10 +42,36 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => Math.min(prevEnergy + 3, 6000));
-    }, 100);  // Регенит 10 энергии в сек
+    }, 100); // Регенит 10 энергии в сек
 
     return () => clearInterval(interval);
   }, []);
+
+  const renderContent = () => {
+    switch (currentPage) {
+      case 'home':
+        return (
+          <>
+            <div className="mt-12 text-5xl font-bold flex items-center">
+              <img src={coin} width={44} height={44} />
+              <span className="ml-2">{points.toLocaleString()}</span>
+            </div>
+            <div className="text-base mt-2 flex items-center">
+              <img src={trophy} width={24} height={24} />
+              <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
+            </div>
+          </>
+        );
+      case 'frend':
+        return <h2>Страница "Frend"</h2>;
+      case 'earn':
+        return <h2>Страница "Earn"</h2>;
+      case 'boost':
+        return <h2>Страница "Boost"</h2>;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium">
@@ -46,23 +84,15 @@ function App() {
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
 
         <div className="fixed top-0 left-0 w-full px-4 pt-8 z-10 flex flex-col items-center text-white">
-          <div className="w-full cursor-pointer">
+          <div className="w-full cursor-pointer" onClick={() => setCurrentPage('home')}>
             <div className="bg-[#1f1f1f] text-center py-2 rounded-xl">
-              <p className="text-lg">Join kingdom <Arrow size={18} className="ml-0 mb-1 inline-block" /></p>
+              <p className="text-lg">Join Kingdom <Arrow size={18} className="ml-0 mb-1 inline-block" /></p>
             </div>
           </div>
-          <div className="mt-12 text-5xl font-bold flex items-center">
-            <img src={coin} width={44} height={44}/>
-            <span className="ml-2">{points.toLocaleString()}</span>
-          </div>
-          <div className="text-base mt-2 flex items-center">
-            <img src={trophy} width={24} height={24} />
-            <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
-          </div>
+          {renderContent()}
         </div>
-        
-        
-      <div className="fixed bottom-0 left-0 w-full px-4 pb-4 z-10">
+
+        <div className="fixed bottom-0 left-0 w-full px-4 pb-4 z-10">
           <div className="w-full flex justify-between gap-2">
             <div className="w-1/3 flex items-center justify-start max-w-32">
               <div className="flex items-center justify-center">
@@ -75,52 +105,51 @@ function App() {
             </div>
             <div className="flex-grow flex items-center max-w-60 text-sm">
               <div className="w-full bg-[#fad256] py-4 rounded-2xl flex justify-around">
-                <button className="flex flex-col items-center gap-1">
-                  <img src={bear} width={24} height={24} alt="HightVoltage" />
+                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
+                  <img src={bear} width={24} height={24} alt="Frend" />
                   <span>Frend</span>
                 </button>
                 <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-                <button className="flex flex-col items-center gap-1">
-                  <img src={coin} width={24} height={24} alt="HighVoltage" />
+                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('earn')}>
+                  <img src={coin} width={24} height={24} alt="Earn" />
                   <span>Earn</span>
                 </button>
                 <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-                <button className="flex flex-col items-center gap-1">
-                  <img src={rocket} width={24} height={24} alt="HighVoltage" />
+                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('boost')}>
+                  <img src={rocket} width={24} height={24} alt="Boost" />
                   <span>Boost</span>
                 </button>
               </div>
             </div>
           </div>
           <div className="w-fill bg-[#f9c035] rounded-full mt-4">
-            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{width: `${(energy / 6000) * 100}%` }}></div>
+            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy / 6000) * 100}%` }}></div>
           </div>
-      </div>
-
-      <div className="flex-grow flex items-center justify-center">
-        <div className="relative mt-4" onClick={handleClick}>
-          <img src={notcoin} width={256} height={256} alt="notcpin" />
-          {clicks.map((click) => (
-            <div
-              key={click.id}
-              className="absolute text-5xl font-bold opacity-0"
-              style={{
-                top: `${click.y - 42}px`,
-                left: `${click.x - 28}px`,
-                animation: `float 1s ease-out`
-              }}
-              onAnimationEnd={() => handleAnimationEnd(click.id)}
-            >
-              1
-            </div>
-          ))}
         </div>
-      </div>
 
+        <div className="flex-grow flex items-center justify-center">
+          <div className="relative mt-4" onClick={handleClick}>
+            <img src={notcoin} width={256} height={256} alt="notcoin" />
+            {clicks.map((click) => (
+              <div
+                key={click.id}
+                className="absolute text-5xl font-bold opacity-0"
+                style={{
+                  top: `${click.y - 42}px`,
+                  left: `${click.x - 28}px`,
+                  animation: `float 1s ease-out`
+                }}
+                onAnimationEnd={() => handleAnimationEnd(click.id)}
+              >
+                1
+              </div>
+            ))}
+          </div>
+        </div>
 
       </div>
     </div>
   );
 }
 
-export default App
+export default App;
