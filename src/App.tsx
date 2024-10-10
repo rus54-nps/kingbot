@@ -2,18 +2,26 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin, highVoltage, rocket, trophy, notcoin } from './images';
 import Arrow from './icons/Arrow';
-import loadingGif from './images/loading.gif'; // Добавьте ваш gif файл
+import loadingGif from './images/loading.gif'; 
+import fallingCoin from './images/coin.png'; // Картинка выпадающей монеты
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true); // Стейт для отслеживания загрузки
+  const [isLoading, setIsLoading] = useState(true); 
   const [points, setPoints] = useState(() => {
     const savedPoints = localStorage.getItem('points');
     return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
-  
-  const [energy, setEnergy] = useState(6000);
+
+  // Загружаем сохраненную энергию или устанавливаем по умолчанию
+  const [energy, setEnergy] = useState(() => {
+    const savedEnergy = localStorage.getItem('energy');
+    return savedEnergy ? parseInt(savedEnergy, 10) : 6000;
+  });
+
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
+  const [fallingCoins, setFallingCoins] = useState<{ id: number, x: number, y: number }[]>([]);
   const [currentPage, setCurrentPage] = useState('home');
+  const [isShaking, setIsShaking] = useState(false); // Для анимации дрожания
   const pointsToAdd = 1;
   const energyToReduce = 15;
 
@@ -21,18 +29,27 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // Заставка показывается 3 секунды
+    }, 3000); 
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Сохраняем энергию в localStorage при каждом ее изменении
+  useEffect(() => {
+    localStorage.setItem('energy', energy.toString());
+  }, [energy]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
       return;
     }
+
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 500);
 
     setPoints((prevPoints) => {
       const newPoints = prevPoints + pointsToAdd;
@@ -41,17 +58,20 @@ function App() {
     });
 
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
+    setFallingCoins([...fallingCoins, { id: Date.now(), x, y }]);
     setClicks([...clicks, { id: Date.now(), x, y }]);
   };
 
   const handleAnimationEnd = (id: number) => {
     setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
+    setFallingCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
   };
 
+  // Восстанавливаем энергию каждую секунду
   useEffect(() => {
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => Math.min(prevEnergy + 3, 6000));
-    }, 100); 
+    }, 1000); // Восстанавливаем 3 единицы энергии каждую секунду
 
     return () => clearInterval(interval);
   }, []);
@@ -83,7 +103,6 @@ function App() {
   };
 
   if (isLoading) {
-    // Отображаем заставку, пока приложение загружается
     return (
       <div className="loading-screen">
         <img src={loadingGif} alt="Loading..." />
@@ -119,50 +138,25 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="flex-grow flex items-center max-w-60 text-sm">
-              <div className="w-full bg-[#fad256] py-4 rounded-2xl flex justify-around">
-                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
-                  <img src={bear} width={24} height={24} alt="Frend" />
-                  <span>Frend</span>
-                </button>
-                <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('earn')}>
-                  <img src={coin} width={24} height={24} alt="Earn" />
-                  <span>Earn</span>
-                </button>
-                <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('boost')}>
-                  <img src={rocket} width={24} height={24} alt="Boost" />
-                  <span>Boost</span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="w-fill bg-[#f9c035] rounded-full mt-4">
-            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy / 6000) * 100}%` }}></div>
           </div>
         </div>
 
         <div className="flex-grow flex items-center justify-center">
-          <div className="relative mt-4" onClick={handleClick}>
+          <div className={`relative mt-4 ${isShaking ? 'shaking' : ''}`} onClick={handleClick}>
             <img src={notcoin} width={256} height={256} alt="notcoin" />
-            {clicks.map((click) => (
-              <div
-                key={click.id}
-                className="absolute text-5xl font-bold opacity-0"
-                style={{
-                  top: `${click.y - 42}px`,
-                  left: `${click.x - 28}px`,
-                  animation: `float 1s ease-out`
-                }}
-                onAnimationEnd={() => handleAnimationEnd(click.id)}
-              >
-                1
-              </div>
+
+            {fallingCoins.map((coin) => (
+              <img
+                key={coin.id}
+                src={fallingCoin}
+                alt="falling coin"
+                className="falling-coin"
+                style={{ left: `${coin.x - 16}px`, top: `${coin.y - 16}px` }}
+                onAnimationEnd={() => handleAnimationEnd(coin.id)}
+              />
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
