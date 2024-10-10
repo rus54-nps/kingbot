@@ -5,30 +5,79 @@ import Arrow from './icons/Arrow';
 import loadingGif from './images/loading.gif';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const maxEnergy = 6000;
+  const energyToReduce = 15;
+  const energyRecoveryRate = 3;
+  const recoveryInterval = 100;
+
+  const [isLoading, setIsLoading] = useState(true); // Заставка
   const [points, setPoints] = useState(() => {
     const savedPoints = localStorage.getItem('points');
     return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
+  
+  const [energy, setEnergy] = useState(() => {
+    const savedEnergy = localStorage.getItem('energy');
+    return savedEnergy ? parseInt(savedEnergy, 10) : maxEnergy;
+  });
 
-  const [energy, setEnergy] = useState(6000);
+  const [lastUpdateTime, setLastUpdateTime] = useState(() => {
+    const savedTime = localStorage.getItem('lastUpdateTime');
+    return savedTime ? parseInt(savedTime, 10) : Date.now();
+  });
+
   const [coins, setCoins] = useState<{ id: number, x: number, y: number }[]>([]);
   const [currentPage, setCurrentPage] = useState('home');
   const [isShaking, setIsShaking] = useState(false);
   const pointsToAdd = 1;
-  const energyToReduce = 15;
+
+  // Рассчитываем восстановленную энергию на основе времени
+  const calculateRecoveredEnergy = () => {
+    const currentTime = Date.now();
+    const timeElapsed = currentTime - lastUpdateTime;
+    const energyRecovered = Math.floor((timeElapsed / recoveryInterval) * energyRecoveryRate);
+    return Math.min(energy + energyRecovered, maxEnergy);
+  };
 
   useEffect(() => {
+    // Показать заставку в течение 3 секунд
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
+    }, 3000); // 3 секунды заставка
+
+    return () => clearTimeout(timer); // Очищаем таймер, если компонент размонтируется
+  }, []);
+
+  useEffect(() => {
+    // Восстанавливаем энергию при загрузке приложения
+    const recoveredEnergy = calculateRecoveredEnergy();
+    setEnergy(recoveredEnergy);
+    setLastUpdateTime(Date.now());
+  }, []);
+
+  useEffect(() => {
+    // Сохраняем энергию и время в localStorage при изменении энергии
+    localStorage.setItem('energy', energy.toString());
+    localStorage.setItem('lastUpdateTime', lastUpdateTime.toString());
+  }, [energy, lastUpdateTime]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEnergy((prevEnergy) => {
+        const newEnergy = Math.min(prevEnergy + energyRecoveryRate, maxEnergy);
+        setLastUpdateTime(Date.now());
+        return newEnergy;
+      });
+    }, recoveryInterval);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
       return;
     }
+
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -40,25 +89,17 @@ function App() {
     });
 
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
-
+    
     // Добавляем новую монету
-    setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]); // Используем уникальный ID для каждой монеты
+    setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
 
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
   };
 
   const handleCoinAnimationEnd = (id: number) => {
-    setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id)); // Удаляем монету после анимации
+    setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setEnergy((prevEnergy) => Math.min(prevEnergy + 3, 6000));
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const renderContent = () => {
     switch (currentPage) {
@@ -87,6 +128,7 @@ function App() {
   };
 
   if (isLoading) {
+    // Показываем заставку
     return (
       <div className="loading-screen">
         <img src={loadingGif} alt="Loading..." />
@@ -142,7 +184,7 @@ function App() {
             </div>
           </div>
           <div className="w-fill bg-[#f9c035] rounded-full mt-4">
-            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy / 6000) * 100}%` }}></div>
+            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy / maxEnergy) * 100}%` }}></div>
           </div>
         </div>
 
