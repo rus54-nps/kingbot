@@ -1,55 +1,37 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { bear, coin, highVoltage, rocket, trophy, notcoin } from './images';
+import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin } from './images';
 import Arrow from './icons/Arrow';
-import loadingGif from './images/loading.gif'; 
-import fallingCoin from './images/coin.png'; // Картинка выпадающей монеты
+import loadingGif from './images/loading.gif';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
   const [points, setPoints] = useState(() => {
     const savedPoints = localStorage.getItem('points');
     return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
 
-  // Загружаем сохраненную энергию или устанавливаем по умолчанию
-  const [energy, setEnergy] = useState(() => {
-    const savedEnergy = localStorage.getItem('energy');
-    return savedEnergy ? parseInt(savedEnergy, 10) : 6000;
-  });
-
-  const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
-  const [fallingCoins, setFallingCoins] = useState<{ id: number, x: number, y: number }[]>([]);
+  const [energy, setEnergy] = useState(6000);
+  const [coins, setCoins] = useState<{ id: number, x: number, y: number }[]>([]);
   const [currentPage, setCurrentPage] = useState('home');
-  const [isShaking, setIsShaking] = useState(false); // Для анимации дрожания
+  const [isShaking, setIsShaking] = useState(false);
   const pointsToAdd = 1;
   const energyToReduce = 15;
 
-  // Скрываем загрузочный экран через 3 секунды
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); 
-
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
-
-  // Сохраняем энергию в localStorage при каждом ее изменении
-  useEffect(() => {
-    localStorage.setItem('energy', energy.toString());
-  }, [energy]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
       return;
     }
-
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
-    setIsShaking(true);
-    setTimeout(() => setIsShaking(false), 500);
 
     setPoints((prevPoints) => {
       const newPoints = prevPoints + pointsToAdd;
@@ -58,20 +40,22 @@ function App() {
     });
 
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
-    setFallingCoins([...fallingCoins, { id: Date.now(), x, y }]);
-    setClicks([...clicks, { id: Date.now(), x, y }]);
+
+    // Добавляем новую монету
+    setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]); // Используем уникальный ID для каждой монеты
+
+    setIsShaking(true);
+    setTimeout(() => setIsShaking(false), 500);
   };
 
-  const handleAnimationEnd = (id: number) => {
-    setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
-    setFallingCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
+  const handleCoinAnimationEnd = (id: number) => {
+    setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id)); // Удаляем монету после анимации
   };
 
-  // Восстанавливаем энергию каждую секунду
   useEffect(() => {
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => Math.min(prevEnergy + 3, 6000));
-    }, 1000); // Восстанавливаем 3 единицы энергии каждую секунду
+    }, 100);
 
     return () => clearInterval(interval);
   }, []);
@@ -81,11 +65,11 @@ function App() {
       case 'home':
         return (
           <>
-            <div className="mt-12 text-5xl font-bold flex items-center">
-              <img src={coin} width={44} height={44} />
+            <div className="mt-12 text-5xl font-bold flex items-center">              
+              <img src={coinImage} width={44} height={44} alt="Static Coin" />
               <span className="ml-2">{points.toLocaleString()}</span>
             </div>
-            <div className="text-base mt-2 flex items-center">
+            <div className="text-base mt-2 flex items-center">              
               <img src={trophy} width={24} height={24} />
               <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
             </div>
@@ -138,22 +122,46 @@ function App() {
                 </div>
               </div>
             </div>
+            <div className="flex-grow flex items-center max-w-60 text-sm">
+              <div className="w-full bg-[#fad256] py-4 rounded-2xl flex justify-around">
+                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
+                  <img src={bear} width={24} height={24} alt="Frend" />
+                  <span>Frend</span>
+                </button>
+                <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('earn')}>
+                  <img src={coinImage} width={24} height={24} alt="Earn" />
+                  <span>Earn</span>
+                </button>
+                <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('boost')}>
+                  <img src={rocket} width={24} height={24} alt="Boost" />
+                  <span>Boost</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="w-fill bg-[#f9c035] rounded-full mt-4">
+            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy / 6000) * 100}%` }}></div>
           </div>
         </div>
 
         <div className="flex-grow flex items-center justify-center">
-          <div className={`relative mt-4 ${isShaking ? 'shaking' : ''}`} onClick={handleClick}>
-            <img src={notcoin} width={256} height={256} alt="notcoin" />
-
-            {fallingCoins.map((coin) => (
-              <img
+          <div className="relative mt-4" onClick={handleClick}>
+            <img src={notcoin} width={256} height={256} className={isShaking ? 'shake' : ''} alt="notcoin" />
+            {coins.map((coin) => (
+              <div
                 key={coin.id}
-                src={fallingCoin}
-                alt="falling coin"
-                className="falling-coin"
-                style={{ left: `${coin.x - 16}px`, top: `${coin.y - 16}px` }}
-                onAnimationEnd={() => handleAnimationEnd(coin.id)}
-              />
+                className="absolute opacity-100 coin"
+                style={{
+                  top: `${coin.y}px`,
+                  left: `${coin.x}px`,
+                  animation: `fall 1s ease forwards`
+                }}
+                onAnimationEnd={() => handleCoinAnimationEnd(coin.id)}
+              >
+                <img src={coinImage} alt="Coin" width={30} height={30} />
+              </div>
             ))}
           </div>
         </div>

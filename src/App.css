@@ -1,0 +1,31 @@
+@keyframes fall {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(30px);
+      opacity: 0; /* Монета исчезает */
+    }
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-30px); /* Элемент поднимается */
+    }
+  }
+  
+  .shake {
+    animation: shake 0.5s forwards;
+  }
+  
+  @keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-5px, 0); }
+    50% { transform: translate(5px, 0); }
+    75% { transform: translate(-5px, 0); }
+    100% { transform: translate(0); }
+  }
