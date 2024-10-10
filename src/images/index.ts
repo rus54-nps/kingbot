@@ -4,6 +4,7 @@ import highVoltage from "./high-voltage.png";
 import notcoin from "./notcoin.png";
 import rocket from "./rocket.png";
 import trophy from "./trophy.png";
+import loading from "./loading.gif"
 
 export {
     bear,
@@ -11,5 +12,6 @@ export {
     highVoltage,
     notcoin,
     rocket,
-    trophy
+    trophy,
+    loading
 }

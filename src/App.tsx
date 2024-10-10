@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin, highVoltage, rocket, trophy, notcoin } from './images';
 import Arrow from './icons/Arrow';
+import loadingGif from './images/loading.gif'; // Добавьте ваш gif файл
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true); // Стейт для отслеживания загрузки
   const [points, setPoints] = useState(() => {
-    // Загрузка количества монет из localStorage при инициализации
     const savedPoints = localStorage.getItem('points');
     return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
@@ -15,6 +16,15 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const pointsToAdd = 1;
   const energyToReduce = 15;
+
+  // Скрываем загрузочный экран через 3 секунды
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // Заставка показывается 3 секунды
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
@@ -26,7 +36,6 @@ function App() {
 
     setPoints((prevPoints) => {
       const newPoints = prevPoints + pointsToAdd;
-      // Сохраняем новое количество монет в localStorage
       localStorage.setItem('points', newPoints.toString());
       return newPoints;
     });
@@ -42,7 +51,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => Math.min(prevEnergy + 3, 6000));
-    }, 100); // Регенит 10 энергии в сек
+    }, 100); 
 
     return () => clearInterval(interval);
   }, []);
@@ -73,16 +82,23 @@ function App() {
     }
   };
 
+  if (isLoading) {
+    // Отображаем заставку, пока приложение загружается
+    return (
+      <div className="loading-screen">
+        <img src={loadingGif} alt="Loading..." />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium">
-
       <div className="absolute inset-0 h-1/2 bg-gradient-overlay z-0"></div>
       <div className="absolute inset-0 flex items-center justify-center z-0">
         <div className="radial-gradient-overlay"></div>
       </div>
 
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
-
         <div className="fixed top-0 left-0 w-full px-4 pt-8 z-10 flex flex-col items-center text-white">
           <div className="w-full cursor-pointer" onClick={() => setCurrentPage('home')}>
             <div className="bg-[#1f1f1f] text-center py-2 rounded-xl">
