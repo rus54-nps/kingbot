@@ -5,7 +5,7 @@ import Arrow from './icons/Arrow';
 import loadingGif from './images/loading.gif';
 
 function App() {
-  const maxEnergy = 6000;
+  const initialMaxEnergy = 6000;
   const energyToReduce = 15;
   const energyRecoveryRate = 3;
   const recoveryInterval = 100;
@@ -18,20 +18,22 @@ function App() {
   
   const [energy, setEnergy] = useState(() => {
     const savedEnergy = localStorage.getItem('energy');
-    return savedEnergy ? parseInt(savedEnergy, 10) : maxEnergy;
+    return savedEnergy ? parseInt(savedEnergy, 10) : initialMaxEnergy;
   });
 
+  const [maxEnergy, setMaxEnergy] = useState(initialMaxEnergy); // Максимальная энергия
   const [lastUpdateTime, setLastUpdateTime] = useState(() => {
     const savedTime = localStorage.getItem('lastUpdateTime');
     return savedTime ? parseInt(savedTime, 10) : Date.now();
   });
 
   const [coins, setCoins] = useState<{ id: number, x: number, y: number }[]>([]);
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState('home'); // Управляем навигацией
   const [isShaking, setIsShaking] = useState(false);
-  const pointsToAdd = 1;
+  const [coinsPerClick, setCoinsPerClick] = useState(1); // Количество монет за клик
 
-  // Рассчитываем восстановленную энергию на основе времени
+  const pointsToAdd = coinsPerClick;
+
   const calculateRecoveredEnergy = () => {
     const currentTime = Date.now();
     const timeElapsed = currentTime - lastUpdateTime;
@@ -40,34 +42,28 @@ function App() {
   };
 
   useEffect(() => {
-    // Показать заставку в течение 3 секунд
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000); // 3 секунды заставка
 
-    return () => clearTimeout(timer); // Очищаем таймер, если компонент размонтируется
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    // Восстанавливаем энергию при загрузке приложения
     const recoveredEnergy = calculateRecoveredEnergy();
     setEnergy(recoveredEnergy);
     setLastUpdateTime(Date.now());
   }, []);
 
   useEffect(() => {
-    // Сохраняем энергию и время в localStorage при изменении энергии
     localStorage.setItem('energy', energy.toString());
     localStorage.setItem('lastUpdateTime', lastUpdateTime.toString());
   }, [energy, lastUpdateTime]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setEnergy((prevEnergy) => {
-        const newEnergy = Math.min(prevEnergy + energyRecoveryRate, maxEnergy);
-        setLastUpdateTime(Date.now());
-        return newEnergy;
-      });
+      setEnergy((prevEnergy) => Math.min(prevEnergy + energyRecoveryRate, maxEnergy));
+      setLastUpdateTime(Date.now());
     }, recoveryInterval);
 
     return () => clearInterval(interval);
@@ -90,7 +86,6 @@ function App() {
 
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
     
-    // Добавляем новую монету
     setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
 
     setIsShaking(true);
@@ -100,6 +95,44 @@ function App() {
   const handleCoinAnimationEnd = (id: number) => {
     setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
   };
+
+  const handlePurchase = (purchaseType: string) => {
+    if (points < 100) {
+      alert('Недостаточно монет для покупки!');
+      return;
+    }
+
+    setPoints((prevPoints) => {
+      const newPoints = prevPoints - 100;
+      localStorage.setItem('points', newPoints.toString());
+      return newPoints;
+    });
+
+    if (purchaseType === 'increaseCoins') {
+      setCoinsPerClick(2); // Удваиваем монеты за клик
+    }
+
+    if (purchaseType === 'increaseEnergy') {
+      setMaxEnergy((prevMaxEnergy) => prevMaxEnergy + 200); // Увеличиваем максимальную энергию
+    }
+  };
+
+  const renderShop = () => (
+    <div className="shop-overlay">
+      <h2>Магазин</h2>
+      <ul>
+        <li>
+          Покупка 1: Удвоение монет за клик (100 монет)
+          <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
+        </li>
+        <li>
+          Покупка 2: Увеличение энергии на 200 единиц (100 монет)
+          <button onClick={() => handlePurchase('increaseEnergy')}>Купить</button>
+        </li>
+      </ul>
+      <button onClick={() => setCurrentPage('home')}>Назад</button>
+    </div>
+  );
 
   const renderContent = () => {
     switch (currentPage) {
@@ -116,19 +149,14 @@ function App() {
             </div>
           </>
         );
-      case 'frend':
-        return <h2>Страница "Frend"</h2>;
-      case 'earn':
-        return <h2>Страница "Earn"</h2>;
-      case 'boost':
-        return <h2>Страница "Boost"</h2>;
+      case 'shop':
+        return renderShop(); // Показываем магазин
       default:
         return null;
     }
   };
 
   if (isLoading) {
-    // Показываем заставку
     return (
       <div className="loading-screen">
         <img src={loadingGif} alt="Loading..." />
@@ -160,7 +188,7 @@ function App() {
                 <img src={highVoltage} width={44} height={44} alt="HighVoltage" />
                 <div className="ml-2 text-left">
                   <span className="text-white text-2xl font-bold block">{energy}</span>
-                  <span className="text-white text-large opacity-75">/ 6000</span>
+                  <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
                 </div>
               </div>
             </div>
@@ -176,9 +204,9 @@ function App() {
                   <span>Earn</span>
                 </button>
                 <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('boost')}>
-                  <img src={rocket} width={24} height={24} alt="Boost" />
-                  <span>Boost</span>
+                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
+                  <img src={rocket} width={24} height={24} alt="Shop" />
+                  <span>Shop</span>
                 </button>
               </div>
             </div>
