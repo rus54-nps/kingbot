@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin } from './images';
+import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin, item1, item2 } from './images';
 import Arrow from './icons/Arrow';
 import loadingGif from './images/loading.gif';
 
@@ -15,7 +15,7 @@ function App() {
     const savedPoints = localStorage.getItem('points');
     return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
-  
+
   const [energy, setEnergy] = useState(() => {
     const savedEnergy = localStorage.getItem('energy');
     return savedEnergy ? parseInt(savedEnergy, 10) : initialMaxEnergy;
@@ -85,7 +85,7 @@ function App() {
     });
 
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
-    
+
     setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
 
     setIsShaking(true);
@@ -119,18 +119,26 @@ function App() {
 
   const renderShop = () => (
     <div className="shop-overlay">
-      <h2>Магазин</h2>
-      <ul>
-        <li>
-          Покупка 1: Удвоение монет за клик (100 монет)
-          <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
+      <h2 className="shop-title">Магазин</h2>
+      <ul className="shop-items">
+        <li className="shop-item">
+          <img src={item1} alt="Покупка 1" className="shop-item-image" />
+          <div className="shop-item-info">
+            <h3>Удвоение монет за клик</h3>
+            <p>Цена: 100 монет</p>
+            <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
+          </div>
         </li>
-        <li>
-          Покупка 2: Увеличение энергии на 200 единиц (100 монет)
-          <button onClick={() => handlePurchase('increaseEnergy')}>Купить</button>
+        <li className="shop-item">
+          <img src={item2} alt="Покупка 2" className="shop-item-image" />
+          <div className="shop-item-info">
+            <h3>Увеличение энергии на 200 единиц</h3>
+            <p>Цена: 100 монет</p>
+            <button onClick={() => handlePurchase('increaseEnergy')}>Купить</button>
+          </div>
         </li>
       </ul>
-      <button onClick={() => setCurrentPage('home')}>Назад</button>
+      <button className="shop-back-button" onClick={() => setCurrentPage('home')}>Join Kingdom</button>
     </div>
   );
 
@@ -139,11 +147,11 @@ function App() {
       case 'home':
         return (
           <>
-            <div className="mt-12 text-5xl font-bold flex items-center">              
+            <div className="mt-12 text-5xl font-bold flex items-center">
               <img src={coinImage} width={44} height={44} alt="Static Coin" />
               <span className="ml-2">{points.toLocaleString()}</span>
             </div>
-            <div className="text-base mt-2 flex items-center">              
+            <div className="text-base mt-2 flex items-center">
               <img src={trophy} width={24} height={24} />
               <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
             </div>

@@ -5,6 +5,8 @@ import notcoin from "./notcoin.png";
 import rocket from "./rocket.png";
 import trophy from "./trophy.png";
 import loading from "./loading.gif";
+import item1 from "./item1.png";
+import item2 from "./item2.png";
 
 export {
     bear,
@@ -14,4 +16,6 @@ export {
     rocket,
     trophy,
     loading,
+    item1,
+    item2,
 }
