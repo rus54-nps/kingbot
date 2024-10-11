@@ -9,6 +9,9 @@ function App() {
   const energyToReduce = 5; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал восстановления энергии 1 секунда
 
+  const [isDoubleCoinsPurchased, setIsDoubleCoinsPurchased] = useState(false);
+  const [isTripleCoinsPurchased, setIsTripleCoinsPurchased] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true); // Заставка
   const [points, setPoints] = useState(() => {
     const savedPoints = localStorage.getItem('points');
@@ -115,17 +118,18 @@ function App() {
       alert('Недостаточно монет для покупки!');
       return;
     }
-
+  
     setPoints((prevPoints) => {
       const newPoints = prevPoints - 100;
       localStorage.setItem('points', newPoints.toString());
       return newPoints;
     });
-
+  
     if (purchaseType === 'increaseCoins') {
-      setCoinsPerClick(2); // Удваиваем монеты за клик
+      setCoinsPerClick(2); // Удвоение монет за клик
+      setIsDoubleCoinsPurchased(true); // Отмечаем, что удвоение куплено
     }
-
+  
     if (purchaseType === 'increaseEnergy') {
       setMaxEnergy((prevMaxEnergy) => {
         const newMaxEnergy = prevMaxEnergy + 200; // Увеличиваем максимальную энергию
@@ -134,26 +138,43 @@ function App() {
         return newMaxEnergy;
       });
     }
-
-    if (purchaseType === 'speedUpEnergy') { // Новая покупка
-      setEnergyRecoveryRate(3); // Увеличиваем скорость восстановления энергии
+  
+    if (purchaseType === 'speedUpEnergy') {
+      setEnergyRecoveryRate(3); // Увеличение скорости восстановления энергии
+    }
+  
+    if (purchaseType === 'increaseToTripleCoins' && isDoubleCoinsPurchased) {
+      setCoinsPerClick(3); // Три монеты за клик
+      setIsTripleCoinsPurchased(true); // Отмечаем, что три монеты за клик куплено
     }
   };
 
   const renderShop = () => (
     <div className="shop-overlay">
-      <div className="shop-frame"> {/* Контейнер с рамкой */}
+      <div className="shop-frame">
         <h2 className="shop-title">Магазин</h2>
         <div className="shop-items-container">
           <ul className="shop-items">
-            <li className="shop-item">
-              <img src={item1} alt="Покупка 1" className="shop-item-image" />
-              <div className="shop-item-info">
-                <h3>Удвоение монет за клик</h3>
-                <p>Цена: 100 монет</p>
-                <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
-              </div>
-            </li>
+            {!isDoubleCoinsPurchased && (
+              <li className="shop-item">
+                <img src={item1} alt="Покупка 1" className="shop-item-image" />
+                <div className="shop-item-info">
+                  <h3>Удвоение монет за клик</h3>
+                  <p>Цена: 100 монет</p>
+                  <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
+                </div>
+              </li>
+            )}
+            {isDoubleCoinsPurchased && !isTripleCoinsPurchased && (
+              <li className="shop-item">
+                <img src={item1} alt="Покупка 2" className="shop-item-image" />
+                <div className="shop-item-info">
+                  <h3>Три монеты за клик</h3>
+                  <p>Цена: 100 монет</p>
+                  <button onClick={() => handlePurchase('increaseToTripleCoins')}>Купить</button>
+                </div>
+              </li>
+            )}
             <li className="shop-item">
               <img src={item2} alt="Покупка 2" className="shop-item-image" />
               <div className="shop-item-info">
@@ -163,11 +184,11 @@ function App() {
               </div>
             </li>
             <li className="shop-item">
-              <img src={item3} alt="Покупка 3" className='shop-item-image' />
-              <div className='shop-item-info'>
+              <img src={item3} alt="Покупка 3" className="shop-item-image" />
+              <div className="shop-item-info">
                 <h3>Улучшение восстановления энергии</h3>
                 <p>Цена: 100 монет</p>
-                <button onClick={() => handlePurchase('increaseEnergyRecovery')}>Купить</button>
+                <button onClick={() => handlePurchase('speedUpEnergy')}>Купить</button>
               </div>
             </li>
           </ul>
@@ -176,7 +197,7 @@ function App() {
       </div>
     </div>
   );
-  
+
   const renderContent = () => {
     switch (currentPage) {
       case 'home':
