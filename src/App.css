@@ -45,19 +45,19 @@
 }
 
 .shop-overlay {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background-color: rgba(0, 0, 0, 0.8); /* Темный полупрозрачный фон */
-color: white;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 20px;
-z-index: 1000; /* Обеспечиваем, чтобы магазин был над другими элементами */
+  position: fixed;
+  top: calc(50% - 550px); /* На 100 пикселей выше центра экрана */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(11, 1, 22); /* Темный полупрозрачный фон */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000; /* Обеспечиваем, чтобы магазин был над другими элементами */
 }
 
 .shop-title {
@@ -145,11 +145,14 @@ background-color: #ffec7f; /* Цвет при нажатии */
 }
 
 .shop-frame {
-border: 2px solid white; /* Белая рамка */
-border-radius: 10px; /* Закругленные углы */
-padding: 20px; /* Отступ внутри рамки */
-background-color: rgba(30, 30, 30, 0.8); /* Фон, чтобы выделить рамку */
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для глубины */
+  border: 2px solid white; /* Белая рамка */
+  border-radius: 10px; /* Закругленные углы */
+  padding: 20px; /* Отступ внутри рамки */
+  background-color: rgba(30, 30, 30, 0.8); /* Фон, чтобы выделить рамку */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для глубины */
+  max-height: 80vh; /* Максимальная высота 80% от высоты экрана */
+  overflow-y: auto; /* Вертикальная прокрутка, если контент превышает высоту */
+  width: 90vw; /* Ширина 90% от ширины экрана */
 }
 
 .shop-title {
