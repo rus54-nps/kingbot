@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin, item1, item2 } from './images';
+import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin, item1, item2, item3 } from './images'; // Добавьте item3
 import Arrow from './icons/Arrow';
 import loadingGif from './images/loading.gif';
 
 function App() {
-  const initialMaxEnergy = 6000;
-  const energyToReduce = 15;
-  const energyRecoveryRate = 3;
-  const recoveryInterval = 100;
+  const initialMaxEnergy = 1000; // Стартовая энергия
+  const energyToReduce = 5; // Энергия за нажатие
+  const recoveryInterval = 1000; // Интервал восстановления энергии 1 секунда
 
   const [isLoading, setIsLoading] = useState(true); // Заставка
   const [points, setPoints] = useState(() => {
@@ -21,7 +20,16 @@ function App() {
     return savedEnergy ? parseInt(savedEnergy, 10) : initialMaxEnergy;
   });
 
-  const [maxEnergy, setMaxEnergy] = useState(initialMaxEnergy); // Максимальная энергия
+  const [maxEnergy, setMaxEnergy] = useState(() => {
+    const savedMaxEnergy = localStorage.getItem('maxEnergy');
+    return savedMaxEnergy ? parseInt(savedMaxEnergy, 10) : initialMaxEnergy; // Загружаем максимальную энергию из localStorage
+  });
+
+  const [coinsPerClick, setCoinsPerClick] = useState(() => {
+    const savedCoinsPerClick = localStorage.getItem('coinsPerClick');
+    return savedCoinsPerClick ? parseInt(savedCoinsPerClick, 10) : 1; // Загружаем монеты за клик
+  });
+
   const [lastUpdateTime, setLastUpdateTime] = useState(() => {
     const savedTime = localStorage.getItem('lastUpdateTime');
     return savedTime ? parseInt(savedTime, 10) : Date.now();
@@ -30,7 +38,8 @@ function App() {
   const [coins, setCoins] = useState<{ id: number, x: number, y: number }[]>([]);
   const [currentPage, setCurrentPage] = useState('home'); // Управляем навигацией
   const [isShaking, setIsShaking] = useState(false);
-  const [coinsPerClick, setCoinsPerClick] = useState(1); // Количество монет за клик
+
+  const [energyRecoveryRate, setEnergyRecoveryRate] = useState(1); // Восстановление энергии, изменяемое покупками
 
   const pointsToAdd = coinsPerClick;
 
@@ -67,10 +76,15 @@ function App() {
     }, recoveryInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [energyRecoveryRate]); // Добавлен energyRecoveryRate в зависимости
+
+  useEffect(() => {
+    localStorage.setItem('maxEnergy', maxEnergy.toString());
+    localStorage.setItem('coinsPerClick', coinsPerClick.toString());
+  }, [maxEnergy, coinsPerClick]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (energy - energyToReduce < 0) {
+    if (energy - energyToReduce < 0) { // Проверяем достаточно ли энергии
       return;
     }
 
@@ -84,7 +98,7 @@ function App() {
       return newPoints;
     });
 
-    setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
+    setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce); // Уменьшаем энергию на energyToReduce
 
     setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
 
@@ -113,35 +127,56 @@ function App() {
     }
 
     if (purchaseType === 'increaseEnergy') {
-      setMaxEnergy((prevMaxEnergy) => prevMaxEnergy + 200); // Увеличиваем максимальную энергию
+      setMaxEnergy((prevMaxEnergy) => {
+        const newMaxEnergy = prevMaxEnergy + 200; // Увеличиваем максимальную энергию
+        const newEnergy = Math.min(energy, newMaxEnergy);
+        setEnergy(newEnergy);
+        return newMaxEnergy;
+      });
+    }
+
+    if (purchaseType === 'speedUpEnergy') { // Новая покупка
+      setEnergyRecoveryRate(3); // Увеличиваем скорость восстановления энергии
     }
   };
 
   const renderShop = () => (
     <div className="shop-overlay">
-      <h2 className="shop-title">Магазин</h2>
-      <ul className="shop-items">
-        <li className="shop-item">
-          <img src={item1} alt="Покупка 1" className="shop-item-image" />
-          <div className="shop-item-info">
-            <h3>Удвоение монет за клик</h3>
-            <p>Цена: 100 монет</p>
-            <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
-          </div>
-        </li>
-        <li className="shop-item">
-          <img src={item2} alt="Покупка 2" className="shop-item-image" />
-          <div className="shop-item-info">
-            <h3>Увеличение энергии на 200 единиц</h3>
-            <p>Цена: 100 монет</p>
-            <button onClick={() => handlePurchase('increaseEnergy')}>Купить</button>
-          </div>
-        </li>
-      </ul>
-      <button className="shop-back-button" onClick={() => setCurrentPage('home')}>Join Kingdom</button>
+      <div className="shop-frame"> {/* Контейнер с рамкой */}
+        <h2 className="shop-title">Магазин</h2>
+        <div className="shop-items-container">
+          <ul className="shop-items">
+            <li className="shop-item">
+              <img src={item1} alt="Покупка 1" className="shop-item-image" />
+              <div className="shop-item-info">
+                <h3>Удвоение монет за клик</h3>
+                <p>Цена: 100 монет</p>
+                <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
+              </div>
+            </li>
+            <li className="shop-item">
+              <img src={item2} alt="Покупка 2" className="shop-item-image" />
+              <div className="shop-item-info">
+                <h3>Увеличение энергии на 200 единиц</h3>
+                <p>Цена: 100 монет</p>
+                <button onClick={() => handlePurchase('increaseEnergy')}>Купить</button>
+              </div>
+            </li>
+            <li className="shop-item">
+              <img src={item3} alt="Покупка 3" className='shop-item-image' />
+              <div className='shop-item-info'>
+                <h3>Улучшение восстановления энергии</h3>
+                <p>Цена: 100 монет</p>
+                <button onClick={() => handlePurchase('increaseEnergyRecovery')}>Купить</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <button className="shop-back-button" onClick={() => setCurrentPage('home')}>Join Kingdom</button>
+      </div>
     </div>
   );
-
+  
   const renderContent = () => {
     switch (currentPage) {
       case 'home':
