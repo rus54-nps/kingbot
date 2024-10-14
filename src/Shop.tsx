@@ -10,15 +10,16 @@ interface ShopItem {
   level: number; // Уровень товара
   regenerationRate: number; // Количество энергии, восстанавливаемой в секунду
   nextPrice: number; // Цена для следующего уровня
+  description: string; // Описание товара
 }
 
 const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateAction<number>>; setCurrentPage: React.Dispatch<React.SetStateAction<string>> }> = ({ points, setPoints, setCurrentPage }) => {
   const [items, setItems] = useState<ShopItem[]>([
-    { id: 1, name: 'Тап lvl 1', price: 100, image: item1, level: 1, regenerationRate: 1, nextPrice: 0 },
-    { id: 2, name: 'Энергия lvl 1', price: 100, image: item2, level: 1, regenerationRate: 1, nextPrice: 0 },
-    { id: 3, name: 'Реген lvl 1', price: 100, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000 }, // Начальная цена для улучшения
+    { id: 1, name: 'Тап lvl 1', price: 100, image: item1, level: 1, regenerationRate: 1, nextPrice: 0, description: 'Монеты за Тап: 1' },
+    { id: 2, name: 'Энергия lvl 1', price: 20, image: item2, level: 1, regenerationRate: 500, nextPrice: 0, description: 'Начальное количество энергии: 500' },
+    { id: 3, name: 'Реген lvl 1', price: 100, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Специальный предмет для восстановления энергии' },
   ]);
-  
+
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null); // Состояние для отслеживания открытого товара
 
   const handlePurchase = (itemId: number) => {
@@ -26,32 +27,22 @@ const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateA
     if (itemToPurchase && points >= itemToPurchase.price) {
       const updatedItems = items.map(item => {
         if (item.id === itemId) {
-          const newLevel = item.level + 1;
-          let newPrice = 0;
+          const newLevel = item.level + 1; // Увеличиваем уровень на 1
+          let newPrice = item.price * 2; // Увеличиваем цену в 2 раза
           let newRegenerationRate = item.regenerationRate;
 
-          // Обновляем цену и скорость восстановления в зависимости от уровня
-          if (newLevel === 2) {
-            newPrice = 5000;
-            newRegenerationRate = 2;
-          } else if (newLevel === 3) {
-            newPrice = 20000;
-            newRegenerationRate = 3;
-          } else if (newLevel === 4) {
-            newPrice = 50000;
-            newRegenerationRate = 4;
-          } else if (newLevel === 5) {
-            newPrice = 120000;
-            newRegenerationRate = 5;
-          } else if (newLevel === 6 && points >= 1000000) { // Появляется только при 1 миллионе
-            newPrice = 500000;
-            newRegenerationRate = 10;
-          } else {
-            alert('Недостаточно монет для повышения уровня!');
-            return item; // Если нет достаточно монет, возвращаем товар без изменений
+          // Обновляем скорость восстановления для "Энергия"
+          if (itemId === 2) {
+            newRegenerationRate = item.regenerationRate + 500; // Каждое улучшение увеличивает на 500 энергии
           }
 
-          return { ...item, level: newLevel, regenerationRate: newRegenerationRate, price: newPrice };
+          return { 
+            ...item, 
+            level: newLevel, // Устанавливаем новый уровень
+            regenerationRate: newRegenerationRate, 
+            price: newPrice,
+            name: `${item.name.split(' lvl')[0]} lvl ${newLevel}` // Обновляем название с новым уровнем
+          };
         }
         return item;
       });
@@ -81,12 +72,17 @@ const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateA
                 </div>
                 <div className="shop-item-info">
                   <h3 onClick={() => handleToggleDescription(item.id)} style={{ cursor: 'pointer' }}>{item.name}</h3>
-                  <p>Цена: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
-                  {item.id === 3 && expandedItemId === item.id && ( // Показываем описание только для Реген lvl 1
-                    <p>Скорость восстановления: {item.regenerationRate} энергии/с</p>
+                  {expandedItemId === item.id ? ( // Показываем описание и скрываем кнопку
+                    <>
+                      <p>{item.description}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>Цена: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
+                      <button onClick={() => handlePurchase(item.id)}>Купить</button>
+                    </>
                   )}
                 </div>
-                <button onClick={() => handlePurchase(item.id)}>Купить</button>
               </li>
             ))}
           </ul>

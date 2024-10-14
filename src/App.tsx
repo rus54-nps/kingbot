@@ -6,10 +6,10 @@ import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 
 function App() {
-  const maxEnergy = 6000;
-  const energyToReduce = 15;
-  const energyRecoveryRate = 3;
-  const recoveryInterval = 100;
+  const maxEnergy = 500; //старт энергия
+  const energyToReduce = 100; // Энергия за нажатие
+  const energyRecoveryRate = 1; // Кол-во энергии в сек
+  const recoveryInterval = 1; // Интервал времени 1000 - 1 сек
 
   const [isLoading, setIsLoading] = useState(true); // Заставка
   const [points, setPoints] = useState(() => {
@@ -161,7 +161,7 @@ function App() {
                 <img src={highVoltage} width={44} height={44} alt="HighVoltage" />
                 <div className="ml-2 text-left">
                   <span className="text-white text-2xl font-bold block">{energy}</span>
-                  <span className="text-white text-large opacity-75">/ 6000</span>
+                  <span className="text-white text-large opacity-75">/ 500</span>
                 </div>
               </div>
             </div>
