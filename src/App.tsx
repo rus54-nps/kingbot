@@ -1,36 +1,25 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin, item1, item2, item3 } from './images'; // Добавьте item3
+import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin } from './images';
 import Arrow from './icons/Arrow';
 import loadingGif from './images/loading.gif';
+import Shop from './Shop';
 
 function App() {
-  const initialMaxEnergy = 1000; // Стартовая энергия
-  const energyToReduce = 5; // Энергия за нажатие
-  const recoveryInterval = 1000; // Интервал восстановления энергии 1 секунда
-
-  const [isDoubleCoinsPurchased, setIsDoubleCoinsPurchased] = useState(false);
-  const [isTripleCoinsPurchased, setIsTripleCoinsPurchased] = useState(false);
+  const maxEnergy = 6000;
+  const energyToReduce = 15;
+  const energyRecoveryRate = 3;
+  const recoveryInterval = 100;
 
   const [isLoading, setIsLoading] = useState(true); // Заставка
   const [points, setPoints] = useState(() => {
     const savedPoints = localStorage.getItem('points');
     return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
-
+  
   const [energy, setEnergy] = useState(() => {
     const savedEnergy = localStorage.getItem('energy');
-    return savedEnergy ? parseInt(savedEnergy, 10) : initialMaxEnergy;
-  });
-
-  const [maxEnergy, setMaxEnergy] = useState(() => {
-    const savedMaxEnergy = localStorage.getItem('maxEnergy');
-    return savedMaxEnergy ? parseInt(savedMaxEnergy, 10) : initialMaxEnergy; // Загружаем максимальную энергию из localStorage
-  });
-
-  const [coinsPerClick, setCoinsPerClick] = useState(() => {
-    const savedCoinsPerClick = localStorage.getItem('coinsPerClick');
-    return savedCoinsPerClick ? parseInt(savedCoinsPerClick, 10) : 1; // Загружаем монеты за клик
+    return savedEnergy ? parseInt(savedEnergy, 10) : maxEnergy;
   });
 
   const [lastUpdateTime, setLastUpdateTime] = useState(() => {
@@ -39,13 +28,11 @@ function App() {
   });
 
   const [coins, setCoins] = useState<{ id: number, x: number, y: number }[]>([]);
-  const [currentPage, setCurrentPage] = useState('home'); // Управляем навигацией
+  const [currentPage, setCurrentPage] = useState('home');
   const [isShaking, setIsShaking] = useState(false);
+  const pointsToAdd = 1;
 
-  const [energyRecoveryRate, setEnergyRecoveryRate] = useState(1); // Восстановление энергии, изменяемое покупками
-
-  const pointsToAdd = coinsPerClick;
-
+  // Рассчитываем восстановленную энергию на основе времени
   const calculateRecoveredEnergy = () => {
     const currentTime = Date.now();
     const timeElapsed = currentTime - lastUpdateTime;
@@ -54,40 +41,41 @@ function App() {
   };
 
   useEffect(() => {
+    // Показать заставку в течение 3 секунд
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 3000); // 3 секунды заставка
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer); // Очищаем таймер, если компонент размонтируется
   }, []);
 
   useEffect(() => {
+    // Восстанавливаем энергию при загрузке приложения
     const recoveredEnergy = calculateRecoveredEnergy();
     setEnergy(recoveredEnergy);
     setLastUpdateTime(Date.now());
   }, []);
 
   useEffect(() => {
+    // Сохраняем энергию и время в localStorage при изменении энергии
     localStorage.setItem('energy', energy.toString());
     localStorage.setItem('lastUpdateTime', lastUpdateTime.toString());
   }, [energy, lastUpdateTime]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setEnergy((prevEnergy) => Math.min(prevEnergy + energyRecoveryRate, maxEnergy));
-      setLastUpdateTime(Date.now());
+      setEnergy((prevEnergy) => {
+        const newEnergy = Math.min(prevEnergy + energyRecoveryRate, maxEnergy);
+        setLastUpdateTime(Date.now());
+        return newEnergy;
+      });
     }, recoveryInterval);
 
     return () => clearInterval(interval);
-  }, [energyRecoveryRate]); // Добавлен energyRecoveryRate в зависимости
-
-  useEffect(() => {
-    localStorage.setItem('maxEnergy', maxEnergy.toString());
-    localStorage.setItem('coinsPerClick', coinsPerClick.toString());
-  }, [maxEnergy, coinsPerClick]);
+  }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (energy - energyToReduce < 0) { // Проверяем достаточно ли энергии
+    if (energy - energyToReduce < 0) {
       return;
     }
 
@@ -101,8 +89,9 @@ function App() {
       return newPoints;
     });
 
-    setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce); // Уменьшаем энергию на energyToReduce
-
+    setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
+    
+    // Добавляем новую монету
     setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
 
     setIsShaking(true);
@@ -113,114 +102,34 @@ function App() {
     setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
   };
 
-  const handlePurchase = (purchaseType: string) => {
-    if (points < 100) {
-      alert('Недостаточно монет для покупки!');
-      return;
-    }
-  
-    setPoints((prevPoints) => {
-      const newPoints = prevPoints - 100;
-      localStorage.setItem('points', newPoints.toString());
-      return newPoints;
-    });
-  
-    if (purchaseType === 'increaseCoins') {
-      setCoinsPerClick(2); // Удвоение монет за клик
-      setIsDoubleCoinsPurchased(true); // Отмечаем, что удвоение куплено
-    }
-  
-    if (purchaseType === 'increaseEnergy') {
-      setMaxEnergy((prevMaxEnergy) => {
-        const newMaxEnergy = prevMaxEnergy + 200; // Увеличиваем максимальную энергию
-        const newEnergy = Math.min(energy, newMaxEnergy);
-        setEnergy(newEnergy);
-        return newMaxEnergy;
-      });
-    }
-  
-    if (purchaseType === 'speedUpEnergy') {
-      setEnergyRecoveryRate(3); // Увеличение скорости восстановления энергии
-    }
-  
-    if (purchaseType === 'increaseToTripleCoins' && isDoubleCoinsPurchased) {
-      setCoinsPerClick(3); // Три монеты за клик
-      setIsTripleCoinsPurchased(true); // Отмечаем, что три монеты за клик куплено
-    }
-  };
-
-  const renderShop = () => (
-    <div className="shop-overlay">
-      <div className="shop-frame">
-        <h2 className="shop-title">Магазин</h2>
-        <div className="shop-items-container">
-          <ul className="shop-items">
-            {!isDoubleCoinsPurchased && (
-              <li className="shop-item">
-                <img src={item1} alt="Покупка 1" className="shop-item-image" />
-                <div className="shop-item-info">
-                  <h3>Удвоение монет за клик</h3>
-                  <p>Цена: 100 монет</p>
-                  <button onClick={() => handlePurchase('increaseCoins')}>Купить</button>
-                </div>
-              </li>
-            )}
-            {isDoubleCoinsPurchased && !isTripleCoinsPurchased && (
-              <li className="shop-item">
-                <img src={item1} alt="Покупка 2" className="shop-item-image" />
-                <div className="shop-item-info">
-                  <h3>Три монеты за клик</h3>
-                  <p>Цена: 100 монет</p>
-                  <button onClick={() => handlePurchase('increaseToTripleCoins')}>Купить</button>
-                </div>
-              </li>
-            )}
-            <li className="shop-item">
-              <img src={item2} alt="Покупка 2" className="shop-item-image" />
-              <div className="shop-item-info">
-                <h3>Увеличение энергии на 200 единиц</h3>
-                <p>Цена: 100 монет</p>
-                <button onClick={() => handlePurchase('increaseEnergy')}>Купить</button>
-              </div>
-            </li>
-            <li className="shop-item">
-              <img src={item3} alt="Покупка 3" className="shop-item-image" />
-              <div className="shop-item-info">
-                <h3>Улучшение восстановления энергии</h3>
-                <p>Цена: 100 монет</p>
-                <button onClick={() => handlePurchase('speedUpEnergy')}>Купить</button>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <button className="shop-back-button" onClick={() => setCurrentPage('home')}>Join Kingdom</button>
-      </div>
-    </div>
-  );
-
   const renderContent = () => {
     switch (currentPage) {
       case 'home':
         return (
           <>
-            <div className="mt-12 text-5xl font-bold flex items-center">
+            <div className="mt-12 text-5xl font-bold flex items-center">              
               <img src={coinImage} width={44} height={44} alt="Static Coin" />
               <span className="ml-2">{points.toLocaleString()}</span>
             </div>
-            <div className="text-base mt-2 flex items-center">
+            <div className="text-base mt-2 flex items-center">              
               <img src={trophy} width={24} height={24} />
               <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
             </div>
           </>
         );
-      case 'shop':
-        return renderShop(); // Показываем магазин
-      default:
-        return null;
-    }
-  };
+        case 'frend':
+          return <h2>Страница "Frend"</h2>;
+        case 'earn':
+          return <h2>Страница "Earn"</h2>;
+        case 'shop':
+          return <Shop points={points} setPoints={setPoints} setCurrentPage={setCurrentPage} />; // Используем компонент Shop
+        default:
+          return null;
+      }
+    };
 
   if (isLoading) {
+    // Показываем заставку
     return (
       <div className="loading-screen">
         <img src={loadingGif} alt="Loading..." />
@@ -252,7 +161,7 @@ function App() {
                 <img src={highVoltage} width={44} height={44} alt="HighVoltage" />
                 <div className="ml-2 text-left">
                   <span className="text-white text-2xl font-bold block">{energy}</span>
-                  <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
+                  <span className="text-white text-large opacity-75">/ 6000</span>
                 </div>
               </div>
             </div>
