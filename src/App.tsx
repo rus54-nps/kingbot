@@ -39,6 +39,7 @@ function App() {
     const energyRecovered = Math.floor((timeElapsed / recoveryInterval) * energyRecoveryRate);
     return Math.min(energy + energyRecovered, maxEnergy);
   };
+  
 
   useEffect(() => {
     // Показать заставку в течение 3 секунд

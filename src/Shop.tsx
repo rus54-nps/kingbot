@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Shop.css';
 import { item1, item2, item3, coin } from './images';
 
@@ -21,6 +21,14 @@ const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateA
   ]);
 
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null); // Состояние для отслеживания открытого товара
+
+  // Загрузка уровней из localStorage при первой загрузке компонента
+  useEffect(() => {
+    const savedItems = localStorage.getItem('shop-items');
+    if (savedItems) {
+      setItems(JSON.parse(savedItems));
+    }
+  }, []);
 
   const handlePurchase = (itemId: number) => {
     const itemToPurchase = items.find(item => item.id === itemId);
@@ -48,6 +56,10 @@ const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateA
       });
       setItems(updatedItems);
       setPoints(points - itemToPurchase.price); // Вычитаем стоимость
+
+      // Сохраняем обновленные предметы в localStorage
+      localStorage.setItem('shop-items', JSON.stringify(updatedItems));
+
       alert(`Вы купили ${itemToPurchase.name}! Теперь уровень: ${itemToPurchase.level + 1}, скорость восстановления: ${updatedItems.find(i => i.id === itemId)?.regenerationRate}`);
     } else {
       alert('Недостаточно очков для покупки!');
