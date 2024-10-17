@@ -6,17 +6,16 @@ import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 
 function App() {
-  const maxEnergy = 500; //старт энергия
-  const energyToReduce = 100; // Энергия за нажатие
-  const energyRecoveryRate = 1; // Кол-во энергии в сек
-  const recoveryInterval = 1; // Интервал времени 1000 - 1 сек
+  const initialMaxEnergy = 500; // Старт энергия
+  const energyToReduce = 1; // Энергия за нажатие
+  const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
 
-  const [isLoading, setIsLoading] = useState(true); // Заставка
-  const [points, setPoints] = useState(() => {
-    const savedPoints = localStorage.getItem('points');
-    return savedPoints ? parseInt(savedPoints, 10) : 0;
+  const [maxEnergy, setMaxEnergy] = useState(() => {
+    const savedMaxEnergy = localStorage.getItem('maxEnergy');
+    return savedMaxEnergy ? parseInt(savedMaxEnergy, 10) : initialMaxEnergy;
   });
-  
+
+  const [energyRecoveryRate, setEnergyRecoveryRate] = useState(1); // Кол-во энергии в сек
   const [energy, setEnergy] = useState(() => {
     const savedEnergy = localStorage.getItem('energy');
     return savedEnergy ? parseInt(savedEnergy, 10) : maxEnergy;
@@ -25,6 +24,12 @@ function App() {
   const [lastUpdateTime, setLastUpdateTime] = useState(() => {
     const savedTime = localStorage.getItem('lastUpdateTime');
     return savedTime ? parseInt(savedTime, 10) : Date.now();
+  });
+
+  const [isLoading, setIsLoading] = useState(true); // Заставка
+  const [points, setPoints] = useState(() => {
+    const savedPoints = localStorage.getItem('points');
+    return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
 
   const [coins, setCoins] = useState<{ id: number, x: number, y: number }[]>([]);
@@ -39,7 +44,6 @@ function App() {
     const energyRecovered = Math.floor((timeElapsed / recoveryInterval) * energyRecoveryRate);
     return Math.min(energy + energyRecovered, maxEnergy);
   };
-  
 
   useEffect(() => {
     // Показать заставку в течение 3 секунд
@@ -64,6 +68,7 @@ function App() {
   }, [energy, lastUpdateTime]);
 
   useEffect(() => {
+    // Восстановление энергии каждые 1000ms
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => {
         const newEnergy = Math.min(prevEnergy + energyRecoveryRate, maxEnergy);
@@ -73,7 +78,15 @@ function App() {
     }, recoveryInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [energyRecoveryRate, maxEnergy]); // Добавляем зависимость от maxEnergy
+
+  useEffect(() => {
+    // Сохраняем максимальную энергию в localStorage при её изменении
+    localStorage.setItem('maxEnergy', maxEnergy.toString());
+    if (energy > maxEnergy) {
+      setEnergy(maxEnergy); // Обновляем энергию, если она превышает новый максимум
+    }
+  }, [maxEnergy]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
@@ -91,10 +104,9 @@ function App() {
     });
 
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
-    
+
     // Добавляем новую монету
     setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
-
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
   };
@@ -108,26 +120,34 @@ function App() {
       case 'home':
         return (
           <>
-            <div className="mt-12 text-5xl font-bold flex items-center">              
+            <div className="mt-12 text-5xl font-bold flex items-center">
               <img src={coinImage} width={44} height={44} alt="Static Coin" />
               <span className="ml-2">{points.toLocaleString()}</span>
             </div>
-            <div className="text-base mt-2 flex items-center">              
+            <div className="text-base mt-2 flex items-center">
               <img src={trophy} width={24} height={24} />
               <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
             </div>
           </>
         );
-        case 'frend':
-          return <h2>Страница "Frend"</h2>;
-        case 'earn':
-          return <h2>Страница "Earn"</h2>;
-        case 'shop':
-          return <Shop points={points} setPoints={setPoints} setCurrentPage={setCurrentPage} />; // Используем компонент Shop
-        default:
-          return null;
-      }
-    };
+      case 'frend':
+        return <h2>Страница "Frend"</h2>;
+      case 'earn':
+        return <h2>Страница "Earn"</h2>;
+      case 'shop':
+        return (
+          <Shop
+            points={points}
+            setPoints={setPoints}
+            setCurrentPage={setCurrentPage}
+            setMaxEnergy={setMaxEnergy} // Передаём setMaxEnergy для изменения максимальной энергии
+            setEnergyRecoveryRate={setEnergyRecoveryRate}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   if (isLoading) {
     // Показываем заставку
@@ -162,7 +182,7 @@ function App() {
                 <img src={highVoltage} width={44} height={44} alt="HighVoltage" />
                 <div className="ml-2 text-left">
                   <span className="text-white text-2xl font-bold block">{energy}</span>
-                  <span className="text-white text-large opacity-75">/ 500</span>
+                  <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
                 </div>
               </div>
             </div>

@@ -7,22 +7,27 @@ interface ShopItem {
   name: string;
   price: number;
   image: string;
-  level: number; // Уровень товара
-  regenerationRate: number; // Количество энергии, восстанавливаемой в секунду
-  nextPrice: number; // Цена для следующего уровня
-  description: string; // Описание товара
+  level: number;
+  regenerationRate: number;
+  nextPrice: number;
+  description: string;
 }
 
-const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateAction<number>>; setCurrentPage: React.Dispatch<React.SetStateAction<string>> }> = ({ points, setPoints, setCurrentPage }) => {
+const Shop: React.FC<{
+  points: number;
+  setPoints: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+  setEnergyRecoveryRate: React.Dispatch<React.SetStateAction<number>>;
+  setMaxEnergy: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy }) => {
   const [items, setItems] = useState<ShopItem[]>([
     { id: 1, name: 'Тап lvl 1', price: 100, image: item1, level: 1, regenerationRate: 1, nextPrice: 0, description: 'Монеты за Тап: 1' },
-    { id: 2, name: 'Энергия lvl 1', price: 20, image: item2, level: 1, regenerationRate: 500, nextPrice: 0, description: 'Начальное количество энергии: 500' },
-    { id: 3, name: 'Реген lvl 1', price: 100, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Специальный предмет для восстановления энергии' },
+    { id: 2, name: 'Энергия lvl 1', price: 20, image: item2, level: 1, regenerationRate: 500, nextPrice: 50, description: 'Начальное количество энергии: 500' },
+    { id: 3, name: 'Реген lvl 1', price: 50, image: item3, level: 1, regenerationRate: 1, nextPrice: 200, description: 'Восстановление энергии: 1 в секунду' },
   ]);
 
-  const [expandedItemId, setExpandedItemId] = useState<number | null>(null); // Состояние для отслеживания открытого товара
+  const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
 
-  // Загрузка уровней из localStorage при первой загрузке компонента
   useEffect(() => {
     const savedItems = localStorage.getItem('shop-items');
     if (savedItems) {
@@ -30,44 +35,71 @@ const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateA
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('shop-items', JSON.stringify(items));
+  }, [items]);
+
   const handlePurchase = (itemId: number) => {
     const itemToPurchase = items.find(item => item.id === itemId);
     if (itemToPurchase && points >= itemToPurchase.price) {
       const updatedItems = items.map(item => {
         if (item.id === itemId) {
-          const newLevel = item.level + 1; // Увеличиваем уровень на 1
-          let newPrice = item.price * 2; // Увеличиваем цену в 2 раза
+          const newLevel = item.level + 1;
+          let newPrice = item.price * 2;
           let newRegenerationRate = item.regenerationRate;
 
-          // Обновляем скорость восстановления для "Энергия"
-          if (itemId === 2) {
-            newRegenerationRate = item.regenerationRate + 500; // Каждое улучшение увеличивает на 500 энергии
+          if (itemId === 2){
+            // Увеличиваем максимальную энергию на 500 при покупке "Энергии"
+            setMaxEnergy(prevMax => prevMax + 500);
           }
 
-          return { 
-            ...item, 
-            level: newLevel, // Устанавливаем новый уровень
-            regenerationRate: newRegenerationRate, 
+          if (itemId === 3){
+             switch (newLevel) {
+            case 2:
+              newPrice = 5000;
+              newRegenerationRate = 2;
+              break;
+            case 3:
+              newPrice = 20000;
+              newRegenerationRate = 3;
+              break;
+            case 4:
+              newPrice = 50000;
+              newRegenerationRate = 4;
+              break;
+            case 5:
+              newPrice = 120000;
+              newRegenerationRate = 5;
+              break;
+            default:
+              break;
+          }
+          setEnergyRecoveryRate(newRegenerationRate);
+        }
+
+          return {
+            ...item,
+            level: newLevel,
+            regenerationRate: newRegenerationRate,
             price: newPrice,
-            name: `${item.name.split(' lvl')[0]} lvl ${newLevel}` // Обновляем название с новым уровнем
+            name: `${item.name.split(' lvl')[0]} lvl ${newLevel}`
           };
         }
         return item;
       });
-      setItems(updatedItems);
-      setPoints(points - itemToPurchase.price); // Вычитаем стоимость
 
-      // Сохраняем обновленные предметы в localStorage
+      setItems(updatedItems);
+      setPoints(points - itemToPurchase.price);
       localStorage.setItem('shop-items', JSON.stringify(updatedItems));
 
-      alert(`Вы купили ${itemToPurchase.name}! Теперь уровень: ${itemToPurchase.level + 1}, скорость восстановления: ${updatedItems.find(i => i.id === itemId)?.regenerationRate}`);
+      alert(`Вы купили ${itemToPurchase.name}! Новый уровень: ${itemToPurchase.level + 1}, скорость восстановления: ${updatedItems.find(i => i.id === itemId)?.regenerationRate}`);
     } else {
       alert('Недостаточно очков для покупки!');
     }
   };
 
   const handleToggleDescription = (itemId: number) => {
-    setExpandedItemId(expandedItemId === itemId ? null : itemId); // Переключаем видимость описания
+    setExpandedItemId(expandedItemId === itemId ? null : itemId);
   };
 
   return (
@@ -84,10 +116,8 @@ const Shop: React.FC<{ points: number; setPoints: React.Dispatch<React.SetStateA
                 </div>
                 <div className="shop-item-info">
                   <h3 onClick={() => handleToggleDescription(item.id)} style={{ cursor: 'pointer' }}>{item.name}</h3>
-                  {expandedItemId === item.id ? ( // Показываем описание и скрываем кнопку
-                    <>
-                      <p>{item.description}</p>
-                    </>
+                  {expandedItemId === item.id ? (
+                    <p>{item.description}</p>
                   ) : (
                     <>
                       <p>Цена: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
