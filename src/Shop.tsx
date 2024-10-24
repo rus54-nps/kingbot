@@ -51,11 +51,15 @@ const Shop: React.FC<{
 
           if (itemId === 1){
             setPointsToAdd(newLevel);
+            localStorage.setItem('pointsToAdd', newLevel.toString()); // Сохранение Тапа
           }
-
+  
           if (itemId === 2){
-            // Увеличиваем максимальную энергию на 500 при покупке "Энергии"
-            setMaxEnergy(prevMax => prevMax + 500);
+            setMaxEnergy(prevMax => {
+              const newMaxEnergy = prevMax + 500;
+              localStorage.setItem('maxEnergy', newMaxEnergy.toString()); // Сохранение макс. энергии
+              return newMaxEnergy;
+            });
           }
 
           if (itemId === 3){
@@ -80,6 +84,7 @@ const Shop: React.FC<{
               break;
           }
           setEnergyRecoveryRate(newRegenerationRate);
+          localStorage.setItem('energyRecoveryRate', newRegenerationRate.toString()); // Сохранение регенерации
         }
 
           return {

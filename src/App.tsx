@@ -92,6 +92,18 @@ function App() {
     }
   }, [maxEnergy, energy]);
 
+  useEffect(() => {
+    const savedPointsToAdd = localStorage.getItem('pointsToAdd');
+    if (savedPointsToAdd) {
+      setPointsToAdd(parseInt(savedPointsToAdd, 10)); // Восстановление Тапа
+    }
+  
+    const savedEnergyRecoveryRate = localStorage.getItem('energyRecoveryRate');
+    if (savedEnergyRecoveryRate) {
+      setEnergyRecoveryRate(parseInt(savedEnergyRecoveryRate, 10)); // Восстановление регенерации
+    }
+  }, []);  
+
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
       return;
