@@ -23,7 +23,7 @@ function App() {
 
   const [lastUpdateTime, setLastUpdateTime] = useState(() => {
     const savedTime = localStorage.getItem('lastUpdateTime');
-    return savedTime ? parseInt(savedTime, 10) : Date.now();
+    return savedTime && !isNaN(parseInt(savedTime, 10)) ? parseInt(savedTime, 10) : Date.now();
   });
 
   const [isLoading, setIsLoading] = useState(true); // Заставка
@@ -35,10 +35,14 @@ function App() {
   const [coins, setCoins] = useState<{ id: number, x: number, y: number }[]>([]);
   const [currentPage, setCurrentPage] = useState('home');
   const [isShaking, setIsShaking] = useState(false);
-  const pointsToAdd = 1;
+  const [pointsToAdd, setPointsToAdd] = useState(1)
 
   // Рассчитываем восстановленную энергию на основе времени
   const calculateRecoveredEnergy = () => {
+    if (isNaN(energy)) {
+      return maxEnergy; // Если энергия не определена, возвращаем максимальное значение
+    }
+    
     const currentTime = Date.now();
     const timeElapsed = currentTime - lastUpdateTime;
     const energyRecovered = Math.floor((timeElapsed / recoveryInterval) * energyRecoveryRate);
@@ -86,7 +90,7 @@ function App() {
     if (energy > maxEnergy) {
       setEnergy(maxEnergy); // Обновляем энергию, если она превышает новый максимум
     }
-  }, [maxEnergy]);
+  }, [maxEnergy, energy]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
@@ -142,6 +146,7 @@ function App() {
             setCurrentPage={setCurrentPage}
             setMaxEnergy={setMaxEnergy} // Передаём setMaxEnergy для изменения максимальной энергии
             setEnergyRecoveryRate={setEnergyRecoveryRate}
+            setPointsToAdd={setPointsToAdd}
           />
         );
       default:
