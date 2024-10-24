@@ -50,7 +50,7 @@ const Shop: React.FC<{
           let newRegenerationRate = item.regenerationRate;
 
           if (itemId === 1){
-            setPointsToAdd((prevPointsToAdd) => prevPointsToAdd + 1);
+            setPointsToAdd(newLevel);
           }
 
           if (itemId === 2){
