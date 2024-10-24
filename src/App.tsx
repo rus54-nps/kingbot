@@ -205,7 +205,7 @@ function App() {
                 <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
                 <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
                   <img src={rocket} width={24} height={24} alt="Shop" />
-                  <span>Shop</span>
+                  <span>Shoppp</span>
                 </button>
               </div>
             </div>

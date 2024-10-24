@@ -97,7 +97,7 @@ const Shop: React.FC<{
       setPoints(points - itemToPurchase.price);
       localStorage.setItem('shop-items', JSON.stringify(updatedItems));
 
-      alert(`Вы купили ${itemToPurchase.name}! Новый уровень: ${itemToPurchase.level + 1}, скорость восстановления: ${updatedItems.find(i => i.id === itemId)?.regenerationRate}`);
+      alert(`Вы купили ${itemToPurchase.name}! Новый уровень: ${itemToPurchase.level + 1}`);
     } else {
       alert('Недостаточно очков для покупки!');
     }
