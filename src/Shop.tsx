@@ -1,6 +1,8 @@
+// Shop.tsx
 import React, { useState, useEffect } from 'react';
 import './Shop.css';
-import { item1, item2, item3, coin } from './images';
+import { item1, item2, item3, coin } from './images'; // Подключаем нужные изображения
+import {tapImages, tapHighLevelImage } from './images/Tap'; // Подключаем нужные изображения
 
 interface ShopItem {
   id: number;
@@ -20,7 +22,7 @@ const Shop: React.FC<{
   setEnergyRecoveryRate: React.Dispatch<React.SetStateAction<number>>;
   setMaxEnergy: React.Dispatch<React.SetStateAction<number>>;
   setPointsToAdd: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd  }) => {
+}> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd }) => {
   const [items, setItems] = useState<ShopItem[]>([
     { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, description: 'Монеты за Тап: 1' },
     { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, description: 'Начальное количество энергии: 500' },
@@ -40,6 +42,11 @@ const Shop: React.FC<{
     localStorage.setItem('shop-items', JSON.stringify(items));
   }, [items]);
 
+  // Функция для получения изображения уровня "Тап"
+  const getTapImageByLevel = (level: number): string => {
+    return level <= 9 ? tapImages[level - 1] : tapHighLevelImage;
+  };
+
   const handlePurchase = (itemId: number) => {
     const itemToPurchase = items.find(item => item.id === itemId);
     if (itemToPurchase && points >= itemToPurchase.price) {
@@ -49,12 +56,12 @@ const Shop: React.FC<{
           let newPrice = item.price * 2;
           let newRegenerationRate = item.regenerationRate;
 
-          if (itemId === 1){
+          if (itemId === 1) {
             setPointsToAdd(newLevel);
-            localStorage.setItem('pointsToAdd', newLevel.toString()); // Сохранение Тапа
+            localStorage.setItem('pointsToAdd', newLevel.toString()); // Сохранение уровня "Тап"
           }
-  
-          if (itemId === 2){
+
+          if (itemId === 2) {
             setMaxEnergy(prevMax => {
               const newMaxEnergy = prevMax + 500;
               localStorage.setItem('maxEnergy', newMaxEnergy.toString()); // Сохранение макс. энергии
@@ -62,37 +69,38 @@ const Shop: React.FC<{
             });
           }
 
-          if (itemId === 3){
-             switch (newLevel) {
-            case 2:
-              newPrice = 5000;
-              newRegenerationRate = 2;
-              break;
-            case 3:
-              newPrice = 20000;
-              newRegenerationRate = 3;
-              break;
-            case 4:
-              newPrice = 50000;
-              newRegenerationRate = 4;
-              break;
-            case 5:
-              newPrice = 120000;
-              newRegenerationRate = 5;
-              break;
-            default:
-              break;
+          if (itemId === 3) {
+            switch (newLevel) {
+              case 2:
+                newPrice = 5000;
+                newRegenerationRate = 2;
+                break;
+              case 3:
+                newPrice = 20000;
+                newRegenerationRate = 3;
+                break;
+              case 4:
+                newPrice = 50000;
+                newRegenerationRate = 4;
+                break;
+              case 5:
+                newPrice = 120000;
+                newRegenerationRate = 5;
+                break;
+              default:
+                break;
+            }
+            setEnergyRecoveryRate(newRegenerationRate);
+            localStorage.setItem('energyRecoveryRate', newRegenerationRate.toString()); // Сохранение регенерации
           }
-          setEnergyRecoveryRate(newRegenerationRate);
-          localStorage.setItem('energyRecoveryRate', newRegenerationRate.toString()); // Сохранение регенерации
-        }
 
           return {
             ...item,
             level: newLevel,
             regenerationRate: newRegenerationRate,
             price: newPrice,
-            name: `${item.name.split(' lvl')[0]} lvl ${newLevel}`
+            name: `${item.name.split(' lvl')[0]} lvl ${newLevel}`,
+            image: item.id === 1 ? getTapImageByLevel(newLevel) : item.image, // Устанавливаем изображение для "Тап"
           };
         }
         return item;
