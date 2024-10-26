@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { bear, coin as coinImage, highVoltage, rocket, trophy, notcoin } from './images';
+import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin } from './images';
 import Arrow from './icons/Arrow';
 import loadingGif from './images/loading.gif';
 import Shop from './Shop';
@@ -204,7 +204,7 @@ function App() {
               </div>
             </div>
             <div className="flex-grow flex items-center max-w-60 text-sm">
-              <div className="w-full bg-[#fad256] py-4 rounded-2xl flex justify-around">
+              <div className="w-full bg-[#91bfa9] py-4 rounded-2xl flex justify-around">
                 <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
                   <img src={bear} width={24} height={24} alt="Frend" />
                   <span>Frend</span>
@@ -216,8 +216,8 @@ function App() {
                 </button>
                 <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
                 <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
-                  <img src={rocket} width={24} height={24} alt="Shop" />
-                  <span>Shoppp</span>
+                  <img src={shp} width={24} height={24} alt="Shop" />
+                  <span>Shop</span>
                 </button>
               </div>
             </div>

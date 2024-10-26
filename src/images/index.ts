@@ -2,7 +2,7 @@ import bear from "./bear.png";
 import coin from "./coin.png";
 import highVoltage from "./high-voltage.png";
 import notcoin from "./notcoin.png";
-import rocket from "./rocket.png";
+import shp from "./shp.png";
 import trophy from "./trophy.png";
 import loading from "./loading.gif";
 import item1 from "./item1.png";
@@ -14,7 +14,7 @@ export {
     coin,
     highVoltage,
     notcoin,
-    rocket,
+    shp,
     trophy,
     loading,
     item1,
