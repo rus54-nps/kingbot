@@ -8,6 +8,16 @@ import loading from "./loading.gif";
 import item1 from "./item1.png";
 import item2 from "./item2.png";
 import item3 from "./item3.png";
+import itemTapLevel1 from './itemTapLevel1.png';
+import itemTapLevel2 from './itemTapLevel2.png';
+import itemTapLevel3 from './itemTapLevel3.png';
+import itemTapLevel4 from './itemTapLevel4.png';
+import itemTapLevel5 from './itemTapLevel5.png';
+import itemTapLevel6 from './itemTapLevel6.png';
+import itemTapLevel7 from './itemTapLevel7.png';
+import itemTapLevel8 from './itemTapLevel8.png';
+import itemTapLevel9 from './itemTapLevel9.png';
+import itemTapHighLevel from './itemTapHighLevel.png';
 
 export {
     bear,
@@ -19,19 +29,8 @@ export {
     loading,
     item1,
     item2,
-    item3,
+    item3
 }
-
-import itemTapLevel1 from './itemTapLevel1.png';
-import itemTapLevel2 from './itemTapLevel2.png';
-import itemTapLevel3 from './itemTapLevel3.png';
-import itemTapLevel4 from './itemTapLevel4.png';
-import itemTapLevel5 from './itemTapLevel5.png';
-import itemTapLevel6 from './itemTapLevel6.png';
-import itemTapLevel7 from './itemTapLevel7.png';
-import itemTapLevel8 from './itemTapLevel8.png';
-import itemTapLevel9 from './itemTapLevel9.png';
-import itemTapHighLevel from './itemTapHighLevel.png';
 
 // Массив изображений для уровней 1–9
 export const tapImages = [
