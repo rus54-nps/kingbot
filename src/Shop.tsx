@@ -1,8 +1,7 @@
 // Shop.tsx
 import React, { useState, useEffect } from 'react';
 import './Shop.css';
-import { item1, item2, item3, coin } from './images'; // Подключаем нужные изображения
-import {tapImages, tapHighLevelImage } from './images/Tap'; // Подключаем нужные изображения
+import { item1, item2, item3, coin, tapImages, tapHighLevelImage } from './images'; // Подключаем нужные изображения
 
 interface ShopItem {
   id: number;

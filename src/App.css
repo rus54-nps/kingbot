@@ -29,3 +29,27 @@
   75% { transform: translate(-5px, 0); }
   100% { transform: translate(0); }
 }
+
+.loading-screen {
+  position: fixed;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #741577; /* Фоновый цвет под GIF */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-screen .ProgressBar {
+  width: 80%;
+  margin-top: 20px;
+}
+
+.App {
+  text-align: center;
+}

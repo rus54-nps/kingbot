@@ -17,6 +17,9 @@ const IMAGES_TO_CACHE = [
   "/images/high-viltage.png",
   "/images/shp.png",
   "/images/bear.png",
+  "/images/notcoin.png",
+  "/images/trophy.png",
+  "/images/loading.gif"
 ];
 
 self.addEventListener("install", (event) => {
