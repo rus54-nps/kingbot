@@ -223,7 +223,7 @@ function App() {
         </div>
 
         <div className="flex-grow flex items-center justify-center">
-          <div className="relative -mt-40" onClick={handleClick}>
+          <div className="relative -mt-30" onClick={handleClick}>
             <img src={notcoin} width={256} height={256} className={isShaking ? 'shake' : ''} alt="notcoin" />
             {coins.map((coin) => (
               <div
