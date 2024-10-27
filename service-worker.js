@@ -1,18 +1,22 @@
-// service-worker.js
-
 const CACHE_NAME = "image-cache-v1";
 const IMAGES_TO_CACHE = [
-  "/path/to/item1.png",
-  "/path/to/item2.png",
-  "/path/to/item3.png",
-  "/path/to/itemTapLevel1.png",
-  "/path/to/itemTapLevel2.png",
-  "/path/to/itemTapLevel3.png",
-  "/path/to/coin.png",   // добавляем также "coin" и другие иконки
-  "/path/to/highVoltage.png",
-  "/path/to/shp.png",
-  "/path/to/bear.png",
-  // Добавьте все пути к изображениям, которые нужно кэшировать
+  "/images/item1.png",
+  "/images/item2.png",
+  "/images/item3.png",
+  "/images/Tap/itemTapLevel1.png",
+  "/images/Tap/itemTapLevel2.png",
+  "/images/Tap/itemTapLevel3.png",
+  "/images/Tap/itemTapLevel4.png",
+  "/images/Tap/itemTapLevel5.png",
+  "/images/Tap/itemTapLevel6.png",
+  "/images/Tap/itemTapLevel7.png",
+  "/images/Tap/itemTapLevel8.png",
+  "/images/Tap/itemTapLevel9.png",
+  "/images/Tap/itemTapHighLevel.png",
+  "/images/coin.png",
+  "/images/high-viltage.png",
+  "/images/shp.png",
+  "/images/bear.png",
 ];
 
 self.addEventListener("install", (event) => {
