@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin } from './images';
-import Arrow from './icons/Arrow';
 import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 
@@ -137,14 +136,22 @@ function App() {
       case 'home':
         return (
           <>
-            {/* Блок с монетами и надписью "Gold", смещенный на 30px выше */}
-            <div className="mt-12 text-5xl font-bold flex items-center" style={{ position: 'relative', top: '-30px' }}>
-              <img src={coinImage} width={44} height={44} alt="Static Coin" />
-              <span className="ml-2">{points.toLocaleString()}</span>
-            </div>
-            <div className="text-base mt-2 flex items-center" style={{ position: 'relative', top: '-30px' }}>
-              <img src={trophy} width={24} height={24} />
-              <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
+            {/* Контейнер с позиционированием на 30px выше */}
+            <div style={{ position: 'relative' }}>
+              <div
+                className="absolute text-5xl font-bold flex items-center"
+                style={{ top: '-30px', left: '50%', transform: 'translateX(-50%)' }}
+              >
+                <img src={coinImage} width={44} height={44} alt="Static Coin" />
+                <span className="ml-2">{points.toLocaleString()}</span>
+              </div>
+              <div
+                className="absolute text-base flex items-center"
+                style={{ top: 'calc(-25px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
+              >
+                <img src={trophy} width={24} height={24} />
+                <span className="ml-1">Gold</span>
+              </div>
             </div>
           </>
         );
@@ -226,43 +233,43 @@ function App() {
           {renderContent()}
         </div>
   
-        <div className="flex-grow flex flex-col items-center justify-center relative">
-          <div className="relative mb-4" onClick={handleClick}>
-            <img src={notcoin} width={180} height={180} className={isShaking ? 'shake' : ''} alt="notcoin" />
-            {coins.map((coin) => (
-              <div
-                key={coin.id}
-                className="absolute opacity-100 coin"
-                style={{
-                  top: `${coin.y}px`,
-                  left: `${coin.x}px`,
-                  animation: `fall 1s ease forwards`
-                }}
-                onAnimationEnd={() => handleCoinAnimationEnd(coin.id)}
-              >
-                <img src={coinImage} alt="Coin" width={30} height={30} />
-              </div>
-            ))}
-          </div>
-  
-          {/* Энергия под монетой */}
-          <div className="flex flex-col items-center mt-2">
-            <div className="flex items-center">
-              <img src={highVoltage} width={36} height={36} alt="HighVoltage" />
-              <div className="ml-2 text-left">
-                <span className="text-white text-xl font-bold block">{energy}</span>
-                <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
-              </div>
-            </div>
-            {/* Увеличенная полоска энергии */}
-            <div className="bg-[#f9c035] rounded-full mt-2" style={{ width: '300px' }}>
-              <div
-                className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full"
-                style={{ width: `${(energy / maxEnergy) * 100}%` }}
-              ></div>
-            </div>
-          </div>
-        </div>
+        <div className="flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '30px' }}>
+  <div className="relative mb-4" onClick={handleClick}>
+    <img src={notcoin} width={180} height={180} className={isShaking ? 'shake' : ''} alt="notcoin" />
+    {coins.map((coin) => (
+      <div
+        key={coin.id}
+        className="absolute opacity-100 coin"
+        style={{
+          top: `${coin.y}px`,
+          left: `${coin.x}px`,
+          animation: `fall 1s ease forwards`
+        }}
+        onAnimationEnd={() => handleCoinAnimationEnd(coin.id)}
+      >
+        <img src={coinImage} alt="Coin" width={30} height={30} />
+      </div>
+    ))}
+  </div>
+
+  {/* Энергия под монетой */}
+  <div className="flex flex-col items-center mt-2">
+    <div className="flex items-center">
+      <img src={highVoltage} width={36} height={36} alt="HighVoltage" />
+      <div className="ml-2 text-left">
+        <span className="text-white text-xl font-bold block">{energy}</span>
+        <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
+      </div>
+    </div>
+    {/* Увеличенная полоска энергии */}
+    <div className="bg-[#f9c035] rounded-full mt-2" style={{ width: '300px' }}>
+      <div
+        className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full"
+        style={{ width: `${(energy / maxEnergy) * 100}%` }}
+      ></div>
+    </div>
+  </div>
+</div>
   
         {/* Нижний блок с кнопками (frend, earn, shop, str4) */}
         <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
