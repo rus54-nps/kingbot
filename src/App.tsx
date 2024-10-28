@@ -234,42 +234,39 @@ function App() {
         </div>
   
         <div className="flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '30px' }}>
-  <div className="relative mb-4" onClick={handleClick}>
-    <img src={notcoin} width={180} height={180} className={isShaking ? 'shake' : ''} alt="notcoin" />
-    {coins.map((coin) => (
-      <div
-        key={coin.id}
-        className="absolute opacity-100 coin"
-        style={{
-          top: `${coin.y}px`,
-          left: `${coin.x}px`,
-          animation: `fall 1s ease forwards`
-        }}
-        onAnimationEnd={() => handleCoinAnimationEnd(coin.id)}
-      >
-        <img src={coinImage} alt="Coin" width={30} height={30} />
-      </div>
-    ))}
-  </div>
+          <div className="relative mb-4" onClick={handleClick}>
+            <img src={notcoin} width={180} height={180} className={isShaking ? 'shake' : ''} alt="notcoin" />
+            {coins.map((coin) => (
+              <div
+                key={coin.id}
+                className="absolute opacity-100 coin"
+                style={{
+                  top: `${coin.y}px`,
+                  left: `${coin.x}px`,
+                  animation: `fall 1s ease forwards`
+                }}
+                onAnimationEnd={() => handleCoinAnimationEnd(coin.id)}
+              >
+                <img src={coinImage} alt="Coin" width={30} height={30} />
+              </div>
+            ))}
+          </div>
 
-  {/* Энергия под монетой */}
-  <div className="flex flex-col items-center mt-2">
-    <div className="flex items-center">
-      <img src={highVoltage} width={36} height={36} alt="HighVoltage" />
-      <div className="ml-2 text-left">
-        <span className="text-white text-xl font-bold block">{energy}</span>
-        <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
-      </div>
-    </div>
-    {/* Увеличенная полоска энергии */}
-    <div className="bg-[#f9c035] rounded-full mt-2" style={{ width: '300px' }}>
-      <div
-        className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full"
-        style={{ width: `${(energy / maxEnergy) * 100}%` }}
-      ></div>
-    </div>
-  </div>
-</div>
+          {/* Энергия под монетой */}
+          <div className="flex flex-col items-center mt-2">
+            <div className="flex items-center justify-center">
+             <img src={highVoltage} width={24} height={24} alt="HighVoltage" className="mr-2" />
+              <span className="text-white text-xl font-bold">{energy}</span>
+            </div>
+            <span className="text-white opacity-75 text-sm">/ {maxEnergy}</span>
+    
+            {/* Увеличенная полоска энергии */}
+            <div className="bg-[#f9c035] rounded-full mt-2" style={{ width: '300px' }}>
+              <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy /  maxEnergy) * 100}%` }}>
+              </div>
+            </div>
+          </div>
+        </div>
   
         {/* Нижний блок с кнопками (frend, earn, shop, str4) */}
         <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
