@@ -137,11 +137,12 @@ function App() {
       case 'home':
         return (
           <>
-            <div className="mt-12 text-5xl font-bold flex items-center">
+            {/* Блок с монетами и надписью "Gold", смещенный на 30px выше */}
+            <div className="mt-12 text-5xl font-bold flex items-center" style={{ position: 'relative', top: '-30px' }}>
               <img src={coinImage} width={44} height={44} alt="Static Coin" />
               <span className="ml-2">{points.toLocaleString()}</span>
             </div>
-            <div className="text-base mt-2 flex items-center">
+            <div className="text-base mt-2 flex items-center" style={{ position: 'relative', top: '-30px' }}>
               <img src={trophy} width={24} height={24} />
               <span className="ml-1">Gold <Arrow size={18} className="ml-0 mb-1 inline-block" /></span>
             </div>
