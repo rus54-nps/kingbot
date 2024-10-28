@@ -132,6 +132,7 @@ function App() {
   };
 
   const renderContent = () => {
+    console.log("Текущая страница:", currentPage); // Отладочная информация
     switch (currentPage) {
       case 'home':
         return (
@@ -146,6 +147,8 @@ function App() {
             </div>
           </>
         );
+      case 'str4':
+        return <h2>Страница "Str4"</h2>;
       case 'frend':
         return <h2>Страница "Frend"</h2>;
       case 'earn':
@@ -156,13 +159,21 @@ function App() {
             points={points}
             setPoints={setPoints}
             setCurrentPage={setCurrentPage}
-            setMaxEnergy={setMaxEnergy} // Передаём setMaxEnergy для изменения максимальной энергии
+            setMaxEnergy={setMaxEnergy}
             setEnergyRecoveryRate={setEnergyRecoveryRate}
             setPointsToAdd={setPointsToAdd}
           />
         );
+      case 'str5':
+        return <h2>Страница "Str5"</h2>;
+      case 'str6':
+        return <h2>Страница "Str6"</h2>;
+      case 'str7':
+        return <h2>Страница "Str7"</h2>;
+      case 'str8':
+        return <h2>Страница "Str8"</h2>;
       default:
-        return null;
+        return <h2>Неизвестная страница</h2>;
     }
   };
 
@@ -181,50 +192,42 @@ function App() {
       <div className="absolute inset-0 flex items-center justify-center z-0">
         <div className="radial-gradient-overlay"></div>
       </div>
-
+  
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
-        <div className="fixed top-0 left-0 w-full px-4 pt-8 z-10 flex flex-col items-center text-white">
+  
+        {/* Верхний блок с кнопками (str5, str6, str7, str8) */}
+        <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-10">
+          <div className="w-full max-w-md bg-[#91bfa9] py-4 rounded-2xl flex justify-around">
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str5')}>
+              <img src={shp} width={24} height={24} alt="Str5" />
+              <span>Str5</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str6')}>
+              <img src={shp} width={24} height={24} alt="Str6" />
+              <span>Str6</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str7')}>
+              <img src={shp} width={24} height={24} alt="Str7" />
+              <span>Str7</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str8')}>
+              <img src={shp} width={24} height={24} alt="Str8" />
+              <span>Str8</span>
+            </button>
+          </div>
+        </div>
+  
+        {/* Отображение содержимого с использованием renderContent */}
+        <div className="fixed top-20 left-0 w-full px-4 pt-20 z-10 flex flex-col items-center text-white">
           {renderContent()}
         </div>
-
-        <div className="fixed bottom-0 left-0 w-full px-4 pb-4 z-10">
-          <div className="w-full flex justify-between gap-2">
-            <div className="w-1/3 flex items-center justify-start max-w-32">
-              <div className="flex items-center justify-center">
-                <img src={highVoltage} width={44} height={44} alt="HighVoltage" />
-                <div className="ml-2 text-left">
-                  <span className="text-white text-2xl font-bold block">{energy}</span>
-                  <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex-grow flex items-center max-w-60 text-sm">
-              <div className="w-full bg-[#91bfa9] py-4 rounded-2xl flex justify-around">
-                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
-                  <img src={bear} width={24} height={24} alt="Frend" />
-                  <span>Frend</span>
-                </button>
-                <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('earn')}>
-                  <img src={coinImage} width={24} height={24} alt="Earn" />
-                  <span>Earn</span>
-                </button>
-                <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-                <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
-                  <img src={shp} width={24} height={24} alt="Shop" />
-                  <span>Shop</span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="w-fill bg-[#f9c035] rounded-full mt-4">
-            <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy / maxEnergy) * 100}%` }}></div>
-          </div>
-        </div>
-
-        <div className="flex-grow flex items-center justify-center">
-          <div className="relative -mt-30" onClick={handleClick}>
-            <img src={notcoin} width={256} height={256} className={isShaking ? 'shake' : ''} alt="notcoin" />
+  
+        <div className="flex-grow flex flex-col items-center justify-center relative">
+          <div className="relative mb-4" onClick={handleClick}>
+            <img src={notcoin} width={180} height={180} className={isShaking ? 'shake' : ''} alt="notcoin" />
             {coins.map((coin) => (
               <div
                 key={coin.id}
@@ -240,10 +243,57 @@ function App() {
               </div>
             ))}
           </div>
+  
+          {/* Энергия под монетой */}
+          <div className="flex flex-col items-center mt-2">
+            <div className="flex items-center">
+              <img src={highVoltage} width={36} height={36} alt="HighVoltage" />
+              <div className="ml-2 text-left">
+                <span className="text-white text-xl font-bold block">{energy}</span>
+                <span className="text-white text-large opacity-75">/ {maxEnergy}</span>
+              </div>
+            </div>
+            {/* Увеличенная полоска энергии */}
+            <div className="bg-[#f9c035] rounded-full mt-2" style={{ width: '300px' }}>
+              <div
+                className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full"
+                style={{ width: `${(energy / maxEnergy) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+  
+        {/* Нижний блок с кнопками (frend, earn, shop, str4) */}
+        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
+          <div className="w-full max-w-md bg-[#91bfa9] py-4 rounded-2xl flex justify-around">
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
+              <img src={bear} width={24} height={24} alt="Frend" />
+              <span>Frend</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('earn')}>
+              <img src={coinImage} width={24} height={24} alt="Earn" />
+              <span>Earn</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
+              <img src={shp} width={24} height={24} alt="Shop" />
+              <span>Shop</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str4')}>
+              <img src={shp} width={24} height={24} alt="Str4" />
+              <span>Str4</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
+  
+  
+
+  
 }
 
 export default App;
