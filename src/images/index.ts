@@ -8,6 +8,7 @@ import loading from "./loading.gif";
 import item1 from "./item1.png";
 import item2 from "./item2.png";
 import item3 from "./item3.png";
+import sett from "./sett.png";
 import itemTapLevel1 from './itemTapLevel1.png';
 import itemTapLevel2 from './itemTapLevel2.png';
 import itemTapLevel3 from './itemTapLevel3.png';
@@ -29,7 +30,8 @@ export {
     loading,
     item1,
     item2,
-    item3
+    item3,
+    sett
 }
 
 // Массив изображений для уровней 1–9

@@ -54,3 +54,10 @@
   text-align: center;
 }
 
+.settings-button {
+  background: none; /* Убирает фон */
+  border: none; /* Убирает обводку */
+  padding: 0; /* Убирает внутренние отступы */
+  cursor: pointer; /* Меняет курсор на указатель */
+}
+

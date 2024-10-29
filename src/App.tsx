@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin } from './images';
+import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
 import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 
@@ -46,6 +46,13 @@ function App() {
     const timeElapsed = currentTime - lastUpdateTime;
     const energyRecovered = Math.floor((timeElapsed / recoveryInterval) * energyRecoveryRate);
     return Math.min(energy + energyRecovered, maxEnergy);
+  };
+
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false); // для управления отображением настроек
+
+  // Функция для обработки клика по кнопке "Settings"
+  const handleSettingsClick = () => {
+    setIsSettingsOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -140,14 +147,14 @@ function App() {
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '-30px', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: '15px', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{points.toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
-                style={{ top: 'calc(-25px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: 'calc(30px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={trophy} width={24} height={24} />
                 <span className="ml-1">Gold</span>
@@ -227,13 +234,20 @@ function App() {
             </button>
           </div>
         </div>
+
+        {/*Кнопка настрек*/}
+        <button className="settings-button fixed top-20 right-4" style={{ marginTop: '30px' }}
+        onClick={handleSettingsClick}
+        >
+          <img src={sett} alt="Settings" width={24} height={24} />
+        </button>
   
         {/* Отображение содержимого с использованием renderContent */}
         <div className="fixed top-20 left-0 w-full px-4 pt-20 z-10 flex flex-col items-center text-white">
           {renderContent()}
         </div>
   
-        <div className="flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '30px' }}>
+        <div className="flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '80px' }}>
           <div className="relative mb-4" onClick={handleClick}>
             <img src={notcoin} width={180} height={180} className={isShaking ? 'shake' : ''} alt="notcoin" />
             {coins.map((coin) => (
