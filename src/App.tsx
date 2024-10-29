@@ -3,6 +3,7 @@ import './App.css';
 import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
 import loadingGif from './images/loading.gif';
 import Shop from './Shop';
+import Setting from './Setting';
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
@@ -48,11 +49,11 @@ function App() {
     return Math.min(energy + energyRecovered, maxEnergy);
   };
 
-  const [/*isSettingsOpen*/, setIsSettingsOpen] = useState(false); // для управления отображением настроек
+  const [showSettings, setShowSettings] = useState(false); // для управления отображением настроек
 
-  // Функция для обработки клика по кнопке "Settings"
-  const handleSettingsClick = () => {
-    setIsSettingsOpen((prev) => !prev);
+  // Функция для обработки клика по кнопке "Setting"
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
   };
 
   useEffect(() => {
@@ -143,18 +144,17 @@ function App() {
       case 'home':
         return (
           <>
-            {/* Контейнер с позиционированием на 30px выше */}
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '15px', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: '95px', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{points.toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
-                style={{ top: 'calc(30px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: 'calc(110px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={trophy} width={24} height={24} />
                 <span className="ml-1">Gold</span>
@@ -220,30 +220,31 @@ function App() {
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str6')}>
               <img src={shp} width={24} height={24} alt="Str6" />
-              <span>Str6</span>
+              <span>Top</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str7')}>
               <img src={shp} width={24} height={24} alt="Str7" />
-              <span>Str7</span>
+              <span>Quest</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str8')}>
               <img src={shp} width={24} height={24} alt="Str8" />
-              <span>Str8</span>
+              <span>Airdrop</span>
             </button>
           </div>
         </div>
 
         {/*Кнопка настрек*/}
-        <button className="settings-button fixed top-20 right-4" style={{ marginTop: '30px' }}
-        onClick={handleSettingsClick}
-        >
-          <img src={sett} alt="Settings" width={24} height={24} />
+        <button className="setting-button fixed top-20 right-4" style={{ marginTop: '30px' }} onClick={toggleSettings}>
+          <img src={sett} alt="Setting" width={24} height={24} />
         </button>
+          {showSettings && (
+        <Setting onClose={toggleSettings} />
+          )}
   
         {/* Отображение содержимого с использованием renderContent */}
-        <div className="fixed top-20 left-0 w-full px-4 pt-20 z-10 flex flex-col items-center text-white">
+        <div className="fixed top-20 left-0 w-full px-4 pt-2 z-20 flex flex-col items-center text-white">
           {renderContent()}
         </div>
   
@@ -295,14 +296,14 @@ function App() {
               <span>Earn</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
-              <img src={shp} width={24} height={24} alt="Shop" />
-              <span>Shop</span>
-            </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str4')}>
               <img src={shp} width={24} height={24} alt="Str4" />
               <span>Str4</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
+              <img src={shp} width={24} height={24} alt="Shop" />
+              <span>Shop</span>
             </button>
           </div>
         </div>

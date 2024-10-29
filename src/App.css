@@ -54,7 +54,7 @@
   text-align: center;
 }
 
-.settings-button {
+.setting-button {
   background: none; /* Убирает фон */
   border: none; /* Убирает обводку */
   padding: 0; /* Убирает внутренние отступы */
