@@ -147,14 +147,14 @@ function App() {
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '95px', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: '75px', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{points.toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
-                style={{ top: 'calc(110px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: 'calc(90px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={trophy} width={24} height={24} />
                 <span className="ml-1">Gold</span>
