@@ -48,7 +48,7 @@ function App() {
     return Math.min(energy + energyRecovered, maxEnergy);
   };
 
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false); // для управления отображением настроек
+  const [/*isSettingsOpen*/, setIsSettingsOpen] = useState(false); // для управления отображением настроек
 
   // Функция для обработки клика по кнопке "Settings"
   const handleSettingsClick = () => {
