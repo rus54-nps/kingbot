@@ -4,7 +4,7 @@ import highVoltage from "./high-voltage.png";
 import notcoin from "./notcoin.png";
 import shp from "./shp.png";
 import trophy from "./trophy.png";
-import loadingMp4 from "./102APP.mp4";
+import loadingMp4 from "./103APP.webm";
 import item1 from "./item1.png";
 import item2 from "./item2.png";
 import item3 from "./item3.png";

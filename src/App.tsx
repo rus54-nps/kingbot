@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
-import loadingMp4 from './images/102APP.mp4';
+import loadingMp4 from './images/103APP.webm';
 import Shop from './Shop';
 import Setting from './Setting';
 
