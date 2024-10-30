@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
-import loadingMp4 from './images/103APP.webm';
+import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 import Setting from './Setting';
 
@@ -57,10 +57,10 @@ function App() {
   };
 
   useEffect(() => {
-    // Показать заставку в течение 7 секунд
+    // Показать заставку в течение 3 секунд
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 7000); // 7 секунды заставка
+    }, 3000); // 3 секунды заставка
 
     return () => clearTimeout(timer); // Очищаем таймер, если компонент размонтируется
   }, []);
@@ -147,14 +147,14 @@ function App() {
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '95px', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: '75px', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{points.toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
-                style={{ top: 'calc(110px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
+                style={{ top: 'calc(90px + 44px)', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={trophy} width={24} height={24} />
                 <span className="ml-1">Gold</span>
@@ -193,18 +193,10 @@ function App() {
   };
 
   if (isLoading) {
+    // Показываем заставку
     return (
-      <div className="loading-screen" style={{ pointerEvents: 'none' }}>
-        <video 
-          src={loadingMp4}
-          autoPlay
-          muted={false}
-          playsInline
-          onLoadedData={() => console.log("Видео загружено")}
-          onError={() => setIsLoading(false)}
-          onEnded={() => setIsLoading(false)}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
+      <div className="loading-screen">
+        <img src={loadingGif} alt="Loading..." />
       </div>
     );
   }
