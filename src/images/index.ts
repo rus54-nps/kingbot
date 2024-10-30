@@ -4,7 +4,7 @@ import highVoltage from "./high-voltage.png";
 import notcoin from "./notcoin.png";
 import shp from "./shp.png";
 import trophy from "./trophy.png";
-import loading from "./loading.gif";
+import loadingMp4 from "./102APP.mp4";
 import item1 from "./item1.png";
 import item2 from "./item2.png";
 import item3 from "./item3.png";
@@ -27,7 +27,7 @@ export {
     notcoin,
     shp,
     trophy,
-    loading,
+    loadingMp4,
     item1,
     item2,
     item3,
