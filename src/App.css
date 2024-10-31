@@ -30,26 +30,6 @@
   100% { transform: translate(0); }
 }
 
-.loading-screen {
-  position: fixed;
-  flex-direction: column;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: #741577; /* Фоновый цвет под GIF */
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loading-screen .ProgressBar {
-  width: 80%;
-  margin-top: 20px;
-}
-
 .App {
   text-align: center;
 }
@@ -59,5 +39,23 @@
   border: none; /* Убирает обводку */
   padding: 0; /* Убирает внутренние отступы */
   cursor: pointer; /* Меняет курсор на указатель */
+}
+
+.loading-screen {
+  position: fixed; /* Зафиксировано, чтобы не сдвигалось */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Полная ширина */
+  height: 100vh; /* Полная высота */
+  display: flex;
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
+  background-color: rgba(0, 0, 0, 0.7); /* Прозрачный фон, если нужно */
+  z-index: 9999; /* Убедитесь, что заставка поверх остальных элементов */
+}
+
+.loading-screen img {
+  max-width: 100%; /* Масштабировать изображение */
+  max-height: 100%; /* Масштабировать изображение */
 }
 

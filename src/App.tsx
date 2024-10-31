@@ -72,7 +72,7 @@ function App() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       audio.pause();
-    }, 7000); // 7 секунд заставка
+    }, 4800); // 7 секунд заставка
 
     if (isLoading) {
       audio.loop = false;
@@ -219,7 +219,7 @@ function App() {
       </div>
     );
   }
-  
+
   return (
     <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium">
       <div className="absolute inset-0 h-1/2 bg-gradient-overlay z-0"></div>
