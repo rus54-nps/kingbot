@@ -19,7 +19,7 @@ import itemTapLevel7 from './itemTapLevel7.png';
 import itemTapLevel8 from './itemTapLevel8.png';
 import itemTapLevel9 from './itemTapLevel9.png';
 import itemTapHighLevel from './itemTapHighLevel.png';
-import epic from "./epic.mp3";
+import epic from "./epic.wma";
 
 export {
     bear,

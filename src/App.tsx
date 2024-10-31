@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
 import loadingGif from './images/loading.gif';
-import epic from './images/epic.mp3';
+import epic from './images/epic.wma';
 import Shop from './Shop';
 import Setting from './Setting';
 
