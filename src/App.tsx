@@ -37,6 +37,16 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isShaking, setIsShaking] = useState(false);
   const [pointsToAdd, setPointsToAdd] = useState(1)
+  const [audio] = useState(new Audio(epic)); // Создаем один экземпляр аудио
+  const [isAudioStarted, setIsAudioStarted] = useState(false); // Для активации звука
+
+  const handleAudioStart = () => {
+    if (!isAudioStarted) {
+      audio.play();
+      setIsAudioStarted(true);
+    }
+  };
+
 
   // Рассчитываем восстановленную энергию на основе времени
   const calculateRecoveredEnergy = () => {
@@ -59,23 +69,20 @@ function App() {
 
   // Добавляем аудио-проигрыватель для эпика
   useEffect(() => {
-    const audio = new Audio(epic);
-    audio.loop = false;
-
     const timer = setTimeout(() => {
       setIsLoading(false);
       audio.pause();
-    }, 7000); // 3 секунды заставка
+    }, 7000); // 7 секунд заставка
 
     if (isLoading) {
-      audio.play();
+      audio.loop = false;
     }
 
     return () => {
       audio.pause();
       clearTimeout(timer);
     };
-  }, [isLoading]);
+  }, [isLoading, audio]);
 
   useEffect(() => {
     // Восстанавливаем энергию при загрузке приложения
@@ -205,14 +212,14 @@ function App() {
   };
 
   if (isLoading) {
-    // Показываем заставку
+    // Заставка с обработчиком нажатия для активации аудио
     return (
-      <div className="loading-screen">
+      <div className="loading-screen" onClick={handleAudioStart}>
         <img src={loadingGif} alt="Loading..." />
       </div>
     );
   }
-
+  
   return (
     <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium">
       <div className="absolute inset-0 h-1/2 bg-gradient-overlay z-0"></div>
