@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
 import loadingGif from './images/loading.gif';
+import epic from './images/epic.mp3';
 import Shop from './Shop';
 import Setting from './Setting';
 
@@ -56,14 +57,25 @@ function App() {
     setShowSettings(!showSettings);
   };
 
+  // Добавляем аудио-проигрыватель для эпика
   useEffect(() => {
-    // Показать заставку в течение 3 секунд
+    const audio = new Audio(epic);
+    audio.loop = false;
+
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // 3 секунды заставка
+      audio.pause();
+    }, 7000); // 3 секунды заставка
 
-    return () => clearTimeout(timer); // Очищаем таймер, если компонент размонтируется
-  }, []);
+    if (isLoading) {
+      audio.play();
+    }
+
+    return () => {
+      audio.pause();
+      clearTimeout(timer);
+    };
+  }, [isLoading]);
 
   useEffect(() => {
     // Восстанавливаем энергию при загрузке приложения

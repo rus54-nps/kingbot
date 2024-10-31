@@ -19,6 +19,7 @@ import itemTapLevel7 from './itemTapLevel7.png';
 import itemTapLevel8 from './itemTapLevel8.png';
 import itemTapLevel9 from './itemTapLevel9.png';
 import itemTapHighLevel from './itemTapHighLevel.png';
+import epic from "./epic.mp3";
 
 export {
     bear,
@@ -31,7 +32,8 @@ export {
     item1,
     item2,
     item3,
-    sett
+    sett,
+    epic
 }
 
 // Массив изображений для уровней 1–9
