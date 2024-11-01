@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
 import loadingGif from './images/loading.gif';
-import epic from './images/epic.aac';
 import Shop from './Shop';
 import Setting from './Setting';
 
@@ -37,16 +36,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isShaking, setIsShaking] = useState(false);
   const [pointsToAdd, setPointsToAdd] = useState(1)
-  const [audio] = useState(new Audio(epic)); // Создаем один экземпляр аудио
-  const [isAudioStarted, setIsAudioStarted] = useState(false); // Для активации звука
-
-  const handleAudioStart = () => {
-    if (!isAudioStarted) {
-      audio.play();
-      setIsAudioStarted(true);
-    }
-  };
-
 
   // Рассчитываем восстановленную энергию на основе времени
   const calculateRecoveredEnergy = () => {
@@ -67,22 +56,14 @@ function App() {
     setShowSettings(!showSettings);
   };
 
-  // Добавляем аудио-проигрыватель для эпика
   useEffect(() => {
+    // Показать заставку в течение 3 секунд
     const timer = setTimeout(() => {
       setIsLoading(false);
-      audio.pause();
-    }, 4800); // 7 секунд заставка
+    }, 3000); // 3 секунды заставка
 
-    if (isLoading) {
-      audio.loop = false;
-    }
-
-    return () => {
-      audio.pause();
-      clearTimeout(timer);
-    };
-  }, [isLoading, audio]);
+    return () => clearTimeout(timer); // Очищаем таймер, если компонент размонтируется
+  }, []);
 
   useEffect(() => {
     // Восстанавливаем энергию при загрузке приложения
@@ -212,9 +193,9 @@ function App() {
   };
 
   if (isLoading) {
-    // Заставка с обработчиком нажатия для активации аудио
+    // Показываем заставку
     return (
-      <div className="loading-screen" onClick={handleAudioStart}>
+      <div className="loading-screen">
         <img src={loadingGif} alt="Loading..." />
       </div>
     );
