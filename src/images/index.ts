@@ -4,7 +4,7 @@ import highVoltage from "./high-voltage.png";
 import notcoin from "./notcoin.png";
 import shp from "./shp.png";
 import trophy from "./trophy.png";
-import loadingMp4 from "./103APP.webm";
+import loadingGif from "./loading.gif";
 import item1 from "./item1.png";
 import item2 from "./item2.png";
 import item3 from "./item3.png";
@@ -19,7 +19,6 @@ import itemTapLevel7 from './itemTapLevel7.png';
 import itemTapLevel8 from './itemTapLevel8.png';
 import itemTapLevel9 from './itemTapLevel9.png';
 import itemTapHighLevel from './itemTapHighLevel.png';
-import epic from "./epic.aac";
 
 export {
     bear,
@@ -28,12 +27,11 @@ export {
     notcoin,
     shp,
     trophy,
-    loadingMp4,
+    loadingGif,
     item1,
     item2,
     item3,
-    sett,
-    epic
+    sett
 }
 
 // Массив изображений для уровней 1–9
