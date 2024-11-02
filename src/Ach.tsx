@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './Achiv.css';
+import './Ach.css';
 import { zl, bl, per, zad } from './images';
 
 // Определение типа для достижения
