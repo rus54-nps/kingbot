@@ -4,7 +4,7 @@ import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from
 import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 import Setting from './Setting';
-import Achiv from './achiv';
+import Achiv from './Ach';
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
