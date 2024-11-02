@@ -91,3 +91,42 @@
 .back-button:hover {
   background-color: #e0b834;
 }
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.next-page-button {
+  margin-top: 20px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: center; /* Центрируем кнопки */
+  margin-top: 20px; /* Отступ сверху */
+}
+
+.back-page-button, .next-page-button {
+  background: none; /* Убираем фоновый цвет */
+  border: none; /* Убираем рамки */
+  cursor: pointer; /* Курсор при наведении */
+}
+
+.navigation-image {
+  width: 50px; /* Ширина изображения кнопки */
+  height: auto; /* Высота автоматически */
+}
+
+.back-page-button:disabled .navigation-image {
+  opacity: 0.5; /* Прозрачность изображения, если кнопка отключена */
+  pointer-events: none; /* Запрещаем взаимодействие с отключенной кнопкой */
+}
+
+.next-page-button.disabled {
+  opacity: 0.5; /* Затемнение кнопки */
+  pointer-events: none; /* Отключаем взаимодействие */
+}

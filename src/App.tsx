@@ -163,11 +163,11 @@ function App() {
             </div>
           </>
         );
-      case 'str4':
+      case 'achiv':
         return (
           <Achiv
           setCurrentPage={setCurrentPage}
-            
+          points={points}
           />
         );
       case 'frend':
@@ -289,7 +289,7 @@ function App() {
           </div>
         </div>
   
-        {/* Нижний блок с кнопками (frend, earn, shop, str4) */}
+        {/* Нижний блок с кнопками (frend, earn, shop, achiv) */}
         <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
@@ -302,7 +302,7 @@ function App() {
               <span>Earn</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str4')}>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
               <img src={shp} width={24} height={24} alt="Achiv" />
               <span>Achiv</span>
             </button>

@@ -22,6 +22,8 @@ import itemTapHighLevel from './itemTapHighLevel.png';
 import fon from './fon.png';
 import bl from './bl.png';
 import zl from './zl.png';
+import per from './per.png';
+import zad from './zad.png';
 
 export {
     bear,
@@ -37,7 +39,9 @@ export {
     sett,
     fon,
     bl,
-    zl
+    zl,
+    per,
+    zad
 }
 
 // Массив изображений для уровней 1–9
