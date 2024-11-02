@@ -6,10 +6,15 @@ import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
 
+interface Achievements {
+  beginnerTapper: boolean;
+}
+
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
+  
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
     const savedMaxEnergy = localStorage.getItem('maxEnergy');
@@ -39,9 +44,24 @@ function App() {
   const [pointsToAdd, setPointsToAdd] = useState(1)
   const [taps, setTaps] = useState<number>(0);
 
+  const [achievements, setAchievements] = useState<Achievements>(() => {
+    const savedAchievements = localStorage.getItem('achievements');
+    return savedAchievements ? JSON.parse(savedAchievements) : { beginnerTapper: false };
+  });
+
   const handleTap = () => {
     setTaps(prevTaps => prevTaps + 1); // Увеличиваем количество тапов
-    // Другие действия при тапе...
+    checkAchievements(taps + 1); // Проверяем достижения при каждом тапе
+  };
+
+  const checkAchievements = (currentTaps: number) => {
+    if (currentTaps === 1 && !achievements.beginnerTapper) {
+      setAchievements(prevAchievements => {
+        const updatedAchievements = { ...prevAchievements, beginnerTapper: true };
+        localStorage.setItem('achievements', JSON.stringify(updatedAchievements)); // Сохраняем достижения
+        return updatedAchievements;
+      });
+    }
   };
 
   // Рассчитываем восстановленную энергию на основе времени

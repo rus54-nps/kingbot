@@ -26,14 +26,14 @@ const achievements: Achievement[] = [
   { id: 9, name: "Начинающий тапер", description: "Сделайте 1 000 тапов", image: zl, unlocked: false },
   { id: 10, name: "Мастери Тапа", description: "Сделайте 100 000 тапов", image: zl, unlocked: false },
   { id: 11, name: "Владыка Тапов", description: "Сделайте 1 000 000 тапов", image: zl, unlocked: false },
-  /*Скорость тапов*
-  { id: 12, name: "Скоростной Тап", description: "Do B to unlock", image: zl, unlocked: false },
-  { id: 13, name: "Неостановимый", description: "Do P to unlock", image: zl, unlocked: false },
-  { id: 14, name: "Прирожденный Тапер", description: "Do P to unlock", image: zl, unlocked: false },
+  /*Скорость тапов*/
+  { id: 12, name: "Скоростной Тап", description: "Совершите 50 тапов за 10 секунд", image: zl, unlocked: false },
+  { id: 13, name: "Неостановимый", description: "Совершите 100 тапов за минуту", image: zl, unlocked: false },
+  { id: 14, name: "Прирожденный Тапер", description: "Совершите 300 тапов за 2 минуты", image: zl, unlocked: false },
   /*Восстановление энергии*
-  { id: 15, name: "Скоростной Реген", description: "Do Y to unlock", image: zl, unlocked: false },
-  { id: 16, name: "Энергетический Реген", description: "Do Z to unlock", image: zl, unlocked: false },
-  { id: 17, name: "Быстрый Реген", description: "Do t f to unlock", image: zl, unlocked: false },
+  { id: 15, name: "Скоростной Тап", description: "Совершите 50 тапов за 10 секунд", image: zl, unlocked: false },
+  { id: 16, name: "Неудержимый Тапер", description: "Совершите 100 тапов за минуту", image: zl, unlocked: false },
+  { id: 17, name: "Прирождённый Тапер", description: "Совершите 300 тапов за 2 минуты", image: zl, unlocked: false },
   /*Завершение достижений*
   { id: 18, name: "Чемпион", description: "Do B to unlock", image: zl, unlocked: false },
   { id: 19, name: "Марафонец", description: "Do P to unlock", image: zl, unlocked: false },
@@ -45,8 +45,8 @@ const achievements: Achievement[] = [
 ];
 
 interface AchivProps {
-  setCurrentPage: (page: string) => void; // Определение типа для setCurrentPage
-  points: number; // Определение типа для points
+  setCurrentPage: (page: string) => void;
+  points: number;
   maxEnergy: number;
   taps: number;
 }
@@ -124,6 +124,26 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
       achievements[10].unlocked = true; // Обратите внимание на индекс 8 для достижения "Начинающий тапер"
     }
   }, [taps]);
+
+  /*Скорость Тапов*/
+  useEffect(() => {
+    if (taps >= 50) {
+      achievements[11].unlocked = true; // Индекс 12 для достижения "Скоростной Тап"
+    }
+  }, [taps]);
+
+  useEffect(() => {
+    if (taps >= 150) {
+      achievements[12].unlocked = true; // Индекс 12 для достижения "Скоростной Тап"
+    }
+  }, [taps]);
+
+  useEffect(() => {
+    if (taps >= 300) {
+      achievements[13].unlocked = true; // Индекс 12 для достижения "Скоростной Тап"
+    }
+  }, [taps]);
+
 
   const handleClick = (achiv: Achievement) => {
     setSelectedAchiv(achiv); // Устанавливаем выбранное достижение
