@@ -28,7 +28,7 @@ const achievements: Achievement[] = [
   { id: 11, name: "Владыка Тапов", description: "Сделайте 1 000 000 тапов", image: zl, unlocked: false },
   /*Завершение достижений*/
   { id: 12, name: "Чемпион", description: "Добейтесь 100% выполнения всех достижений", image: zl, unlocked: false },
-  
+  /*
   { id: 13, name: "Потрачено", description: "Потратьте 1000 монет в магазине", image: zl, unlocked: false },
   /*
   { id: 14, name: "Прирожденный Тапер", description: "Совершите 300 тапов за 2 минуты", image: zl, unlocked: false },
