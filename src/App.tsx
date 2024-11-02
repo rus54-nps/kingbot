@@ -4,6 +4,7 @@ import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from
 import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 import Setting from './Setting';
+import Achiv from './achiv';
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
@@ -163,7 +164,12 @@ function App() {
           </>
         );
       case 'str4':
-        return <h2>Страница "Str4"</h2>;
+        return (
+          <Achiv
+          setCurrentPage={setCurrentPage}
+            
+          />
+        );
       case 'frend':
         return <h2>Страница "Frend"</h2>;
       case 'earn':
@@ -202,7 +208,7 @@ function App() {
   }
 
   return (
-    <div className="bg-gradient-main min-h-screen px-4 flex flex-col items-center text-white font-medium">
+    <div className="App min-h-screen px-4 flex flex-col items-center text-white font-medium">
       <div className="absolute inset-0 h-1/2 bg-gradient-overlay z-0"></div>
       <div className="absolute inset-0 flex items-center justify-center z-0">
         <div className="radial-gradient-overlay"></div>
@@ -212,7 +218,7 @@ function App() {
   
         {/* Верхний блок с кнопками (str5, str6, str7, str8) */}
         <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-10">
-          <div className="w-full max-w-md bg-[#91bfa9] py-4 rounded-2xl flex justify-around">
+          <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str5')}>
               <img src={shp} width={24} height={24} alt="Str5" />
               <span>Str5</span>
@@ -285,7 +291,7 @@ function App() {
   
         {/* Нижний блок с кнопками (frend, earn, shop, str4) */}
         <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
-          <div className="w-full max-w-md bg-[#91bfa9] py-4 rounded-2xl flex justify-around">
+          <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
               <img src={bear} width={24} height={24} alt="Frend" />
               <span>Frend</span>
@@ -297,8 +303,8 @@ function App() {
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str4')}>
-              <img src={shp} width={24} height={24} alt="Str4" />
-              <span>Str4</span>
+              <img src={shp} width={24} height={24} alt="Achiv" />
+              <span>Achiv</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>

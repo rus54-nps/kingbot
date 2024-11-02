@@ -1,0 +1,93 @@
+.achievements-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(11, 1, 22, 0.95); /* Темный полупрозрачный фон */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000; /* Чтобы оверлей был поверх других элементов */
+}
+
+.achievements-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.achievements-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.achievement {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.achievement-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: black;
+}
+
+.achievement-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #333;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 300px;
+  color: #fff;
+}
+
+.achievements-back-button {
+  background-color: #f9c035;
+  color: #1f1f1f;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.achievements-back-button:hover {
+  background-color: #e0b834;
+}
+
+.back-button {
+  background-color: #f9c035;
+  color: #1f1f1f;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.back-button:hover {
+  background-color: #e0b834;
+}

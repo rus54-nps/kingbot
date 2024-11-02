@@ -5,7 +5,7 @@
 body {
     font-family: sans-serif;
 }
-
+/*
 .bg-gradient-main {
     background: linear-gradient(to top, #29051d, #610d56);
 }
@@ -19,7 +19,7 @@ body {
     width: 100%;
     height: 100%;
     background: radial-gradient(circle, rgba(108, 25, 116, 0.8) 0%, rgba(18, 29, 124, 0) 60%);
-}
+}*/
 
 @keyframes float {
     0% {
