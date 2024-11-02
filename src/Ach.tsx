@@ -14,8 +14,8 @@ type Achievement = {
 const achievements: Achievement[] = [
   /*Заработок монет*/
   { id: 1, name: "Первый Шаг", description: "Заработайте 1 000 монет", image: zl, unlocked: false },
-  { id: 2, name: "Финансовый прорыв", description: "Заработайте 10 000 монет", image: zl, unlocked: false },
-  { id: 3, name: "Медленный старт", description: "Заработайте 100 000 монет", image: zl, unlocked: false },
+  { id: 2, name: "Медленный старт", description: "Заработайте 10 000 монет", image: zl, unlocked: false },
+  { id: 3, name: "Финансовый прорыв", description: "Заработайте 100 000 монет", image: zl, unlocked: false },
   { id: 4, name: "Монетный Магнат", description: "Заработайте 1 000 000 монет", image: zl, unlocked: false },
   { id: 5, name: "Золотая Лихорадка", description: "Заработайте 10 000 000 монет", image: zl, unlocked: false },
   /*Максимальная энергия*/
@@ -26,19 +26,18 @@ const achievements: Achievement[] = [
   { id: 9, name: "Начинающий тапер", description: "Сделайте 1 000 тапов", image: zl, unlocked: false },
   { id: 10, name: "Мастери Тапа", description: "Сделайте 100 000 тапов", image: zl, unlocked: false },
   { id: 11, name: "Владыка Тапов", description: "Сделайте 1 000 000 тапов", image: zl, unlocked: false },
-  /*Скорость тапов*/
-  { id: 12, name: "Скоростной Тап", description: "Совершите 50 тапов за 10 секунд", image: zl, unlocked: false },
-  { id: 13, name: "Неостановимый", description: "Совершите 100 тапов за минуту", image: zl, unlocked: false },
+  /*Завершение достижений*/
+  { id: 12, name: "Чемпион", description: "Добейтесь 100% выполнения всех достижений", image: zl, unlocked: false },
+  
+  { id: 13, name: "Потрачено", description: "Потратьте 1000 монет в магазине", image: zl, unlocked: false },
+  /*
   { id: 14, name: "Прирожденный Тапер", description: "Совершите 300 тапов за 2 минуты", image: zl, unlocked: false },
-  /*Восстановление энергии*
   { id: 15, name: "Скоростной Тап", description: "Совершите 50 тапов за 10 секунд", image: zl, unlocked: false },
   { id: 16, name: "Неудержимый Тапер", description: "Совершите 100 тапов за минуту", image: zl, unlocked: false },
   { id: 17, name: "Прирождённый Тапер", description: "Совершите 300 тапов за 2 минуты", image: zl, unlocked: false },
-  /*Завершение достижений*
   { id: 18, name: "Чемпион", description: "Do B to unlock", image: zl, unlocked: false },
   { id: 19, name: "Марафонец", description: "Do P to unlock", image: zl, unlocked: false },
   { id: 20, name: "Тайный Реген", description: "Do B to unlock", image: zl, unlocked: false },
-  /*
   { id: 21, name: "Achievement 24", description: "Do P to unlock", image: zl, unlocked: false },
   { id: 22, name: "Achievement 24", description: "Do P to unlock", image: zl, unlocked: false },
    */
@@ -55,6 +54,7 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
   const [selectedAchiv, setSelectedAchiv] = useState<Achievement | null>(null);
   const [currentPage, setCurrentPageState] = useState(0);
   const achievementsPerPage = 12;
+  
 
   /*Заработок монет*/
   useEffect(() => {
@@ -109,7 +109,7 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
   /*Количество тапов*/
   useEffect(() => {
     if (taps >= 1000) {
-      achievements[8].unlocked = true; // Обратите внимание на индекс 8 для достижения "Начинающий тапер"
+      achievements[8].unlocked = true;
     }
   }, [taps]);
 
@@ -125,24 +125,13 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
     }
   }, [taps]);
 
-  /*Скорость Тапов*/
-  useEffect(() => {
-    if (taps >= 50) {
-      achievements[11].unlocked = true; // Индекс 12 для достижения "Скоростной Тап"
+                        /*Последнее достиженее*/
+    useEffect(() => {
+    const allAchievementsUnlocked = achievements.slice(0, -1).every(ach => ach.unlocked);
+    if (allAchievementsUnlocked) {
+      achievements[11].unlocked = true; // Индекс 11 для достижения "Чемпион"
     }
-  }, [taps]);
-
-  useEffect(() => {
-    if (taps >= 150) {
-      achievements[12].unlocked = true; // Индекс 12 для достижения "Скоростной Тап"
-    }
-  }, [taps]);
-
-  useEffect(() => {
-    if (taps >= 300) {
-      achievements[13].unlocked = true; // Индекс 12 для достижения "Скоростной Тап"
-    }
-  }, [taps]);
+  }, [achievements]);
 
 
   const handleClick = (achiv: Achievement) => {

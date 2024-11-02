@@ -6,10 +6,6 @@ import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
 
-interface Achievements {
-  beginnerTapper: boolean;
-}
-
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
   const energyToReduce = 1; // Энергия за нажатие
@@ -44,24 +40,8 @@ function App() {
   const [pointsToAdd, setPointsToAdd] = useState(1)
   const [taps, setTaps] = useState<number>(0);
 
-  const [achievements, setAchievements] = useState<Achievements>(() => {
-    const savedAchievements = localStorage.getItem('achievements');
-    return savedAchievements ? JSON.parse(savedAchievements) : { beginnerTapper: false };
-  });
-
   const handleTap = () => {
     setTaps(prevTaps => prevTaps + 1); // Увеличиваем количество тапов
-    checkAchievements(taps + 1); // Проверяем достижения при каждом тапе
-  };
-
-  const checkAchievements = (currentTaps: number) => {
-    if (currentTaps === 1 && !achievements.beginnerTapper) {
-      setAchievements(prevAchievements => {
-        const updatedAchievements = { ...prevAchievements, beginnerTapper: true };
-        localStorage.setItem('achievements', JSON.stringify(updatedAchievements)); // Сохраняем достижения
-        return updatedAchievements;
-      });
-    }
   };
 
   // Рассчитываем восстановленную энергию на основе времени
@@ -191,37 +171,39 @@ function App() {
             </div>
           </>
         );
+      case 'shop':
+        return (
+          <Shop
+          points={points}
+          setPoints={setPoints}
+          setCurrentPage={setCurrentPage}
+          setMaxEnergy={setMaxEnergy}
+          setEnergyRecoveryRate={setEnergyRecoveryRate}
+          setPointsToAdd={setPointsToAdd}
+          />
+        );
+      case 'autofarm':
+        return <h2>Страница "Autofarm"</h2>;
+      case 'Game':
+        return <h2>Страница "Game"</h2>
+      case 'tasks':
+        return <h2>Страница "Tasks"</h2>;
+        /*Верхний блок*/
+      case 'home':
+        return <h2>Страница "Home"</h2>
+      case 'top':
+        return <h2>Страница "Top"</h2>
+      case 'friend':
+        return <h2>Страница "Friend"</h2>;
       case 'achiv':
         return (
           <Achiv
           setCurrentPage={setCurrentPage}
           points={points}
           maxEnergy={maxEnergy}
-          taps={taps}
-          />
-        );
-      case 'frend':
-        return <h2>Страница "Frend"</h2>;
-      case 'earn':
-        return <h2>Страница "Earn"</h2>;
-      case 'shop':
-        return (
-          <Shop
-            points={points}
-            setPoints={setPoints}
-            setCurrentPage={setCurrentPage}
-            setMaxEnergy={setMaxEnergy}
-            setEnergyRecoveryRate={setEnergyRecoveryRate}              setPointsToAdd={setPointsToAdd}
-          />
-        );
-      case 'str5':
-        return <h2>Страница "Str5"</h2>;
-      case 'str6':
-        return <h2>Страница "Str6"</h2>;
-      case 'str7':
-        return <h2>Страница "Str7"</h2>;
-      case 'str8':
-        return <h2>Страница "Str8"</h2>;
+           taps={taps}
+           />
+         );
       default:
         return <h2>Неизвестная страница</h2>;
     }
@@ -245,27 +227,27 @@ function App() {
   
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
   
-        {/* Верхний блок с кнопками (str5, str6, str7, str8) */}
+        {/* Верхний блок с кнопками*/}
         <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-10">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str5')}>
-              <img src={shp} width={24} height={24} alt="Str5" />
-              <span>Str5</span>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('home')}>
+              <img src={shp} width={24} height={24} alt="home" />
+              <span>Home</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str6')}>
-              <img src={shp} width={24} height={24} alt="Str6" />
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('top')}>
+              <img src={shp} width={24} height={24} alt="Top" />
               <span>Top</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str7')}>
-              <img src={shp} width={24} height={24} alt="Str7" />
-              <span>Quest</span>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('friend')}>
+              <img src={bear} width={24} height={24} alt="Friend" />
+              <span>Friend</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('str8')}>
-              <img src={shp} width={24} height={24} alt="Str8" />
-              <span>Airdrop</span>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
+              <img src={shp} width={24} height={24} alt="Achiv" />
+              <span>Achiv</span>
             </button>
           </div>
         </div>
@@ -321,24 +303,24 @@ function App() {
         {/* Нижний блок с кнопками (frend, earn, shop, achiv) */}
         <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('frend')}>
-              <img src={bear} width={24} height={24} alt="Frend" />
-              <span>Frend</span>
-            </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('earn')}>
-              <img src={coinImage} width={24} height={24} alt="Earn" />
-              <span>Earn</span>
-            </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
-              <img src={shp} width={24} height={24} alt="Achiv" />
-              <span>Achiv</span>
-            </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
               <img src={shp} width={24} height={24} alt="Shop" />
               <span>Shop</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('autofarm')}>
+              <img src={bear} width={24} height={24} alt="Autofarm" />
+              <span>Autofarm</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('Game')}>
+              <img src={coinImage} width={24} height={24} alt="Game" />
+              <span>Game</span>
+            </button>
+            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('tasks')}>
+              <img src={shp} width={24} height={24} alt="Tasks" />
+              <span>tasks</span>
             </button>
           </div>
         </div>
