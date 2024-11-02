@@ -11,8 +11,6 @@ function App() {
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
 
-  const [achievement, setAchievement] = useState<string | null>(null);
-
   const [maxEnergy, setMaxEnergy] = useState(() => {
     const savedMaxEnergy = localStorage.getItem('maxEnergy');
     return savedMaxEnergy ? parseInt(savedMaxEnergy, 10) : initialMaxEnergy;
@@ -39,6 +37,12 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isShaking, setIsShaking] = useState(false);
   const [pointsToAdd, setPointsToAdd] = useState(1)
+  const [taps, setTaps] = useState<number>(0);
+
+  const handleTap = () => {
+    setTaps(prevTaps => prevTaps + 1); // Увеличиваем количество тапов
+    // Другие действия при тапе...
+  };
 
   // Рассчитываем восстановленную энергию на основе времени
   const calculateRecoveredEnergy = () => {
@@ -119,6 +123,8 @@ function App() {
       return;
     }
 
+    handleTap();
+
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -171,7 +177,7 @@ function App() {
           setCurrentPage={setCurrentPage}
           points={points}
           maxEnergy={maxEnergy}
-          
+          taps={taps}
           />
         );
       case 'frend':
@@ -180,18 +186,13 @@ function App() {
         return <h2>Страница "Earn"</h2>;
       case 'shop':
         return (
-          <div>
-            <Shop
-              points={points}
-              setPoints={setPoints}
-              setCurrentPage={setCurrentPage}
-              setMaxEnergy={setMaxEnergy}
-              setEnergyRecoveryRate={setEnergyRecoveryRate}
-              setPointsToAdd={setPointsToAdd}
-              setAchievement={setAchievement}
-            />
-            {achievement && <div className="achievement-notification">{achievement}</div>}
-          </div>
+          <Shop
+            points={points}
+            setPoints={setPoints}
+            setCurrentPage={setCurrentPage}
+            setMaxEnergy={setMaxEnergy}
+            setEnergyRecoveryRate={setEnergyRecoveryRate}              setPointsToAdd={setPointsToAdd}
+          />
         );
       case 'str5':
         return <h2>Страница "Str5"</h2>;
