@@ -1,4 +1,3 @@
-// Shop.tsx
 import React, { useState, useEffect } from 'react';
 import './Shop.css';
 import { item1, item2, item3, coin, tapImages, tapHighLevelImage } from './images'; // Подключаем нужные изображения
@@ -21,7 +20,8 @@ const Shop: React.FC<{
   setEnergyRecoveryRate: React.Dispatch<React.SetStateAction<number>>;
   setMaxEnergy: React.Dispatch<React.SetStateAction<number>>;
   setPointsToAdd: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd }) => {
+  setAchievement: React.Dispatch<React.SetStateAction<string | null>>;
+}> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd,setAchievement }) => {
   const [items, setItems] = useState<ShopItem[]>([
     { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, description: 'Монеты за Тап: 1' },
     { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, description: 'Начальное количество энергии: 500' },
@@ -58,6 +58,11 @@ const Shop: React.FC<{
           if (itemId === 1) {
             setPointsToAdd(newLevel);
             localStorage.setItem('pointsToAdd', newLevel.toString()); // Сохранение уровня "Тап"
+
+            if (newLevel === 5) {
+              setAchievement('Сила Тапа'); // Устанавливаем достижение
+              alert('Достижение получено: Сила Тапа!'); // Уведомляем пользователя
+            }
           }
 
           if (itemId === 2) {

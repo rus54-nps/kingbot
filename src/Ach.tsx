@@ -12,48 +12,106 @@ type Achievement = {
 };
 
 const achievements: Achievement[] = [
-  { id: 1, name: "Первый Шаг", description: "Заработайте 10 монет", image: zl, unlocked: false },
-  { id: 2, name: "Achievement 2", description: "Do Y to unlock", image: zl, unlocked: false },
-  { id: 3, name: "Achievement 3", description: "Do Z to unlock", image: zl, unlocked: false },
-  { id: 4, name: "Achievement 4", description: "Do t f to unlock", image: zl, unlocked: false },
-  { id: 5, name: "Achievement 5", description: "Do B to unlock", image: zl, unlocked: false },
-  { id: 6, name: "Achievement 6", description: "Do P to unlock", image: zl, unlocked: false },
-  { id: 7, name: "Achievement 7", description: "Do P to unlock", image: zl, unlocked: false },
-  { id: 8, name: "Achievement 8", description: "Do Y to unlock", image: zl, unlocked: false },
-  { id: 9, name: "Achievement 9", description: "Do Z to unlock", image: zl, unlocked: false },
-  { id: 10, name: "Achievement 10", description: "Do t f to unlock", image: zl, unlocked: false },
-  { id: 11, name: "Achievement 11", description: "Do B to unlock", image: zl, unlocked: false },
-  { id: 12, name: "Achievement 12", description: "Do P to unlock", image: zl, unlocked: false },
-  { id: 13, name: "Achievement 13", description: "Do Z to unlock", image: zl, unlocked: false },
-  { id: 14, name: "Achievement 14", description: "Do t f to unlock", image: zl, unlocked: false },
-  { id: 15, name: "Achievement 15", description: "Do B to unlock", image: zl, unlocked: false },
-  { id: 16, name: "Achievement 16", description: "Do P to unlock", image: zl, unlocked: false },
-  { id: 17, name: "Achievement 17", description: "Do P to unlock", image: zl, unlocked: false },
-  { id: 18, name: "Achievement 18", description: "Do Y to unlock", image: zl, unlocked: false },
-  { id: 19, name: "Achievement 19", description: "Do Z to unlock", image: zl, unlocked: false },
-  { id: 20, name: "Achievement 20", description: "Do t f to unlock", image: zl, unlocked: false },
-  { id: 21, name: "Achievement 21", description: "Do B to unlock", image: zl, unlocked: false },
-  { id: 22, name: "Achievement 22", description: "Do P to unlock", image: zl, unlocked: false },
-  { id: 23, name: "Achievement 23", description: "Do B to unlock", image: zl, unlocked: false },
+  /*Заработок монет*/
+  { id: 1, name: "Первый Шаг", description: "Заработайте 1 000 монет", image: zl, unlocked: false },
+  { id: 2, name: "Финансовый прорыв", description: "Заработайте 10 000 монет", image: zl, unlocked: false },
+  { id: 3, name: "Медленный старт", description: "Заработайте 100 000 монет", image: zl, unlocked: false },
+  { id: 4, name: "Монетный Магнат", description: "Заработайте 1 000 000 монет", image: zl, unlocked: false },
+  { id: 5, name: "Золотая Лихорадка", description: "Заработайте 10 000 000 монет", image: zl, unlocked: false },
+  /*Максимальная энергия*/
+  { id: 6, name: "Начинающий энергетик", description: "Увеличьте максимальную энергию до 5 000", image: zl, unlocked: false },
+  { id: 7, name: "Энергетик", description: "Увеличьте максимальную энергию до 10 000", image: zl, unlocked: false },
+  { id: 8, name: "Энергетический Гигант", description: "Увеличьте максимальную энергию до 15 000", image: zl, unlocked: false },
+  /*Уровень "Тапа"*/
+  { id: 9, name: "Сила Тапа", description: "Улучшите 'Тап' до 5 уровня", image: zl, unlocked: false },
+  { id: 10, name: "Тап-мастер", description: "Улучшите 'Тап' до 10 уровня", image: zl, unlocked: false },
+  { id: 11, name: "Легендарный Тап", description: "Улучшите 'Тап' до 15 уровня", image: zl, unlocked: false },
+  /*Количество тапов*
+  { id: 12, name: "Начинающий тапер", description: "Do P to unlock", image: zl, unlocked: false },
+  { id: 13, name: "Мастери Тапа", description: "Do Z to unlock", image: zl, unlocked: false },
+  { id: 14, name: "Владыка Тапов", description: "Do f to unlock", image: zl, unlocked: false },
+  /*Скорость тапов*
+  { id: 15, name: "Скоростной Тап", description: "Do B to unlock", image: zl, unlocked: false },
+  { id: 16, name: "Неостановимый", description: "Do P to unlock", image: zl, unlocked: false },
+  { id: 17, name: "Прирожденный Тапер", description: "Do P to unlock", image: zl, unlocked: false },
+  /*Восстановление энергии*
+  { id: 18, name: "Скоростной Реген", description: "Do Y to unlock", image: zl, unlocked: false },
+  { id: 19, name: "Энергетический Реген", description: "Do Z to unlock", image: zl, unlocked: false },
+  { id: 20, name: "Быстрый Реген", description: "Do t f to unlock", image: zl, unlocked: false },
+  /*Завершение достижений*
+  { id: 21, name: "Чемпион", description: "Do B to unlock", image: zl, unlocked: false },
+  { id: 22, name: "Марафонец", description: "Do P to unlock", image: zl, unlocked: false },
+  { id: 23, name: "Тайный Реген", description: "Do B to unlock", image: zl, unlocked: false },
+  /*
   { id: 24, name: "Achievement 24", description: "Do P to unlock", image: zl, unlocked: false },
   { id: 25, name: "Achievement 24", description: "Do P to unlock", image: zl, unlocked: false },
+   */
 ];
 
 interface AchivProps {
   setCurrentPage: (page: string) => void; // Определение типа для setCurrentPage
   points: number; // Определение типа для points
+  maxEnergy: number;
 }
 
-function Achiv({ setCurrentPage, points }: AchivProps) {
+function Achiv({ setCurrentPage, points, maxEnergy, }: AchivProps) {
   const [selectedAchiv, setSelectedAchiv] = useState<Achievement | null>(null);
   const [currentPage, setCurrentPageState] = useState(0);
   const achievementsPerPage = 12;
 
+  /*Заработок монет*/
   useEffect(() => {
-    if (points >= 10) {
-      achievements[0].unlocked = true; // Открываем первое достижение
+    if (points >= 1000) {
+      achievements[0].unlocked = true;
     }
   }, [points]);
+
+  useEffect(() => {
+    if (points >= 10000) {
+      achievements[1].unlocked = true;
+    }
+  }, [points]);
+
+  useEffect(() => {
+    if (points >= 100000) {
+      achievements[2].unlocked = true;
+    }
+  }, [points]);
+
+  useEffect(() => {
+    if (points >= 1000000) {
+      achievements[3].unlocked = true;
+    }
+  }, [points]);
+
+  useEffect(() => {
+    if (points >= 10000000) {
+      achievements[4].unlocked = true;
+    }
+  }, [points]);
+
+  /*Максимальная энергия*/
+  useEffect(() => {
+    if (maxEnergy >= 5000) {
+      achievements[5].unlocked = true;
+    }
+  },[maxEnergy]);
+
+  useEffect(() => {
+    if (maxEnergy >= 10000) {
+      achievements[6].unlocked = true;
+    }
+  },[maxEnergy]);
+
+  useEffect(() => {
+    if (maxEnergy >= 15000) {
+      achievements[7].unlocked = true;
+    }
+  },[maxEnergy]);
+
+  /*Уровень "Тапа"*/
+  
+
 
   const handleClick = (achiv: Achievement) => {
     setSelectedAchiv(achiv); // Устанавливаем выбранное достижение
@@ -102,7 +160,7 @@ function Achiv({ setCurrentPage, points }: AchivProps) {
         <div className="achievement-modal">
           <div className="modal-content">
             <h2>{selectedAchiv.name}</h2>
-            <p>{selectedAchiv.unlocked ? selectedAchiv.description : "Complete the task to unlock"}</p>
+            <p>{selectedAchiv.unlocked ? selectedAchiv.description : "Достижение закрыто"}</p>
             <button onClick={handleClose}>Close</button>
           </div>
         </div>

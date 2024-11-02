@@ -11,6 +11,8 @@ function App() {
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
 
+  const [achievement, setAchievement] = useState<string | null>(null);
+
   const [maxEnergy, setMaxEnergy] = useState(() => {
     const savedMaxEnergy = localStorage.getItem('maxEnergy');
     return savedMaxEnergy ? parseInt(savedMaxEnergy, 10) : initialMaxEnergy;
@@ -168,6 +170,8 @@ function App() {
           <Achiv
           setCurrentPage={setCurrentPage}
           points={points}
+          maxEnergy={maxEnergy}
+          
           />
         );
       case 'frend':
@@ -176,14 +180,18 @@ function App() {
         return <h2>Страница "Earn"</h2>;
       case 'shop':
         return (
-          <Shop
-            points={points}
-            setPoints={setPoints}
-            setCurrentPage={setCurrentPage}
-            setMaxEnergy={setMaxEnergy}
-            setEnergyRecoveryRate={setEnergyRecoveryRate}
-            setPointsToAdd={setPointsToAdd}
-          />
+          <div>
+            <Shop
+              points={points}
+              setPoints={setPoints}
+              setCurrentPage={setCurrentPage}
+              setMaxEnergy={setMaxEnergy}
+              setEnergyRecoveryRate={setEnergyRecoveryRate}
+              setPointsToAdd={setPointsToAdd}
+              setAchievement={setAchievement}
+            />
+            {achievement && <div className="achievement-notification">{achievement}</div>}
+          </div>
         );
       case 'str5':
         return <h2>Страница "Str5"</h2>;
