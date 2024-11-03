@@ -1,8 +1,8 @@
-import bear from "./bear.png";
+/*import bear from "./bear.png";*/
 import coin from "./coin.png";
 import highVoltage from "./high-voltage.png";
 import notcoin from "./notcoin.png";
-import shp from "./shp.png";
+/*import shp from "./shp.png";*/
 import trophy from "./trophy.png";
 import loadingGif from "./loading.gif";
 import item1 from "./item1.png";
@@ -25,8 +25,17 @@ import zl from './zl.png';
 import per from './per.png';
 import zad from './zad.png';
 
+import hom from './home.png';
+import top from './top.png';
+import frnd from './friend.png';
+import medal from './medal.png';
+import shp from './shop.png';
+import autfr from './autofarm.png';
+import gam from './game.png';
+import task from './tasks.png';
+
 export {
-    bear,
+    /*bear,*/
     coin,
     highVoltage,
     notcoin,
@@ -41,7 +50,14 @@ export {
     bl,
     zl,
     per,
-    zad
+    zad,
+    hom,
+    top,
+    frnd,
+    medal,
+    autfr,
+    gam,
+    task
 }
 
 // Массив изображений для уровней 1–9

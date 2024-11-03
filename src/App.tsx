@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { bear, coin as coinImage, highVoltage, shp, trophy, notcoin, sett } from './images';
+import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task } from './images';
 import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 import Setting from './Setting';
@@ -171,6 +171,7 @@ function App() {
             </div>
           </>
         );
+        /*Нижний блок*/
       case 'shop':
         return (
           <Shop
@@ -231,22 +232,22 @@ function App() {
         <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-10">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('home')}>
-              <img src={shp} width={24} height={24} alt="home" />
+              <img src={hom} width={24} height={24} alt="Home" />
               <span>Home</span>
             </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('top')}>
-              <img src={shp} width={24} height={24} alt="Top" />
+              <img src={top} width={24} height={24} alt="Top" />
               <span>Top</span>
             </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('friend')}>
-              <img src={bear} width={24} height={24} alt="Friend" />
+              <img src={frnd} width={24} height={24} alt="Friend" />
               <span>Friend</span>
             </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
-              <img src={shp} width={24} height={24} alt="Achiv" />
+              <img src={medal} width={24} height={24} alt="Achiv" />
               <span>Achiv</span>
             </button>
           </div>
@@ -302,25 +303,25 @@ function App() {
   
         {/* Нижний блок с кнопками (frend, earn, shop, achiv) */}
         <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
-          <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
+          <div className="w-full max-w-md  py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
               <img src={shp} width={24} height={24} alt="Shop" />
               <span>Shop</span>
             </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('autofarm')}>
-              <img src={bear} width={24} height={24} alt="Autofarm" />
+              <img src={autfr} width={24} height={24} alt="Autofarm" />
               <span>Autofarm</span>
             </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('Game')}>
-              <img src={coinImage} width={24} height={24} alt="Game" />
+              <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
             </button>
-            <div className="h-[48px] w-[2px] bg-[#fddb6d]"></div>
+            <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('tasks')}>
-              <img src={shp} width={24} height={24} alt="Tasks" />
-              <span>tasks</span>
+              <img src={task} width={24} height={24} alt="Tasks" />
+              <span>Tasks</span>
             </button>
           </div>
         </div>
