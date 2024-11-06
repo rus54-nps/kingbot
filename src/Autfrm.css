@@ -2,7 +2,7 @@
     font-size: 24px;
     text-transform: uppercase;
     text-align: center;
-    margin-top: 30%;
+    margin-top: 50%;
     font-weight: bold;
     overflow-wrap: break-word; /* Обеспечивает перенос текста при нехватке места */
     word-wrap: break-word; /* Для старых браузеров */
@@ -21,6 +21,21 @@
     justify-content: center;
     align-items: center;
 }
+
+.autofarm-income {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  
+  .autofarm-income img {
+    margin-right: 5px;
+  }
+  
+  .autofarm-income span {
+    font-weight: bold;
+  }
 
 .autofarm-balance img {
     margin-right: 5px;

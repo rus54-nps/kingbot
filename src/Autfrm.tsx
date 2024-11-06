@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Autfrm.css';
 import { item1, item2, item3, coin } from './images'; // Подключаем изображения
 
@@ -9,7 +9,7 @@ interface AutoFarmItem {
   image: string;
   level: number;
   description: string;
-  incomePerHour: number;  // Добавим поле для дохода в час
+  incomePerHour: number;  // Доход в час
 }
 
 const AutoFarm: React.FC<{
@@ -18,10 +18,50 @@ const AutoFarm: React.FC<{
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ points, setPoints, setCurrentPage }) => {
   const [items, setItems] = useState<AutoFarmItem[]>([
-    { id: 1, name: 'Золотые Руки', price: 3000, image: item1, level: 1, description: '400 в час.', incomePerHour: 400 },
-    { id: 2, name: 'Счастливая Монета', price: 2500, image: item2, level: 1, description: '330 в час.', incomePerHour: 330 },
-    { id: 3, name: 'Счастливая Монета', price: 2500, image: item3, level: 1, description: '330 в час.', incomePerHour: 500 },
+    { id: 1, name: 'Золотые Руки', price: 3000, image: item1, level: 1, description: '0 монет в час.', incomePerHour: 0 },
+    { id: 2, name: 'Счастливая Монета', price: 2500, image: item2, level: 1, description: '330 монет в час.', incomePerHour: 330 },
+    { id: 3, name: 'Счастливая Монета', price: 2500, image: item3, level: 1, description: '330 монет в час.', incomePerHour: 500 },
   ]);
+  const [autoFarmIncome, setAutoFarmIncome] = useState(0); // Хранение текущего дохода от автофарма
+
+  // Загружаем состояние из localStorage
+  useEffect(() => {
+    const savedPoints = localStorage.getItem('points');
+    if (savedPoints) {
+      setPoints(Number(savedPoints));
+    }
+
+    const savedItems = localStorage.getItem('autoFarmItems');
+    if (savedItems) {
+      setItems(JSON.parse(savedItems));
+    }
+  }, [setPoints]);
+
+  // Сохраняем состояние в localStorage
+  useEffect(() => {
+    localStorage.setItem('points', points.toString());
+    localStorage.setItem('autoFarmItems', JSON.stringify(items));
+  }, [points, items]);
+
+  // Функция для добавления монет с округлением
+  const addCoins = (coins: number) => {
+    setPoints(prevPoints => Math.floor(prevPoints + coins)); // Округляем до целого числа
+  };
+
+  // Рассчитываем доход от автофарма
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let totalIncome = 0;
+      items.forEach(item => {
+        // Суммируем доход от всех активных предметов
+        totalIncome += item.incomePerHour * (1 / 3600); // Доход в секунду
+      });
+      setAutoFarmIncome(totalIncome); // Обновляем доход от автофарма
+      addCoins(totalIncome); // Прибавляем монеты к балансу
+    }, 1000); // Запускать каждую секунду
+
+    return () => clearInterval(interval); // Очистка интервала при демонтировании компонента
+  }, [items]); // Завязываем на изменения в items, чтобы доход обновлялся при изменении предметов
 
   const handlePurchase = (itemId: number) => {
     const itemToPurchase = items.find(item => item.id === itemId);
@@ -34,9 +74,9 @@ const AutoFarm: React.FC<{
           // Увеличиваем доход в зависимости от уровня
           let newIncome = item.incomePerHour;
           if (newLevel === 2) {
-            newIncome += item.id === 1 ? 100 : 110;  // Для Золотых Рук прибавляем 100, для Монеты 110
+            newIncome = item.id === 1 ? 3600 : item.incomePerHour; // Для Золотых Рук доход становится 3600 монет в час
           } else if (newLevel === 3) {
-            newIncome += item.id === 1 ? 100 : 110;  // Для Золотых Рук прибавляем ещё 100, для Монеты ещё 110
+            newIncome += item.id === 1 ? 100 : 110; // Для других предметов увеличиваем доход
           }
 
           return {
@@ -53,6 +93,7 @@ const AutoFarm: React.FC<{
       setItems(updatedItems);
       setPoints(points - itemToPurchase.price);
       alert(`Вы купили ${itemToPurchase.name}! Новый уровень: ${itemToPurchase.level + 1}`);
+      
     } else {
       alert('Недостаточно очков для покупки!');
     }
@@ -63,8 +104,16 @@ const AutoFarm: React.FC<{
       <h2 className="autofarm-title">Автофарм</h2>
       <div className="autofarm-balance">
         <img src={coin} alt="Coin" width={20} height={20} />
-        <span>{points}</span> {/* Баланс */}
+        <span>{Math.floor(points)}</span> {/* Отображаем только целые монеты */}
       </div>
+
+      {/* Добавим строку с доходом от автофарма */}
+      <div className="autofarm-income">
+        <img src={coin} alt="Coin" width={20} height={20} />
+        <span>{Math.floor(autoFarmIncome)}</span> {/* Показываем доход от автофарма */}
+        <span>монет в час</span>
+      </div>
+
       <div className="autofarm-passive-income">
         <div className="autofarm-passive-title">Пассивный доход</div>
         <p className="autofarm-passive-text">
@@ -94,7 +143,6 @@ const AutoFarm: React.FC<{
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
-  
 };
 
 export default AutoFarm;
