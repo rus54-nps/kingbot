@@ -25,7 +25,6 @@ const AutoFarm: React.FC<{
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
 
   useEffect(() => {
-    // Загружаем сохраненные данные
     const savedPoints = localStorage.getItem('points');
     if (savedPoints) {
       setPoints(Number(savedPoints));
@@ -35,43 +34,26 @@ const AutoFarm: React.FC<{
     if (savedItems) {
       setItems(JSON.parse(savedItems));
     }
-
-    const savedIncome = localStorage.getItem('autoFarmIncome');
-    if (savedIncome) {
-      setAutoFarmIncome(Number(savedIncome));
-    }
   }, [setPoints]);
 
   useEffect(() => {
-    // Обновление localStorage при изменении points, items и autoFarmIncome
     localStorage.setItem('points', points.toString());
     localStorage.setItem('autoFarmItems', JSON.stringify(items));
-    localStorage.setItem('autoFarmIncome', autoFarmIncome.toString());
-  }, [points, items, autoFarmIncome]);
+  }, [points, items]);
 
   const addCoins = (coins: number) => {
     setPoints(prevPoints => prevPoints + coins);
   };
 
-  // Основной useEffect для постоянного обновления дохода
+  // Рассчитываем доход от автофарма
   useEffect(() => {
-    // Получаем время последнего обновления из localStorage
-    const lastUpdateTime = Number(localStorage.getItem('lastUpdateTime')) || Date.now();
-    
     const interval = setInterval(() => {
-      const now = Date.now();
-      const timeElapsed = (now - lastUpdateTime) / 1000; // Прошло время в секундах
-
       let totalIncome = 0;
       items.forEach(item => {
-        totalIncome += item.incomePerHour * (timeElapsed / 3600); // Доход за прошедшее время
+        totalIncome += item.incomePerHour * (1 / 3600);
       });
-
       setAutoFarmIncome(totalIncome);
       addCoins(totalIncome);
-
-      // Сохраняем текущее время в localStorage
-      localStorage.setItem('lastUpdateTime', now.toString());
     }, 1000);
 
     return () => clearInterval(interval);
