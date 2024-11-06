@@ -5,6 +5,7 @@ import loadingGif from './images/loading.gif';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
+import Autfrm from './Autfrm';
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
@@ -183,9 +184,15 @@ function App() {
           setPointsToAdd={setPointsToAdd}
           />
         );
-      case 'autofarm':
-        return <h2>Страница "Autofarm"</h2>;
-      case 'Game':
+      case 'autfrm':
+        return (
+          <Autfrm
+          points={points}
+          setPoints={setPoints}
+          setCurrentPage={setCurrentPage}
+          />
+        );
+      case 'game':
         return <h2>Страница "Game"</h2>
       case 'tasks':
         return <h2>Страница "Tasks"</h2>;
@@ -309,12 +316,12 @@ function App() {
               <span>Shop</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('autofarm')}>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('autfrm')}>
               <img src={autfr} width={24} height={24} alt="Autofarm" />
               <span>Autofarm</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('Game')}>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('game')}>
               <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
             </button>

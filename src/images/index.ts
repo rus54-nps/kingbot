@@ -1,4 +1,4 @@
-/*import bear from "./bear.png";*/
+import bear from "./bear.png";
 import coin from "./coin.png";
 import highVoltage from "./high-voltage.png";
 import notcoin from "./notcoin.png";
@@ -35,7 +35,7 @@ import gam from './game.png';
 import task from './tasks.png';
 
 export {
-    /*bear,*/
+    bear,
     coin,
     highVoltage,
     notcoin,

@@ -1,0 +1,172 @@
+.autofarm-title {
+    font-size: 24px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 40px;
+    font-weight: bold;
+  }
+  
+  .autofarm-balance {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .autofarm-balance img {
+    margin-right: 5px;
+  }
+  
+  .autofarm-passive-income {
+    text-align: left;  /* Выравнивание по левому краю */
+    margin-top: 20px;
+    padding-left: 20px;  /* Добавим отступ слева */
+  }
+  
+  .autofarm-passive-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .autofarm-passive-text {
+    font-size: 14px;
+    color: #ff6c6c;
+    margin-top: 5px;
+    margin-bottom: 40px;
+  }
+  
+
+.autofarm-overlay {
+    position: fixed;
+    top: calc(50% - 550px); /* Центрируем по вертикали */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(11, 1, 22); /* Темный полупрозрачный фон */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000; /* Обеспечиваем, чтобы окно было поверх других */
+}
+
+.autofarm-items-container {
+    max-height: 400px; /* Максимальная высота контейнера */
+    overflow-y: auto; /* Вертикальная прокрутка */
+    padding-right: 10px; /* Отступ справа для прокрутки */
+}
+
+.autofarm-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+.autofarm-item {
+    display: flex;
+    align-items: center; /* Выравнивание элементов по центру по вертикали */
+    background-color: #2c2c2c; /* Темный фон */
+    border-radius: 10px; /* Скругленные углы */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #f9c035; /* Рамка вокруг элемента */
+}
+
+.autofarm-item-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Выравнивание по центру вертикально */
+    margin-right: 15px; /* Отступ справа от изображения */
+}
+
+.autofarm-item-image {
+    width: 60px;
+    height: 64px;
+    border-radius: 8px;
+}
+
+.autofarm-item-level {
+    font-size: 12px;
+    color: #3cdfdf;
+    padding: 2px 4px;
+    border-radius: 4px;
+    background-color: #1f1f1f;
+    margin-top: 5px; /* Отступ сверху для уровня */
+    margin-left: 40px;
+}
+
+.autofarm-item-info {
+    flex-grow: 1;
+    text-align: right; /* Выравнивание текста по правому краю */
+    margin-left: auto; /* Отодвигаем в правую часть */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Вертикальное выравнивание текста */
+}
+
+.autofarm-item-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    padding: 5px;
+    border: 1px solid #f9c035;
+    border-radius: 5px;
+}
+
+.autofarm-item-info p {
+    margin: 5px 0;
+    color: #f3c45a;
+}
+
+/* Обновления для кнопки "Купить" */
+.buy-button {
+    background-color: #f9c035;
+    color: #1f1f1f;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex; /* Используем flexbox для выравнивания содержимого */
+    align-items: center; /* Центрируем содержимое по вертикали */
+    justify-content: center; /* Выравнивание по центру по горизонтали */
+    margin-left: auto; /* Отодвигаем кнопку в правую часть */
+}
+
+.buy-button:hover {
+    background-color: #e5b42e;
+}
+
+.buy-button:active {
+    background-color: #ffec7f;
+}
+
+/* Добавляем стиль для монеты в кнопке */
+.buy-button .coin-image {
+    width: 20px; /* Размер монетки */
+    height: 20px;
+    margin-right: 5px; /* Отступ между изображением монетки и текстом */
+}
+
+.autofarm-back-button {
+    background-color: #f9c035;
+    color: #1f1f1f;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    margin: 20px auto;
+}
+
+.autofarm-back-button:hover {
+    background-color: #e0b834;
+}
