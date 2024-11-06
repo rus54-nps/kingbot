@@ -40,6 +40,11 @@ function App() {
   const [isShaking, setIsShaking] = useState(false);
   const [pointsToAdd, setPointsToAdd] = useState(1)
   const [taps, setTaps] = useState<number>(0);
+  const [items, setItems] = useState([
+    { id: 1, name: 'Золотые Руки', price: 3000, incomePerHour: 0, level: 1 },
+    { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
+    { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
+  ]);
 
   const handleTap = () => {
     setTaps(prevTaps => prevTaps + 1); // Увеличиваем количество тапов
@@ -63,6 +68,39 @@ function App() {
   const toggleSettings = () => {
     setShowSettings(!showSettings);
   };
+
+  // Загружаем начальные значения из localStorage
+  useEffect(() => {
+    const savedPoints = localStorage.getItem('points');
+    if (savedPoints) setPoints(Number(savedPoints));
+
+    const savedItems = localStorage.getItem('autoFarmItems');
+    if (savedItems) setItems(JSON.parse(savedItems));
+
+    const lastIncomeTime = localStorage.getItem('lastIncomeTime');
+    if (lastIncomeTime) {
+      const timePassed = (Date.now() - Number(lastIncomeTime)) / 1000; // В секундах
+      const passiveIncome = items.reduce(
+        (total, item) => total + (item.incomePerHour * (timePassed / 3600)),
+        0
+      );
+      setPoints(prevPoints => prevPoints + Math.floor(passiveIncome));
+    }
+  }, []);
+
+  // Таймер для начисления дохода от автофарма
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const totalIncome = items.reduce((total, item) => total + item.incomePerHour * (1 / 3600), 0); // Доход в секунду
+      setPoints(prevPoints => prevPoints + Math.floor(totalIncome));
+      localStorage.setItem('points', (points + Math.floor(totalIncome)).toString());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      localStorage.setItem('lastIncomeTime', Date.now().toString());
+    };
+  }, [items, points]);
 
   useEffect(() => {
     // Показать заставку в течение 3 секунд
