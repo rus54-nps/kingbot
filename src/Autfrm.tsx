@@ -34,12 +34,18 @@ const AutoFarm: React.FC<{
     if (savedItems) {
       setItems(JSON.parse(savedItems));
     }
+
+    const savedIncome = localStorage.getItem('autoFarmIncome');
+    if (savedIncome) {
+      setAutoFarmIncome(Number(savedIncome));
+    }
   }, [setPoints]);
 
   useEffect(() => {
     localStorage.setItem('points', points.toString());
     localStorage.setItem('autoFarmItems', JSON.stringify(items));
-  }, [points, items]);
+    localStorage.setItem('autoFarmIncome', autoFarmIncome.toString());
+  }, [points, items, autoFarmIncome]);
 
   const addCoins = (coins: number) => {
     setPoints(prevPoints => prevPoints + coins);
