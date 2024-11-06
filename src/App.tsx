@@ -198,7 +198,7 @@ function App() {
                 style={{ top: '75px', left: '50%', transform: 'translateX(-50%)' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
-                <span className="ml-2">{points.toLocaleString()}</span>
+                <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
