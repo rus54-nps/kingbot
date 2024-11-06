@@ -73,20 +73,21 @@ function App() {
   useEffect(() => {
     const savedPoints = localStorage.getItem('points');
     if (savedPoints) setPoints(Number(savedPoints));
-
+  
     const savedItems = localStorage.getItem('autoFarmItems');
     if (savedItems) setItems(JSON.parse(savedItems));
-
+  
     const lastIncomeTime = localStorage.getItem('lastIncomeTime');
     if (lastIncomeTime) {
-      const timePassed = (Date.now() - Number(lastIncomeTime)) / 1000; // В секундах
+      const timePassed = (Date.now() - Number(lastIncomeTime)) / 1000; // Время в секундах
       const passiveIncome = items.reduce(
         (total, item) => total + (item.incomePerHour * (timePassed / 3600)),
         0
       );
       setPoints(prevPoints => prevPoints + Math.floor(passiveIncome));
     }
-  }, []);
+  }, [items]);
+  
 
   // Таймер для начисления дохода от автофарма
   useEffect(() => {

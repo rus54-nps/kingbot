@@ -41,6 +41,10 @@ const AutoFarm: React.FC<{
     localStorage.setItem('autoFarmItems', JSON.stringify(items));
   }, [points, items]);
 
+  useEffect(() => {
+    localStorage.setItem('lastIncomeTime', Date.now().toString());
+  }, [points]);
+
   const addCoins = (coins: number) => {
     setPoints(prevPoints => prevPoints + coins);
   };
