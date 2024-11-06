@@ -4,39 +4,46 @@
     text-align: center;
     margin-top: 40px;
     font-weight: bold;
-  }
-  
-  .autofarm-balance {
+    overflow-wrap: break-word; /* Обеспечивает перенос текста при нехватке места */
+    word-wrap: break-word; /* Для старых браузеров */
+    white-space: normal; /* Разрешает перенос текста */
+    word-break: break-word; /* Переносит слово, если оно не помещается */
+    width: 100%; /* Убираем ограничение по ширине */
+    box-sizing: border-box; /* Учитывает padding и margin */
+}
+
+/* Баланс */
+.autofarm-balance {
     text-align: center;
     font-size: 18px;
     margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .autofarm-balance img {
+}
+
+.autofarm-balance img {
     margin-right: 5px;
-  }
-  
-  .autofarm-passive-income {
+}
+
+/* Пассивный доход */
+.autofarm-passive-income {
     text-align: left;  /* Выравнивание по левому краю */
     margin-top: 20px;
     padding-left: 20px;  /* Добавим отступ слева */
-  }
-  
-  .autofarm-passive-title {
+}
+
+.autofarm-passive-title {
     font-size: 20px;
     font-weight: bold;
-  }
-  
-  .autofarm-passive-text {
+}
+
+.autofarm-passive-text {
     font-size: 14px;
     color: #ff6c6c;
     margin-top: 5px;
     margin-bottom: 40px;
-  }
-  
+}
 
 .autofarm-overlay {
     position: fixed;
@@ -170,3 +177,54 @@
 .autofarm-back-button:hover {
     background-color: #e0b834;
 }
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .autofarm-title {
+      font-size: 1.5rem; /* Уменьшаем размер заголовка на мобильных устройствах */
+      padding: 0 10px; /* Добавляем отступы, чтобы текст не вылазил */
+      text-align: center; /* Центрируем текст */
+    }
+  
+    .autofarm-balance {
+      font-size: 1.2rem; /* Уменьшаем размер шрифта для баланса */
+    }
+  
+    .autofarm-passive-income {
+      font-size: 0.9rem; /* Уменьшаем размер шрифта для пояснения */
+      padding-left: 10px;
+    }
+  
+    .autofarm-passive-title {
+      font-size: 1rem; /* Уменьшаем размер шрифта для заголовка */
+    }
+  
+    .autofarm-passive-text {
+      font-size: 0.8rem; /* Уменьшаем размер шрифта для текста */
+    }
+  
+    .buy-button {
+      font-size: 0.9rem; /* Уменьшаем размер шрифта для кнопки */
+      padding: 8px 16px; /* Уменьшаем размеры кнопки */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .autofarm-title {
+      font-size: 1.3rem; /* Еще меньше размер для очень маленьких экранов */
+      padding: 0 5px; /* Уменьшаем отступы, чтобы текст не выходил за пределы экрана */
+    }
+  
+    .autofarm-balance {
+      font-size: 1rem; /* Еще меньше размер шрифта для баланса */
+    }
+  
+    .autofarm-passive-income {
+      font-size: 0.8rem; /* Еще меньше для пояснения */
+    }
+  
+    .buy-button {
+      font-size: 0.8rem; /* Уменьшаем размер шрифта для кнопки */
+      padding: 8px 12px;
+    }
+  }
