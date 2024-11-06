@@ -2,7 +2,7 @@
     font-size: 24px;
     text-transform: uppercase;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 30%;
     font-weight: bold;
     overflow-wrap: break-word; /* Обеспечивает перенос текста при нехватке места */
     word-wrap: break-word; /* Для старых браузеров */
