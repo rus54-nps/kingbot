@@ -110,7 +110,7 @@ const AutoFarm: React.FC<{
       <div className="autofarm-income">
         <img src={coin} alt="Coin" width={20} height={20} />
         <span>{Math.floor(autoFarmIncome * 3600)}</span>
-        <span className="income-text"> монет в час</span>
+        <span> монет в час</span>
       </div>
 
       <div className="autofarm-passive-income">
