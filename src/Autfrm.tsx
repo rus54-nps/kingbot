@@ -17,12 +17,11 @@ const AutoFarm: React.FC<{
   setPoints: React.Dispatch<React.SetStateAction<number>>;
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ points, setPoints, setCurrentPage }) => {
-    const initialItems: AutoFarmItem[] = [
+  const [items, setItems] = useState<AutoFarmItem[]>([
     { id: 1, name: 'Золотые Руки', price: 5000, image: item1, level: 0, description: '0 монет в час.', incomePerHour: 0 },
     { id: 2, name: 'Счастливая Монета', price: 8888, image: item2, level: 0, description: '0 монет в час.', incomePerHour: 0 },
     { id: 3, name: 'Охотник за Сокровищами', price: 16320, image: item3, level: 0, description: '0 монет в час.', incomePerHour: 0 },
-  ];
-  const [items, setItems] = useState<AutoFarmItem[]>(initialItems);
+  ]);
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
 
   useEffect(() => {
@@ -100,13 +99,6 @@ const AutoFarm: React.FC<{
     }
   };
 
-  const resetItems = () => {
-    setItems(initialItems); // Сброс к начальным значениям
-    alert('Все улучшения сброшены!');
-  };
-  
-  
-
   return (
     <div className="autofarm-overlay">
       <h2 className="autofarm-title">Автофарм</h2>
@@ -118,7 +110,7 @@ const AutoFarm: React.FC<{
       <div className="autofarm-income">
         <img src={coin} alt="Coin" width={20} height={20} />
         <span>{Math.floor(autoFarmIncome * 3600)}</span>
-        <span> монет в час</span>
+        <span className="income-text"> монет в час</span>
       </div>
 
       <div className="autofarm-passive-income">
@@ -148,8 +140,6 @@ const AutoFarm: React.FC<{
         </ul>
       </div>
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
-      <button className="reset-button" onClick={resetItems}>Сбросить улучшения</button>
-    
     </div>
   );
 };
