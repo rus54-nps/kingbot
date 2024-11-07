@@ -25,6 +25,7 @@ const AutoFarm: React.FC<{
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
 
   useEffect(() => {
+    // Загрузка данных из localStorage
     const savedPoints = localStorage.getItem('points');
     if (savedPoints) {
       setPoints(Number(savedPoints));
@@ -34,28 +35,38 @@ const AutoFarm: React.FC<{
     if (savedItems) {
       setItems(JSON.parse(savedItems));
     }
+
+    // Рассчёт дохода за время простоя
+    const lastIncomeTime = localStorage.getItem('lastIncomeTime');
+    const currentTime = Date.now();
+
+    if (lastIncomeTime) {
+      const elapsedTime = currentTime - Number(lastIncomeTime);
+      const maxOfflineTime = 3 * 60 * 60 * 1000; // 3 часа в миллисекундах
+      const totalIncomePerHour = items.reduce((sum, item) => sum + item.incomePerHour, 0); // Общий доход в час
+      const offlineIncome = totalIncomePerHour * Math.min(elapsedTime, maxOfflineTime) / 3600000; // Конвертируем миллисекунды в часы и рассчитываем доход
+      addCoins(offlineIncome); // Начисляем доход за время простоя
+    }
+
+    // Обновляем метку времени
+    localStorage.setItem('lastIncomeTime', currentTime.toString());
   }, [setPoints]);
 
   useEffect(() => {
+    // Сохранение данных в localStorage
     localStorage.setItem('points', points.toString());
     localStorage.setItem('autoFarmItems', JSON.stringify(items));
+    localStorage.setItem('lastIncomeTime', Date.now().toString()); // Обновляем метку времени при обновлении points
   }, [points, items]);
-
-  useEffect(() => {
-    localStorage.setItem('lastIncomeTime', Date.now().toString());
-  }, [points]);
 
   const addCoins = (coins: number) => {
     setPoints(prevPoints => prevPoints + coins);
   };
 
-  // Рассчитываем доход от автофарма
+  // Рассчитываем доход от автофарма каждую секунду
   useEffect(() => {
     const interval = setInterval(() => {
-      let totalIncome = 0;
-      items.forEach(item => {
-        totalIncome += item.incomePerHour * (1 / 3600);
-      });
+      let totalIncome = items.reduce((sum, item) => sum + item.incomePerHour * (1 / 3600), 0); // Доход в секунду
       setAutoFarmIncome(totalIncome);
       addCoins(totalIncome);
     }, 1000);
@@ -73,6 +84,7 @@ const AutoFarm: React.FC<{
           let newPrice: number = item.price;
           let newIncomePerHour: number = item.incomePerHour;
 
+          // Обновляем цену и доход для каждого улучшения
           if (item.id === 1) {
             newPrice = Math.round(item.price * 1.4);
             newIncomePerHour = item.level === 0 ? 2000 : item.incomePerHour + 150;
