@@ -9,7 +9,7 @@ interface AutoFarmItem {
   image: string;
   level: number;
   description: string;
-  incomePerHour: number;  // Доход в час
+  incomePerHour: number;
 }
 
 const AutoFarm: React.FC<{
@@ -49,15 +49,12 @@ const AutoFarm: React.FC<{
       addCoins(offlineIncome);
     }
 
-    // Сохраняем текущее время как последний момент активности
     localStorage.setItem('lastIncomeTime', currentTime.toString());
 
-    // Функция для проверки активности вкладки
     const handleVisibilityChange = () => {
-      const maxOfflineTime = 3 * 60 * 60 * 1000; // Максимальное время оффлайн-дохода (3 часа)
-    
+      const maxOfflineTime = 3 * 60 * 60 * 1000;
       if (document.visibilityState === 'hidden') {
-        saveState(); // Сохраняем состояние при скрытии
+        saveState();
       } else {
         const savedLastIncomeTime = localStorage.getItem('lastIncomeTime');
         const newElapsedTime = Date.now() - Number(savedLastIncomeTime);
@@ -69,21 +66,23 @@ const AutoFarm: React.FC<{
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [setPoints]);
+  }, [setPoints, autoFarmIncome]);
 
   const addCoins = (coins: number) => {
-    setPoints((prevPoints) => prevPoints + coins);
-    localStorage.setItem('points', (points + coins).toString());
+    setPoints((prevPoints) => {
+      const newPoints = prevPoints + coins;
+      console.log(`Adding ${coins} coins. New points: ${newPoints}`);
+      return newPoints;
+    });
   };
 
-  // Автоматическое начисление дохода раз в минуту
   useEffect(() => {
     const interval = setInterval(() => {
       const totalIncome = items.reduce((sum, item) => sum + item.incomePerHour, 0);
-      const incomePerMinute = totalIncome / 60; // Начисляем раз в минуту
+      const incomePerMinute = totalIncome / 60;
       setAutoFarmIncome(totalIncome);
       addCoins(incomePerMinute);
-    }, 60000); // Раз в минуту
+    }, 60000);
 
     return () => clearInterval(interval);
   }, [items]);
