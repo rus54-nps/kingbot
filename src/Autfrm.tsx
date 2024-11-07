@@ -71,7 +71,8 @@ const AutoFarm: React.FC<{
   const addCoins = (coins: number) => {
     setPoints((prevPoints) => {
       const newPoints = prevPoints + coins;
-      console.log(`Adding ${coins} coins. New points: ${newPoints}`);
+      localStorage.setItem('points', newPoints.toString());
+      console.log(`Добавлено ${coins} монет. Текущие очки: ${newPoints}`);
       return newPoints;
     });
   };
@@ -83,7 +84,7 @@ const AutoFarm: React.FC<{
       setAutoFarmIncome(totalIncome);
       addCoins(incomePerMinute);
     }, 60000);
-
+  
     return () => clearInterval(interval);
   }, [items]);
 
