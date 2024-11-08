@@ -62,14 +62,7 @@ const AutoFarm: React.FC<{
         if (item.id === itemId) {
           const newLevel = item.level + 1;
           const newPrice = item.price * 2;
-          let newIncome = item.incomePerHour;
-
-          if (newLevel === 1) {
-            newIncome = item.id === 1 ? 3600 : 330; // Уровень 1: доход для каждого предмета
-          } else if (newLevel > 1) {
-            // Увеличение дохода для уровней выше 1
-            newIncome += item.id === 1 ? 100 : 110;
-          }
+          const newIncome = item.id === 1 && newLevel === 2 ? 3600 : item.incomePerHour + 100;
 
           return {
             ...item,
@@ -88,19 +81,6 @@ const AutoFarm: React.FC<{
     } else {
       alert('Недостаточно очков для покупки!');
     }
-  };
-
-  const resetUpgrades = () => {
-    const resetItems = items.map(item => ({
-      ...item,
-      level: 0,
-      price: item.id === 1 ? 3000 : 2500,
-      incomePerHour: 0,
-      description: '0 монет в час.',
-    }));
-    setItems(resetItems);
-    localStorage.setItem('autoFarmItems', JSON.stringify(resetItems));
-    alert('Все улучшения сброшены до нуля!');
   };
 
   return (
@@ -143,7 +123,6 @@ const AutoFarm: React.FC<{
           ))}
         </ul>
       </div>
-      <button className="autofarm-reset-button" onClick={resetUpgrades}>Сбросить улучшения</button>
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
