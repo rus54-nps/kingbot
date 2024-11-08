@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Autfrm.css';
-import { item1, item2, item3, coin } from './images';
+import { item1, item2, item3, coin } from './images'; // Подключаем изображения
 
 interface AutoFarmItem {
   id: number;
@@ -18,11 +18,12 @@ const AutoFarm: React.FC<{
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ points, setPoints, setCurrentPage }) => {
   const [items, setItems] = useState<AutoFarmItem[]>(() => {
+    // Загружаем состояние улучшений из localStorage при первом рендере
     const savedItems = localStorage.getItem('autoFarmItems');
     return savedItems ? JSON.parse(savedItems) : [
       { id: 1, name: 'Золотые Руки', price: 3000, image: item1, level: 0, description: '0 монет в час.', incomePerHour: 0 },
-      { id: 2, name: 'Счастливая Монета', price: 2500, image: item2, level: 0, description: '0 монет в час.', incomePerHour: 0 },
-      { id: 3, name: 'Счастливая Монета', price: 2500, image: item3, level: 0, description: '0 монет в час.', incomePerHour: 0 },
+      { id: 2, name: 'Счастливая Монета', price: 2500, image: item2, level: 0, description: '330 монет в час.', incomePerHour: 0 },
+      { id: 3, name: 'Счастливая Монета', price: 2500, image: item3, level: 0, description: '330 монет в час.', incomePerHour: 0 },
     ];
   });
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
@@ -43,9 +44,7 @@ const AutoFarm: React.FC<{
     const interval = setInterval(() => {
       let totalIncome = 0;
       items.forEach(item => {
-        if (item.level > 0) {
-          totalIncome += item.incomePerHour * (1 / 3600);
-        }
+        totalIncome += item.incomePerHour * (1 / 3600);
       });
       setAutoFarmIncome(totalIncome);
       addCoins(totalIncome);
@@ -63,9 +62,11 @@ const AutoFarm: React.FC<{
           const newPrice = item.price * 2;
           let newIncome = item.incomePerHour;
 
-          if (newLevel === 1) {
-            newIncome = item.id === 1 ? 3600 : 330;
+
+           if (newLevel === 1) {
+            newIncome = item.id === 1 ? 3600 : 330; // Уровень 1: доход для каждого предмета
           } else if (newLevel > 1) {
+            // Увеличение дохода для уровней выше 1
             newIncome += item.id === 1 ? 100 : 110;
           }
 
@@ -86,19 +87,6 @@ const AutoFarm: React.FC<{
     } else {
       alert('Недостаточно очков для покупки!');
     }
-  };
-
-  const resetUpgrades = () => {
-    const resetItems = items.map(item => ({
-      ...item,
-      level: 0,
-      price: item.id === 1 ? 3000 : 2500,
-      incomePerHour: 0,
-      description: '0 монет в час.',
-    }));
-    setItems(resetItems);
-    localStorage.setItem('autoFarmItems', JSON.stringify(resetItems));
-    alert('Все улучшения сброшены до нуля!');
   };
 
   return (
@@ -141,7 +129,6 @@ const AutoFarm: React.FC<{
           ))}
         </ul>
       </div>
-      <button className="autofarm-reset-button" onClick={resetUpgrades}>Сбросить улучшения</button>
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
