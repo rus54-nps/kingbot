@@ -235,9 +235,7 @@ function App() {
         return <h2>Страница "Game"</h2>
       case 'tasks':
         return <h2>Страница "Tasks"</h2>;
-        /*Верхний блок*/
-      case 'home':
-        return <h2>Страница "Home"</h2>
+        /*Верхний блок*/ 
       case 'top':
         return <h2>Страница "Top"</h2>
       case 'friend':
