@@ -90,6 +90,19 @@ const AutoFarm: React.FC<{
     }
   };
 
+  const resetUpgrades = () => {
+    const resetItems = items.map(item => ({
+      ...item,
+      level: 0,
+      price: item.id === 1 ? 3000 : 2500,
+      incomePerHour: 0,
+      description: '0 монет в час.',
+    }));
+    setItems(resetItems);
+    localStorage.setItem('autoFarmItems', JSON.stringify(resetItems));
+    alert('Все улучшения сброшены до нуля!');
+  };
+
   return (
     <div className="autofarm-overlay">
       <h2 className="autofarm-title">Автофарм</h2>
@@ -130,6 +143,7 @@ const AutoFarm: React.FC<{
           ))}
         </ul>
       </div>
+      <button className="autofarm-reset-button" onClick={resetUpgrades}>Сбросить улучшения</button>
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
