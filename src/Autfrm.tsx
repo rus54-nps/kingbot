@@ -44,7 +44,9 @@ const AutoFarm: React.FC<{
     const interval = setInterval(() => {
       let totalIncome = 0;
       items.forEach(item => {
-        totalIncome += item.incomePerHour * (1 / 3600);
+        if (item.level > 0) {
+          totalIncome += item.incomePerHour * (1 / 3600); // Начисление дохода только для предметов с уровнем > 0
+        }
       });
       setAutoFarmIncome(totalIncome);
       addCoins(totalIncome);
