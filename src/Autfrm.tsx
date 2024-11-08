@@ -21,9 +21,11 @@ const AutoFarm: React.FC<{
     // Загружаем состояние улучшений из localStorage при первом рендере
     const savedItems = localStorage.getItem('autoFarmItems');
     return savedItems ? JSON.parse(savedItems) : [
-      { id: 1, name: 'Золотые Руки', price: 3000, image: item1, level: 0, description: '0 монет в час.', incomePerHour: 0 },
-      { id: 2, name: 'Счастливая Монета', price: 2500, image: item2, level: 0, description: '330 монет в час.', incomePerHour: 0 },
-      { id: 3, name: 'Счастливая Монета', price: 2500, image: item3, level: 0, description: '330 монет в час.', incomePerHour: 0 },
+      { id: 1, name: 'Золотые Руки', price: 5000, image: item1, level: 0, description: '0 монет в час.', incomePerHour: 0 },
+      { id: 2, name: 'Счастливая Монета', price: 8000, image: item2, level: 0, description: '330 монет в час.', incomePerHour: 0 },
+      { id: 3, name: '<Богатый урожай>', price: 10000, image: item3, level: 0, description: '330 монет в час.', incomePerHour: 0 },
+      { id: 4, name: 'Дар судьбы', price: 12000, image: item3, level: 0, description: '330 монет в час.', incomePerHour: 0 },
+      { id: 5, name: 'Охотник за сокровищами', price: 16000, image: item3, level: 0, description: '330 монет в час.', incomePerHour: 0 },
     ];
   });
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
@@ -45,7 +47,7 @@ const AutoFarm: React.FC<{
       let totalIncome = 0;
       items.forEach(item => {
         if (item.level > 0) {
-          totalIncome += item.incomePerHour * (1 / 3600); // Начисление дохода только для предметов с уровнем > 0
+          totalIncome += item.incomePerHour * (1 / 3600);
         }
       });
       setAutoFarmIncome(totalIncome);
@@ -61,21 +63,30 @@ const AutoFarm: React.FC<{
       const updatedItems = items.map(item => {
         if (item.id === itemId) {
           const newLevel = item.level + 1;
-          const newPrice = item.price * 2;
+          let newPrice = item.price;
           let newIncome = item.incomePerHour;
 
-
-           if (newLevel === 1) {
-            newIncome = item.id === 1 ? 3600 : 330; // Уровень 1: доход для каждого предмета
-          } else if (newLevel > 1) {
-            // Увеличение дохода для уровней выше 1
-            newIncome += item.id === 1 ? 100 : 110;
+          if (item.id === 1) { // Настройки для "Золотые Руки"
+            newPrice *= 1.4;
+            newIncome = 2000 + (newLevel - 1) * 150;
+          } else if (item.id === 2) { // Настройки для "Счастливая Монета"
+            newPrice *= 1.45;
+            newIncome = 3000 + (newLevel - 1) * 200;
+          } else if (item.id === 3) { // Настройки для "Богатый урожай"
+            newPrice *= 1.5;
+            newIncome = 4000 + (newLevel - 1) * 250;
+          } else if (item.id === 4) { // Настройки для "Дар судьбы"
+            newPrice *= 1.55;
+            newIncome = 5000 + (newLevel - 1) * 300;
+          } else if (item.id === 5) { // Настройки для "Охотник"
+            newPrice *= 1.6;
+            newIncome = 6000 + (newLevel - 1) * 350;
           }
 
           return {
             ...item,
             level: newLevel,
-            price: newPrice,
+            price: Math.floor(newPrice),
             incomePerHour: newIncome,
             description: `${newIncome} монет в час.`,
           };
