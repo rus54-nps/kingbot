@@ -21,9 +21,9 @@ const AutoFarm: React.FC<{
     // Загружаем состояние улучшений из localStorage при первом рендере
     const savedItems = localStorage.getItem('autoFarmItems');
     return savedItems ? JSON.parse(savedItems) : [
-      { id: 1, name: 'Золотые Руки', price: 3000, image: item1, level: 1, description: '0 монет в час.', incomePerHour: 0 },
-      { id: 2, name: 'Счастливая Монета', price: 2500, image: item2, level: 1, description: '330 монет в час.', incomePerHour: 330 },
-      { id: 3, name: 'Счастливая Монета', price: 2500, image: item3, level: 1, description: '330 монет в час.', incomePerHour: 500 },
+      { id: 1, name: 'Золотые Руки', price: 3000, image: item1, level: 0, description: '0 монет в час.', incomePerHour: 0 },
+      { id: 2, name: 'Счастливая Монета', price: 2500, image: item2, level: 0, description: '0 монет в час.', incomePerHour: 0 },
+      { id: 3, name: 'Счастливая Монета', price: 2500, image: item3, level: 0, description: '0 монет в час.', incomePerHour: 0 },
     ];
   });
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
@@ -44,7 +44,9 @@ const AutoFarm: React.FC<{
     const interval = setInterval(() => {
       let totalIncome = 0;
       items.forEach(item => {
+        if (item.level > 0) {
         totalIncome += item.incomePerHour * (1 / 3600);
+        }
       });
       setAutoFarmIncome(totalIncome);
       addCoins(totalIncome);
@@ -60,7 +62,14 @@ const AutoFarm: React.FC<{
         if (item.id === itemId) {
           const newLevel = item.level + 1;
           const newPrice = item.price * 2;
-          const newIncome = item.id === 1 && newLevel === 2 ? 3600 : item.incomePerHour + 100;
+          let newIncome = item.incomePerHour;
+
+          if (newLevel === 1) {
+            newIncome = item.id === 1 ? 3600 : 330; // Уровень 1: доход для каждого предмета
+          } else if (newLevel > 1) {
+            // Увеличение дохода для уровней выше 1
+            newIncome += item.id === 1 ? 100 : 110;
+          }
 
           return {
             ...item,
