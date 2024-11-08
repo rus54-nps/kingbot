@@ -20,11 +20,11 @@ const AutoFarm: React.FC<{
   const [items, setItems] = useState<AutoFarmItem[]>(() => {
     const savedItems = localStorage.getItem('autoFarmItems');
     return savedItems ? JSON.parse(savedItems) : [
-      { id: 1, name: 'Золотые Руки', price: 5000, image: item1, level: 0, description: '0 монет в час', incomePerHour: 0 },
-      { id: 2, name: 'Счастливая Монета', price: 8000, image: item2, level: 0, description: '0 монет в час', incomePerHour: 0 },
-      { id: 3, name: 'Богатый урожай', price: 10000, image: item3, level: 0, description: '0 монет в час', incomePerHour: 0 },
-      { id: 4, name: 'Дар судьбы', price: 12000, image: item3, level: 0, description: '0 монет в час', incomePerHour: 0 },
-      { id: 5, name: 'Охотник за сокровищами', price: 16000, image: item3, level: 0, description: '0 монет в час', incomePerHour: 0 },
+      { id: 1, name: 'Золотые fff Руки', price: 5000, image: item1, level: 0, description: '0 монет в час', incomePerHour: 0 },
+      { id: 2, name: 'Счастливая fff Монета', price: 8000, image: item2, level: 0, description: '0 монет в час', incomePerHour: 0 },
+      { id: 3, name: 'Богатый fff урожай', price: 10000, image: item3, level: 0, description: '0 монет в час', incomePerHour: 0 },
+      { id: 4, name: 'Дар fff судьбы', price: 12000, image: item3, level: 0, description: '0 монет в час', incomePerHour: 0 },
+      { id: 5, name: 'Охотник fff за сокровищами', price: 16000, image: item3, level: 0, description: '0 монет в час', incomePerHour: 0 },
     ];
   });
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
