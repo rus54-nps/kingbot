@@ -30,6 +30,25 @@ const AutoFarm: React.FC<{
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
 
   useEffect(() => {
+    // Загружаем время выхода и начисляем доход
+    const lastExitTime = localStorage.getItem('lastExitTime');
+    if (lastExitTime) {
+      const timeElapsed = (Date.now() - parseInt(lastExitTime)) / (1000 * 60 * 60); // Часы с момента выхода
+      const hoursToAdd = Math.min(timeElapsed, 3); // Ограничиваем до 3 часов
+
+      let totalIncomePerHour = 0;
+      items.forEach(item => {
+        if (item.level > 0) {
+          totalIncomePerHour += item.incomePerHour;
+        }
+      });
+
+      const passiveIncome = totalIncomePerHour * hoursToAdd;
+      setPoints(prevPoints => prevPoints + Math.floor(passiveIncome));
+    }
+  }, [items, setPoints]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       let totalIncome = 0;
       items.forEach(item => {
@@ -40,7 +59,11 @@ const AutoFarm: React.FC<{
       setAutoFarmIncome(totalIncome);
       setPoints(prevPoints => Math.floor(prevPoints + totalIncome));
     }, 1000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+      localStorage.setItem('lastExitTime', Date.now().toString()); // Сохраняем время выхода
+    };
   }, [items, setPoints]);
 
   const handlePurchase = (itemId: number) => {
