@@ -33,7 +33,9 @@ const AutoFarm: React.FC<{
     const interval = setInterval(() => {
       let totalIncome = 0;
       items.forEach(item => {
-        totalIncome += item.incomePerHour * (1 / 3600);
+        if (item.level > 0) {
+          totalIncome += item.incomePerHour * (1 / 3600);
+        }
       });
       setAutoFarmIncome(totalIncome);
       setPoints(prevPoints => Math.floor(prevPoints + totalIncome));
@@ -48,7 +50,7 @@ const AutoFarm: React.FC<{
         if (item.id === itemId) {
           const newLevel = item.level + 1;
           const newPrice = item.price * item.priceIncreaseFactor;
-          const newIncome = item.incomePerHour + item.incomeIncrease;
+          const newIncome = newLevel === 1 ? item.incomePerHour : item.incomePerHour + item.incomeIncrease;
 
           return {
             ...item,
@@ -67,20 +69,6 @@ const AutoFarm: React.FC<{
     } else {
       alert('Недостаточно очков для покупки!');
     }
-  };
-
-  // Функция сброса улучшений
-  const handleReset = () => {
-    const resetItems = items.map(item => ({
-      ...item,
-      level: 0,
-      price: item.price, // Сброс цены к первоначальной
-      incomePerHour: item.incomePerHour - item.incomeIncrease * item.level, // Сброс дохода к начальному значению
-      description: '0 монет в час', // Обновляем описание на исходное
-    }));
-
-    setItems(resetItems);
-    alert('Все улучшения сброшены!');
   };
 
   return (
@@ -121,12 +109,6 @@ const AutoFarm: React.FC<{
           ))}
         </ul>
       </div>
-
-      {/* Кнопка сброса улучшений */}
-      <button className="autofarm-reset-button" onClick={handleReset}>
-        Сбросить улучшения
-      </button>
-
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
