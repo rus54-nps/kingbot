@@ -69,19 +69,20 @@ const AutoFarm: React.FC<{
     }
   };
 
+  // Функция сброса улучшений
   const handleReset = () => {
     const resetItems = items.map(item => ({
       ...item,
       level: 0,
-      price: item.price, // Цена остается такой же, но без увеличений
-      incomePerHour: item.incomePerHour - item.incomeIncrease * item.level, // Уменьшаем доход в зависимости от уровня
-      description: `${item.incomePerHour - item.incomeIncrease * item.level} монет в час`, // Обновляем описание
+      price: item.price, // Сброс цены к первоначальной
+      incomePerHour: item.incomePerHour - item.incomeIncrease * item.level, // Сброс дохода к начальному значению
+      description: '0 монет в час', // Обновляем описание на исходное
     }));
-  
+
     setItems(resetItems);
-    alert("Улучшения сброшены! Можешь начать заново.");
+    alert('Все улучшения сброшены!');
   };
-  
+
   return (
     <div className="autofarm-overlay">
       <h2 className="autofarm-title">Автофарм</h2>
@@ -120,9 +121,12 @@ const AutoFarm: React.FC<{
           ))}
         </ul>
       </div>
+
+      {/* Кнопка сброса улучшений */}
       <button className="autofarm-reset-button" onClick={handleReset}>
-  Сбросить улучшения
-</button>
+        Сбросить улучшения
+      </button>
+
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
