@@ -41,11 +41,9 @@ function App() {
   const [pointsToAdd, setPointsToAdd] = useState(1)
   const [taps, setTaps] = useState<number>(0);
   const [items, setItems] = useState([
-    { id: 1, name: 'Золотые Руки', price: 5000, incomePerHour: 0, level: 0 },
-    { id: 2, name: 'Счастливая Монета', price: 800, incomePerHour: 0, level: 0 },
-    { id: 3, name: '<Богатый урожай>', price: 10000, incomePerHour: 0, level: 0, },
-    { id: 4, name: 'Дар судьбы', price: 12000, incomePerHour: 0, level: 0 },
-    { id: 5, name: 'Охотник за сокровищами', price: 16000, incomePerHour: 0, level: 0},
+    { id: 1, name: 'Золотые Руки', price: 3000, incomePerHour: 0, level: 1 },
+    { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
+    { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
   ]);
 
   const handleTap = () => {
@@ -237,6 +235,8 @@ function App() {
       case 'tasks':
         return <h2>Страница "Tasks"</h2>;
         /*Верхний блок*/
+      case 'home':
+        return <h2>Страница "Home"</h2>
       case 'top':
         return <h2>Страница "Top"</h2>
       case 'friend':
