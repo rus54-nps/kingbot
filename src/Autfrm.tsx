@@ -69,6 +69,19 @@ const AutoFarm: React.FC<{
     }
   };
 
+  const handleReset = () => {
+    const resetItems = items.map(item => ({
+      ...item,
+      level: 0,
+      price: item.price, // Цена остается такой же, но без увеличений
+      incomePerHour: item.incomePerHour - item.incomeIncrease * item.level, // Уменьшаем доход в зависимости от уровня
+      description: `${item.incomePerHour - item.incomeIncrease * item.level} монет в час`, // Обновляем описание
+    }));
+  
+    setItems(resetItems);
+    alert("Улучшения сброшены! Можешь начать заново.");
+  };
+  
   return (
     <div className="autofarm-overlay">
       <h2 className="autofarm-title">Автофарм</h2>
@@ -107,6 +120,9 @@ const AutoFarm: React.FC<{
           ))}
         </ul>
       </div>
+      <button className="autofarm-reset-button" onClick={handleReset}>
+  Сбросить улучшения
+</button>
       <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
