@@ -10,6 +10,29 @@
     word-break: break-word; /* Переносит слово, если оно не помещается */
     width: 100%; /* Убираем ограничение по ширине */
     box-sizing: border-box; /* Учитывает padding и margin */
+    z-index: 2;
+}
+
+.Aut {
+  position: relative;
+  text-align: center;
+  background-image: url('./images/fon.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  overflow: hidden; /* чтобы скрыть избыточные элементы */
+}
+
+.Aut::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* затемнение черного цвета */
+  z-index: 1; /* чтобы затемнение было поверх фона */
 }
 
 /* Баланс */
@@ -20,6 +43,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 .autofarm-income {
@@ -27,6 +51,7 @@
     align-items: center;
     font-size: 16px;
     margin-top: 10px;
+    z-index: 2;
   }
   
   .autofarm-income img {
@@ -47,6 +72,7 @@
     text-align: left;  /* Выравнивание по левому краю */
     margin-top: 20px;
     padding-left: 20px;  /* Добавим отступ слева */
+    z-index: 2;
 }
 
 .autofarm-passive-title {
@@ -81,6 +107,7 @@
     max-height: 400px; /* Максимальная высота контейнера */
     overflow-y: auto; /* Вертикальная прокрутка */
     padding-right: 10px; /* Отступ справа для прокрутки */
+    z-index: 2;
 }
 
 .autofarm-items {
@@ -188,6 +215,7 @@
     transition: background-color 0.3s;
     display: block;
     margin: 20px auto;
+    z-index: 2;
 }
 
 .autofarm-back-button:hover {
@@ -244,3 +272,4 @@
       padding: 8px 12px;
     }
   }
+

@@ -22,9 +22,9 @@ const Shop: React.FC<{
   setPointsToAdd: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd }) => {
   const [items, setItems] = useState<ShopItem[]>([
-    { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, description: 'Монеты за Тап: 1' },
-    { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, description: 'Начальное количество энергии: 500' },
-    { id: 3, name: 'Реген lvl 1', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Восстановление энергии: 1 в секунду' },
+    { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, description: 'Увеличивает получаемые за Тап монеты ' },
+    { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, description: 'Добавляет энергии: 500' },
+    { id: 3, name: 'Реген lvl 1', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Увеличивает скорость восстановления энергии' },
   ]);
 
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
@@ -119,7 +119,7 @@ const Shop: React.FC<{
   };
 
   return (
-    <div className="shop-overlay">
+    <div className="Shp shop-overlay">
       <h2 className="shop-title">Магазин</h2>
       <div className="shop-frame">
         <div className="shop-items-container">

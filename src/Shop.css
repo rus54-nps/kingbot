@@ -4,6 +4,28 @@
   padding-right: 10px; /* Отступ справа для прокрутки */
 }
 
+.Shp {
+  position: relative;
+  text-align: center;
+  background-image: url('./images/fon.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  overflow: hidden; /* чтобы скрыть избыточные элементы */
+}
+
+.Shp::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* затемнение черного цвета */
+  z-index: 1; /* чтобы затемнение было поверх фона */
+}
+
 .shop-items {
   list-style: none;
   padding: 0;
@@ -30,6 +52,7 @@
 font-size: 2rem; /* Размер заголовка */
 margin-bottom: 20px; /* Отступ снизу */
 text-align: center; /* Выравнивание по центру */
+z-index: 2;
 }
 
 .shop-items {
@@ -89,6 +112,7 @@ cursor: pointer; /* Курсор в виде указателя */
 transition: background-color 0.3s; /* Плавный переход цвета фона */
 display: block; /* Блочный элемент для выравнивания */
 margin: 20px auto; /* Центрирование кнопки */
+z-index: 2;
 }
 
 .shop-back-button:hover {
@@ -122,6 +146,7 @@ background-color: #ffec7f; /* Цвет при нажатии */
   max-height: 80vh; /* Максимальная высота 80% от высоты экрана */
   overflow-y: auto; /* Вертикальная прокрутка, если контент превышает высоту */
   width: 90vw; /* Ширина 90% от ширины экрана */
+  z-index: 2;
 }
 
 .shop-title {

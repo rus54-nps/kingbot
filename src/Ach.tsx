@@ -163,7 +163,7 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
   const hasNextPage = (currentPage + 1) * achievementsPerPage < achievements.length; // Проверка наличия достижений на следующей странице
 
   return (
-    <div className="achievements-overlay">
+    <div className="Ach achievements-overlay">
       <h1 className="achievements-title">Achievements</h1>
       <div className="achievements-grid">
         {currentAchievements.map((achiv) => (

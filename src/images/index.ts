@@ -24,7 +24,11 @@ import bl from './bl.png';
 import zl from './zl.png';
 import per from './per.png';
 import zad from './zad.png';
-
+import bogy from './bogy.png';
+import dar from './dar.png';
+import goldh from './goldh.png';
+import huntg from './huntg.png';
+import lackm from './lackm.png';
 import hom from './home.png';
 import top from './top.png';
 import frnd from './friend.png';
@@ -57,7 +61,12 @@ export {
     medal,
     autfr,
     gam,
-    task
+    task,
+    bogy,
+    dar,
+    goldh,
+    huntg,
+    lackm
 }
 
 // Массив изображений для уровней 1–9

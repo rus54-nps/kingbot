@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Autfrm.css';
-import { item1, item2, item3, coin, bl, per } from './images';
+import { bogy, goldh, dar, huntg, lackm, coin } from './images';
 
 interface AutoFarmItem {
   id: number;
@@ -20,11 +20,11 @@ const AutoFarm: React.FC<{
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ points, setPoints, setCurrentPage }) => {
   const [items, setItems] = useState<AutoFarmItem[]>([
-    { id: 1, name: 'Золотые Руки', price: 8000, image: item1, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
-    { id: 2, name: 'Счастливая Монета', price: 1000, image: item2, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 150 },
-    { id: 3, name: 'Богатый Урожай', price: 12000, image: item3, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
-    { id: 4, name: 'Дар Судьбы', price: 15000, image: bl, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
-    { id: 5, name: 'Охотник за Сокровищами', price: 18800, image: per, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
+    { id: 1, name: 'Золотые Руки', price: 8000, image: goldh, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
+    { id: 2, name: 'Счастливая Монета', price: 1000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 150 },
+    { id: 3, name: 'Богатый Урожай', price: 12000, image: bogy, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
+    { id: 4, name: 'Дар Судьбы', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
+    { id: 5, name: 'Искатель Сокровищ', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
   ]);
 
   const [autoFarmIncome, setAutoFarmIncome] = useState(0);
@@ -95,7 +95,7 @@ const AutoFarm: React.FC<{
   };
 
   return (
-    <div className="autofarm-overlay">
+    <div className="Aut autofarm-overlay">
       <h2 className="autofarm-title">Автофарм</h2>
       <div className="autofarm-balance">
         <img src={coin} alt="Coin" width={20} height={20} />
