@@ -100,6 +100,12 @@ function App() {
     }
   }, []);
 
+  const [showGameModal, setShowGameModal] = useState(false);
+  const handleGameClick = () => {
+    setShowGameModal(true);
+    setTimeout(() => setShowGameModal(false), 2000); // Скрываем окно через 2 секунды
+  };
+
   // Таймер для начисления дохода от автофарма
   useEffect(() => {
     const interval = setInterval(() => {
@@ -369,7 +375,7 @@ function App() {
               <span>Autofarm</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('game')}>
+            <button className="flex flex-col items-center gap-1" onClick={handleGameClick}>
               <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
             </button>
@@ -384,6 +390,11 @@ function App() {
           <div className="locked-message">
             <span>Разблокировка будет доступна после улучшение тапа на 10lvl</span>
           </div>
+        )}
+        {showGameModal && (
+          <div className="locked-message">
+          <span>Скоро появится</span>
+        </div>
         )}
       </div>
     </div>
