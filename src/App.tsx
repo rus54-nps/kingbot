@@ -12,6 +12,7 @@ function App() {
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
   
+  
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
     const savedMaxEnergy = localStorage.getItem('maxEnergy');
@@ -47,7 +48,7 @@ function App() {
   ]);
 
   const handleTap = () => {
-    setTaps(prevTaps => prevTaps + 1); // Увеличиваем количество тапов
+    setTaps(prevTaps => prevTaps + 1);
   };
 
   // Рассчитываем восстановленную энергию на основе времени
@@ -69,6 +70,17 @@ function App() {
     setShowSettings(!showSettings);
   };
 
+  //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВЛ ТАБ)*//
+  const isAutoFarmUnlocked = pointsToAdd >= 10;
+  const [showLockedMessage, setShowLockedMessage] = useState(false);
+  const openAutoFarm = () => {
+    if (isAutoFarmUnlocked) {
+      setCurrentPage('autfrm');
+    } else {
+      setShowLockedMessage(true); // Показать сообщение
+      setTimeout(() => setShowLockedMessage(false), 2000); // Скрыть сообщение через 2 секунды
+    }
+  };
   // Загружаем начальные значения из localStorage
   useEffect(() => {
     const savedPoints = localStorage.getItem('points');
@@ -235,8 +247,6 @@ function App() {
       case 'tasks':
         return <h2>Страница "Tasks"</h2>;
         /*Верхний блок*/
-      case 'home':
-        return <h2>Страница "Home"</h2>
       case 'top':
         return <h2>Страница "Top"</h2>
       case 'friend':
@@ -354,8 +364,8 @@ function App() {
               <span>Shop</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('autfrm')}>
-              <img src={autfr} width={24} height={24} alt="Autofarm" />
+            <button className="flex flex-col items-center gap-1" onClick={openAutoFarm}>
+              <img src={autfr} width={24} height={24} alt="Autofarm" style={{ opacity: isAutoFarmUnlocked ? 1 : 0.5 }} />
               <span>Autofarm</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
@@ -370,6 +380,11 @@ function App() {
             </button>
           </div>
         </div>
+        {showLockedMessage && (
+          <div className="locked-message">
+            <span>Разблокировка будет доступна после улучшение тапа на 10lvl</span>
+          </div>
+        )}
       </div>
     </div>
   );

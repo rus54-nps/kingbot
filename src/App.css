@@ -82,3 +82,17 @@
   max-height: 100%; /* Масштабировать изображение */
 }
 
+.locked-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ff4d4f;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 100;
+}
