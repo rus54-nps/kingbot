@@ -10,7 +10,7 @@ interface ShopItem {
   level: number;
   regenerationRate: number;
   nextPrice: number;
-  description: string;
+  descrip: string;
 }
 
 const Shop: React.FC<{
@@ -22,9 +22,9 @@ const Shop: React.FC<{
   setPointsToAdd: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd }) => {
   const [items, setItems] = useState<ShopItem[]>([
-    { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, description: 'Увеличивает получаемые за Тап монеты ' },
-    { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, description: 'Добавляет энергии: 500' },
-    { id: 3, name: 'Реген lvl 1', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Увеличивает скорость восстановления энергии' },
+    { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, descrip: 'Увеличивает получаемые за Тап монеты ' },
+    { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, descrip: 'Добавляет энергии: 500' },
+    { id: 3, name: 'Реген lvl 1', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, descrip: 'Увеличивает скорость восстановления энергии' },
   ]);
 
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
@@ -39,15 +39,6 @@ const Shop: React.FC<{
   useEffect(() => {
     localStorage.setItem('shop-items', JSON.stringify(items));
   }, [items]);
-
-  useEffect(() => {
-    // Очистить локальное хранилище при старте или обновлении
-    localStorage.removeItem('shop-items');
-    const savedItems = localStorage.getItem('shop-items');
-    if (savedItems) {
-      setItems(JSON.parse(savedItems));
-    }
-  }, []);
 
   // Функция для получения изображения уровня "Тап"
   const getTapImageByLevel = (level: number): string => {
@@ -142,7 +133,7 @@ const Shop: React.FC<{
                 <div className="shop-item-info">
                   <h3 onClick={() => handleToggleDescription(item.id)} style={{ cursor: 'pointer' }}>{item.name}</h3>
                   {expandedItemId === item.id ? (
-                    <p>{item.description}</p>
+                    <p>{item.descrip}</p>
                   ) : (
                     <>
                       <p>Цена: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
