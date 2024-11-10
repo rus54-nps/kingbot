@@ -114,7 +114,7 @@ const Shop: React.FC<{
     }
   };
 
-  const handleToggleDescription = (itemId: number) => {
+  const handleToggleDescrip = (itemId: number) => {
     setExpandedItemId(expandedItemId === itemId ? null : itemId);
   };
 
@@ -131,7 +131,7 @@ const Shop: React.FC<{
                   <p className="shop-item-level">lvl {item.level}</p>
                 </div>
                 <div className="shop-item-info">
-                  <h3 onClick={() => handleToggleDescription(item.id)} style={{ cursor: 'pointer' }}>{item.name}</h3>
+                  <h3 onClick={() => handleToggleDescrip(item.id)} style={{ cursor: 'pointer' }}>{item.name}</h3>
                   {expandedItemId === item.id ? (
                     <p>{item.descrip}</p>
                   ) : (
