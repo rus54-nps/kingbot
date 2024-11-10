@@ -303,7 +303,7 @@ function App() {
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
               <img src={medal} width={24} height={24} alt="Achiv" />
-              <span>Achiv</span>
+              <span>Medals</span>
             </button>
           </div>
         </div>
