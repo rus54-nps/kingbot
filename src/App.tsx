@@ -248,8 +248,7 @@ function App() {
           setCurrentPage={setCurrentPage}
           />
         );
-      case 'game':
-        return <h2>Страница "Game"</h2>
+
       case 'tasks':
         return <h2>Страница "Tasks"</h2>;
         /*Верхний блок*/
