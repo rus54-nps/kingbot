@@ -187,7 +187,6 @@
     align-items: center; /* Центрируем содержимое по вертикали */
     justify-content: center; /* Выравнивание по центру по горизонтали */
     margin-left: auto; /* Отодвигаем кнопку в правую часть */
-
 }
 
 .buy-button:hover {
@@ -216,6 +215,7 @@
     transition: background-color 0.3s;
     display: block;
     margin: 20px auto;
+    z-index: 2;
 }
 
 .autofarm-back-button:hover {
