@@ -40,6 +40,15 @@ const Shop: React.FC<{
     localStorage.setItem('shop-items', JSON.stringify(items));
   }, [items]);
 
+  useEffect(() => {
+    // Очистить локальное хранилище при старте или обновлении
+    localStorage.removeItem('shop-items');
+    const savedItems = localStorage.getItem('shop-items');
+    if (savedItems) {
+      setItems(JSON.parse(savedItems));
+    }
+  }, []);
+
   // Функция для получения изображения уровня "Тап"
   const getTapImageByLevel = (level: number): string => {
     return level <= 9 ? tapImages[level - 1] : tapHighLevelImage;
