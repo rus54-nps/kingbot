@@ -30,6 +30,10 @@
   100% { transform: translate(0); }
 }
 
+.relative {
+  margin-top: 60px;
+}
+
 .App {
   position: relative;
   text-align: center;
