@@ -1,7 +1,12 @@
 .shop-items-container {
-  max-height: 400px; /* Максимальная высот контейнера */
+  max-height: 600px; /* Максимальная высот контейнера */
   overflow-y: auto; /* Вертикальная прокрутка */
   padding-right: 10px; /* Отступ справа для прокрутки */
+  z-index: 2;
+  
+  justify-content: center; /* Центрируем по горизонтали */
+  align-items: center; /* Центрируем по вертикали */
+  z-index: 2;
 }
 
 .Shp {
@@ -13,6 +18,7 @@
   background-repeat: no-repeat;
   min-height: 100vh;
   overflow: hidden; /* чтобы скрыть избыточные элементы */
+  
 }
 
 .Shp::before {
@@ -30,6 +36,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  z-index: 2;
 }
 
 .shop-overlay {
@@ -61,16 +68,21 @@ padding: 0; /* Убираем отступы */
 margin: 0; /* Убираем маржи */
 width: 100%; /* Занимаем всю ширину */
 max-width: 600px; /* Максимальная ширина для удобства */
+z-index: 2;
 }
 
 .shop-item {
 display: flex;
 align-items: center;
-background-color: #2c2c2c; /* Темный фон для элементов магазина */
+background-color: #4d4c4c; /* Темный фон для элементов магазина */
 border-radius: 10px; /* Скругленные углы */
 padding: 10px; /* Внутренние отступы */
 margin-bottom: 15px; /* Отступ снизу между элементами */
 border: 2px solid #f9c035; /* Рамка вокруг элемента товара */
+max-height: 120vh; /* Максимальная высота 80% от высоты экрана */
+overflow-y: auto; /* Вертикальная прокрутка, если контент превышает высоту */
+width: 70vw; /* Ширина 90% от ширины экрана */
+z-index: 2;
 }
 
 .shop-item-image {
@@ -78,11 +90,13 @@ width: 64px; /* Ширина изображения */
 height: 64px; /* Высота изображения */
 border-radius: 8px; /* Скругленные углы изображения */
 margin-right: 15px; /* Отступ справа от изображения */
+z-index: 2;
 }
 
 .shop-item-info {
 flex-grow: 1; /* Занимаем все доступное пространство */
 text-align: left; /* Выравнивание текста по левому краю */
+z-index: 2;
 }
 
 .shop-item-info h3 {
@@ -91,6 +105,7 @@ font-size: 1.2rem; /* Размер заголовка товара */
 padding: 5px; /* Внутренние отступы заголовка */
 border: 1px solid #f9c035; /* Рамка вокруг названия товара */
 border-radius: 5px; /* Скругленные углы рамки */
+z-index: 2;
 }
 
 .shop-item-info p {
@@ -99,24 +114,27 @@ color: #f3c45a; /* Цвет текста для описания */
 align-items: center; /* Центрируем по вертикали */
 margin-left: 4px; /* Добавим немного отступа слева от монеты */
 display: flex; /* Используем flexbox для размещения элементов в одну строку */
+z-index: 2;
 }
 
 .shop-back-button {
-background-color: #f9c035; /* Цвет фона кнопки */
-color: #1f1f1f; /* Цвет текста кнопки */
-border: none; /* Убираем рамку */
-border-radius: 5px; /* Скругленные углы */
-padding: 10px 20px; /* Внутренние отступы кнопки */
-font-size: 1rem; /* Размер текста кнопки */
-cursor: pointer; /* Курсор в виде указателя */
-transition: background-color 0.3s; /* Плавный переход цвета фона */
-display: block; /* Блочный элемент для выравнивания */
-margin: 20px auto; /* Центрирование кнопки */
-z-index: 2;
+  position: fixed;
+  bottom: 20px; /* Размещение кнопки внизу экрана */
+  left: 50%;
+  transform: translateX(-50%); /* Центрируем кнопку */
+  background-color: #f9c035; /* Цвет фона кнопки */
+  color: #1f1f1f; /* Цвет текста кнопки */
+  border-radius: 5px; /* Скругленные углы */
+  padding: 10px 20px; /* Внутренние отступы кнопки */
+  font-size: 1rem; /* Размер текста кнопки */
+  cursor: pointer; /* Курсор в виде указателя */
+  transition: background-color 0.3s; /* Плавный переход цвета фона */
+  z-index: 2; /* Обеспечим, чтобы кнопка была над другими элементами */
 }
 
 .shop-back-button:hover {
 background-color: #e0b834; /* Цвет фона при наведении */
+z-index: 2;
 }
 
 .shop-item button {
@@ -127,31 +145,23 @@ border-radius: 8px; /* Закругленные углы */
 padding: 10px 20px; /* Отступы */
 cursor: pointer; /* Указатель мыши */
 transition: background-color 0.3s ease; /* Плавный переход цвета */
+z-index: 2;
 }
 
 .shop-item button:hover {
 background-color: #e5b42e; /* Цвет при наведении */
+z-index: 2;
 }
 
 .shop-item button:active {
 background-color: #ffec7f; /* Цвет при нажатии */
-}
-
-.shop-frame {
-  border: 2px solid white; /* Белая рамка */
-  border-radius: 10px; /* Закругленные углы */
-  padding: 20px; /* Отступ внутри рамки */
-  background-color: rgba(30, 30, 30, 0.8); /* Фон, чтобы выделить рамку */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для глубины */
-  max-height: 80vh; /* Максимальная высота 80% от высоты экрана */
-  overflow-y: auto; /* Вертикальная прокрутка, если контент превышает высоту */
-  width: 90vw; /* Ширина 90% от ширины экрана */
-  z-index: 2;
+z-index: 2;
 }
 
 .shop-title {
 margin-bottom: 10px; /* Отступ снизу заголовка */
 text-align: center; /* Центрирование текста */
+z-index: 2;
 }
 
 /* lvl Товара */
@@ -160,6 +170,7 @@ text-align: center; /* Центрирование текста */
 .shop-item-image-container {
   position: relative; /* Для позиционирования уровня */
   margin-right: 10px; /* Отступ справа от изображения */
+  z-index: 2;
 }
 
 .shop-item-level {
@@ -170,10 +181,12 @@ text-align: center; /* Центрирование текста */
   color: #3cdfdf; /* Цвет текста */
   padding: 2px 4px; /* Отступы для улучшения внешнего вида */
   border-radius: 4px; /* Скругленные углы */
+  z-index: 2;
 }
 
 .item-description {
   color: black; /* Или любой другой стиль для описания */
   margin-top: 5px;
+  z-index: 2;
 }
 
