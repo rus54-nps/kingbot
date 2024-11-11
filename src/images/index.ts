@@ -37,7 +37,9 @@ import shp from './shop.png';
 import autfr from './autofarm.png';
 import gam from './game.png';
 import task from './tasks.png';
-import zvuk from './zvuk.mp3';
+import zvuk from './zvuk.mp3'
+import fon1 from './fon1.mp3';
+import fon2 from './fon2.mp3';
 
 export {
     bear,
@@ -68,6 +70,8 @@ export {
     goldh,
     huntg,
     lackm,
+    fon1,
+    fon2,
     zvuk
 }
 

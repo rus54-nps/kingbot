@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, loadingGif } from './images';
+import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon1, fon2, loadingGif } from './images';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
@@ -173,6 +173,36 @@ function App() {
       setEnergyRecoveryRate(parseInt(savedEnergyRecoveryRate, 10)); // Восстановление регенерации
     }
   }, []);  
+
+  useEffect(() => {
+    const firstAudio = new Audio(fon1);
+    const secondAudio = new Audio(fon2);
+
+    const playFirstAudio = () => {
+      firstAudio.play();
+    };
+
+    const playSecondAudio = () => {
+      secondAudio.play();
+    };
+
+    // Настраиваем события окончания воспроизведения
+    firstAudio.addEventListener('ended', playSecondAudio);
+    secondAudio.addEventListener('ended', playFirstAudio);
+
+    // Запускаем первое аудио
+    playFirstAudio();
+
+    return () => {
+      // Очищаем обработчики событий и сбрасываем воспроизведение
+      firstAudio.removeEventListener('ended', playSecondAudio);
+      secondAudio.removeEventListener('ended', playFirstAudio);
+      firstAudio.pause();
+      secondAudio.pause();
+      firstAudio.currentTime = 0;
+      secondAudio.currentTime = 0;
+    };
+  }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {

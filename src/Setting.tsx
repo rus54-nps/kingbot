@@ -1,4 +1,3 @@
-// Setting.tsx
 import React from 'react';
 import './Setting.css';
 
@@ -16,7 +15,11 @@ const Setting: React.FC<SettingProps> = ({ onClose }) => {
         <h2>Настройки</h2>
         <div className="settings-content">
           <label>
-            <span>Звук:</span>
+            <span>Звук фона:</span>
+            <input type="checkbox" />
+          </label>
+          <label>
+            <span>Звук монеты:</span>
             <input type="checkbox" />
           </label>
           <label>
@@ -24,7 +27,7 @@ const Setting: React.FC<SettingProps> = ({ onClose }) => {
             <input type="checkbox" />
           </label>
           <label>
-            <span>Темная тема:</span>
+            <span>Язык:</span>
             <input type="checkbox" />
           </label>
         </div>
