@@ -27,8 +27,6 @@ const Shop: React.FC<{
     { id: 3, name: 'Реген lvl 1', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Увеличивает скорость восстановления энергии' },
   ]);
 
-  const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
-
   useEffect(() => {
     const savedItems = localStorage.getItem('shop-items');
     if (savedItems) {
@@ -114,10 +112,6 @@ const Shop: React.FC<{
     }
   };
 
-  const handleToggleDescription = (itemId: number) => {
-    setExpandedItemId(expandedItemId === itemId ? null : itemId);
-  };
-
   return (
     <div className="Shp shop-overlay">
       <h2 className="shop-title">Магазин</h2>
@@ -131,15 +125,9 @@ const Shop: React.FC<{
                   <p className="shop-item-level">lvl {item.level}</p>
                 </div>
                 <div className="shop-item-info">
-                  <h3 onClick={() => handleToggleDescription(item.id)} style={{ cursor: 'pointer' }}>{item.name}</h3>
-                  {expandedItemId === item.id ? (
-                    <p>{item.description}</p>
-                  ) : (
-                    <>
-                      <p>Цена: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
-                      <button onClick={() => handlePurchase(item.id)}>Купить</button>
-                    </>
-                  )}
+                  <h3>{item.name}</h3>
+                  <p>Цена: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
+                  <button onClick={() => handlePurchase(item.id)}>Купить</button>
                 </div>
               </li>
             ))}
