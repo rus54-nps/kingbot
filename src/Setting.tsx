@@ -8,26 +8,29 @@ interface SettingProps {
 const Setting: React.FC<SettingProps> = ({ onClose }) => {
   const [isBackgroundSoundOn, setIsBackgroundSoundOn] = useState(false);
   const [volume, setVolume] = useState(0.5); // начальный уровень громкости
-  const audio = new Audio('fon.mp3'); // Укажите путь к аудиофайлу
+  const [audio] = useState(new Audio('fon.mp3')); // Создаем аудио объект один раз
 
   useEffect(() => {
-    // Обновляем громкость звука при изменении volume
+    // Устанавливаем громкость
     audio.volume = volume;
+    
+    // Устанавливаем цикл воспроизведения
+    audio.loop = true;
 
-    // Включаем или останавливаем музыку в зависимости от состояния isBackgroundSoundOn
+    // Включаем или выключаем аудио в зависимости от состояния `isBackgroundSoundOn`
     if (isBackgroundSoundOn) {
-      audio.loop = true; // Зацикливаем музыку
       audio.play();
     } else {
       audio.pause();
+      audio.currentTime = 0; // Сбрасываем на начало
     }
 
+    // Чистим звук при размонтировании компонента
     return () => {
-      // Останавливаем и сбрасываем звук при размонтировании компонента
       audio.pause();
       audio.currentTime = 0;
     };
-  }, [isBackgroundSoundOn, volume]);
+  }, [isBackgroundSoundOn, volume, audio]);
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVolume(parseFloat(event.target.value));
