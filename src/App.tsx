@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task } from './images';
-import loadingGif from './images/loading.gif';
+import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, loadingGif } from './images';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
@@ -179,6 +178,8 @@ function App() {
     if (energy - energyToReduce < 0) {
       return;
     }
+    const audio = new Audio(zvuk);
+    audio.play();
 
     handleTap();
 
@@ -213,14 +214,14 @@ function App() {
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '85px', left: '50%', transform: 'translateX(-70%)' }}
+                style={{ top: '70px', left: '50%', transform: 'translateX(-70% )' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
-                style={{ top: 'calc(100px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
+                style={{ top: 'calc(85px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
               >
                 <img src={trophy} width={24} height={24} />
                 <span className="ml-1">Gold</span>
@@ -326,9 +327,9 @@ function App() {
           {renderContent()}
         </div>
   
-        <div className="relative flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '80px' }}>
+        <div className="relative flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '80px'}}>
           <div className="relative mb-4" onClick={handleClick}>
-            <img src={notcoin} width={250} height={200} className={isShaking ? 'shake' : ''} alt="notcoin" />
+            <img src={notcoin} width={250} height={200} className={isShaking ? 'shake' : ''} style={{ transform: 'translateX(-20px)' }} alt="notcoin"/>
             {coins.map((coin) => (
               <div
                 key={coin.id}
