@@ -4,10 +4,10 @@ import './Setting.css';
 interface SettingProps {
   onClose: () => void;
   toggleMusic: () => void;
-  isMusicPlaying: boolean;
+  isMusicOn: boolean;
 }
 
-const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicPlaying }) => {
+const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn }) => {
   return (
     <div className="settings-overlay">
       <div className="settings-container">
@@ -18,7 +18,7 @@ const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicPlaying 
         <div className="settings-content">
           <label>
             <span>Звук фона:</span>
-            <input type="checkbox" checked={isMusicPlaying} onChange={toggleMusic} />
+            <input type="checkbox" checked={isMusicOn} onChange={toggleMusic} />
           </label>
           <label>
             <span>Звук монеты:</span>

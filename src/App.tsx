@@ -174,9 +174,14 @@ function App() {
     }
   }, []);  
 
-  const [isMusicPlaying, setIsMusicPlaying] = useState(true); // Новое состояние для фоновой музыки
+  const [isMusicOn, setIsMusicOn] = useState(() => {
+    const savedMusicSetting = localStorage.getItem('isMusicOn');
+    return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
+  });
+  
   const toggleMusic = () => {
-    setIsMusicPlaying(!isMusicPlaying);
+    setIsMusicOn(!isMusicOn);
+    localStorage.setItem('isMusicOn', JSON.stringify(!isMusicOn));
   };
 
   useEffect(() => {
@@ -184,22 +189,21 @@ function App() {
     const secondAudio = new Audio(fon2);
 
     const playFirstAudio = () => {
-      if (isMusicPlaying) firstAudio.play();
+      if (isMusicOn) firstAudio.play();
     };
 
     const playSecondAudio = () => {
-      if (isMusicPlaying) secondAudio.play();
+      if (isMusicOn) secondAudio.play();
     };
 
-    // Настраиваем события окончания воспроизведения
     firstAudio.addEventListener('ended', playSecondAudio);
     secondAudio.addEventListener('ended', playFirstAudio);
 
-    // Запускаем первое аудио
-    playFirstAudio();
+    if (isMusicOn) {
+      playFirstAudio();
+    }
 
     return () => {
-      // Очищаем обработчики событий и сбрасываем воспроизведение
       firstAudio.removeEventListener('ended', playSecondAudio);
       secondAudio.removeEventListener('ended', playFirstAudio);
       firstAudio.pause();
@@ -207,7 +211,7 @@ function App() {
       firstAudio.currentTime = 0;
       secondAudio.currentTime = 0;
     };
-  }, [isMusicPlaying]);
+  }, [isMusicOn]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
@@ -355,7 +359,7 @@ function App() {
           <img src={sett} alt="Setting" width={24} height={24} />
         </button>
           {showSettings && (
-        <Setting onClose={toggleSettings} toggleMusic={toggleMusic} isMusicPlaying={isMusicPlaying} />
+        <Setting onClose={toggleSettings} isMusicOn={isMusicOn} toggleMusic={toggleMusic} />
           )}
   
         {/* Отображение содержимого с использованием renderContent */}
