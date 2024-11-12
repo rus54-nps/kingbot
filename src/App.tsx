@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon1, fon2, loadingGif } from './images';
+import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon1, fon2, loadingGif, dar, goldh, lackm, huntg, bogy } from './images';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
@@ -41,9 +41,12 @@ function App() {
   const [pointsToAdd, setPointsToAdd] = useState(1)
   const [taps, setTaps] = useState<number>(0);
   const [items, setItems] = useState([
-    { id: 1, name: 'Золотые Руки', price: 3000, incomePerHour: 0, level: 1 },
-    { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
-    { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
+    { id: 1, name: 'Золотые Руки', price: 8000, image: goldh, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
+    { id: 2, name: 'Счастливая Монета', price: 10000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 150 },
+    { id: 3, name: 'Богатый Урожай', price: 12000, image: bogy, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
+    { id: 4, name: 'Дар Судьбы', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
+    { id: 5, name: 'Искатель Сокровищ', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
+
   ]);
 
   const handleTap = () => {
@@ -178,7 +181,7 @@ function App() {
     const savedMusicSetting = localStorage.getItem('isMusicOn');
     return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
   });
-  
+
   const toggleMusic = () => {
     setIsMusicOn(!isMusicOn);
     localStorage.setItem('isMusicOn', JSON.stringify(!isMusicOn));
