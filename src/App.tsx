@@ -174,16 +174,21 @@ function App() {
     }
   }, []);  
 
+  const [isMusicPlaying, setIsMusicPlaying] = useState(true); // Новое состояние для фоновой музыки
+  const toggleMusic = () => {
+    setIsMusicPlaying(!isMusicPlaying);
+  };
+
   useEffect(() => {
     const firstAudio = new Audio(fon1);
     const secondAudio = new Audio(fon2);
 
     const playFirstAudio = () => {
-      firstAudio.play();
+      if (isMusicPlaying) firstAudio.play();
     };
 
     const playSecondAudio = () => {
-      secondAudio.play();
+      if (isMusicPlaying) secondAudio.play();
     };
 
     // Настраиваем события окончания воспроизведения
@@ -202,7 +207,7 @@ function App() {
       firstAudio.currentTime = 0;
       secondAudio.currentTime = 0;
     };
-  }, []);
+  }, [isMusicPlaying]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
@@ -234,6 +239,7 @@ function App() {
   const handleCoinAnimationEnd = (id: number) => {
     setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
   };
+
 
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -349,7 +355,7 @@ function App() {
           <img src={sett} alt="Setting" width={24} height={24} />
         </button>
           {showSettings && (
-        <Setting onClose={toggleSettings} />
+        <Setting onClose={toggleSettings} toggleMusic={toggleMusic} isMusicPlaying={isMusicPlaying} />
           )}
   
         {/* Отображение содержимого с использованием renderContent */}
