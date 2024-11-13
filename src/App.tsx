@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon1, fon2, loadingGif, dar, goldh, lackm, huntg, bogy } from './images';
+import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon1, fon2, loadingGif } from './images';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
@@ -41,12 +41,9 @@ function App() {
   const [pointsToAdd, setPointsToAdd] = useState(1)
   const [taps, setTaps] = useState<number>(0);
   const [items, setItems] = useState([
-    { id: 1, name: 'Золотые Руки', price: 8000, image: goldh, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
-    { id: 2, name: 'Счастливая Монета', price: 10000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 150 },
-    { id: 3, name: 'Богатый Урожай', price: 12000, image: bogy, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
-    { id: 4, name: 'Дар Судьбы', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
-    { id: 5, name: 'Искатель Сокровищ', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
-
+    { id: 1, name: 'Золотые Руки', price: 3000, incomePerHour: 0, level: 1 },
+    { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
+    { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
   ]);
 
   const handleTap = () => {
@@ -177,36 +174,27 @@ function App() {
     }
   }, []);  
 
-  const [isMusicOn, setIsMusicOn] = useState(() => {
-    const savedMusicSetting = localStorage.getItem('isMusicOn');
-    return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
-  });
-
-  const toggleMusic = () => {
-    setIsMusicOn(!isMusicOn);
-    localStorage.setItem('isMusicOn', JSON.stringify(!isMusicOn));
-  };
-
   useEffect(() => {
     const firstAudio = new Audio(fon1);
     const secondAudio = new Audio(fon2);
 
     const playFirstAudio = () => {
-      if (isMusicOn) firstAudio.play();
+      firstAudio.play();
     };
 
     const playSecondAudio = () => {
-      if (isMusicOn) secondAudio.play();
+      secondAudio.play();
     };
 
+    // Настраиваем события окончания воспроизведения
     firstAudio.addEventListener('ended', playSecondAudio);
     secondAudio.addEventListener('ended', playFirstAudio);
 
-    if (isMusicOn) {
-      playFirstAudio();
-    }
+    // Запускаем первое аудио
+    playFirstAudio();
 
     return () => {
+      // Очищаем обработчики событий и сбрасываем воспроизведение
       firstAudio.removeEventListener('ended', playSecondAudio);
       secondAudio.removeEventListener('ended', playFirstAudio);
       firstAudio.pause();
@@ -214,7 +202,7 @@ function App() {
       firstAudio.currentTime = 0;
       secondAudio.currentTime = 0;
     };
-  }, [isMusicOn]);
+  }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
@@ -246,7 +234,6 @@ function App() {
   const handleCoinAnimationEnd = (id: number) => {
     setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
   };
-
 
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -362,7 +349,7 @@ function App() {
           <img src={sett} alt="Setting" width={24} height={24} />
         </button>
           {showSettings && (
-        <Setting onClose={toggleSettings} isMusicOn={isMusicOn} toggleMusic={toggleMusic} />
+        <Setting onClose={toggleSettings} />
           )}
   
         {/* Отображение содержимого с использованием renderContent */}
