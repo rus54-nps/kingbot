@@ -174,64 +174,45 @@ function App() {
     }
   }, []);  
 
-  // Добавьте в App.tsx
-const [isCoinSoundOn, setIsCoinSoundOn] = useState(() => {
-  const savedCoinSoundSetting = localStorage.getItem('isCoinSoundOn');
-  return savedCoinSoundSetting ? JSON.parse(savedCoinSoundSetting) : true;
-});
-
-const toggleCoinSound = () => {
-  setIsCoinSoundOn((prev: boolean) => {
-    const newState = !prev;
-    localStorage.setItem('isCoinSoundOn', JSON.stringify(newState));
-    return newState;
-  });
-};
-
-
   const [isMusicOn, setIsMusicOn] = useState(() => {
     const savedMusicSetting = localStorage.getItem('isMusicOn');
     return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
   });
 
   useEffect(() => {
-    // Создаём объект аудио один раз
     const backgroundAudio = new Audio(fon2);
     backgroundAudio.loop = true; // Включаем зацикливание
-    
-    // Восстанавливаем время воспроизведения
+  
+    // Восстановление позиции из localStorage
     const savedTime = localStorage.getItem('audioCurrentTime');
     if (savedTime) {
       backgroundAudio.currentTime = parseFloat(savedTime);
     }
   
-    // Функция для управления воспроизведением
-    const manageMusic = () => {
+    const manageMusic = async () => {
       if (isMusicOn) {
-        backgroundAudio.play().catch((error) => {
-          console.error("Error playing audio:", error);
-        });
+        try {
+          await backgroundAudio.play();
+        } catch (error) {
+          console.error("Ошибка при воспроизведении музыки:", error);
+        }
       } else {
         backgroundAudio.pause();
       }
     };
   
-    // Управление музыкой на старте и при изменении состояния
-    manageMusic();
+    manageMusic(); // Запускаем музыку на старте
   
-    // Сохраняем текущую позицию музыки при выходе из приложения
     const saveAudioPosition = () => {
       localStorage.setItem('audioCurrentTime', backgroundAudio.currentTime.toString());
     };
   
-    // Добавляем слушатели событий
     window.addEventListener('beforeunload', saveAudioPosition);
   
-    // Очистка
     return () => {
+      saveAudioPosition();
       backgroundAudio.pause();
       backgroundAudio.currentTime = 0;
-      saveAudioPosition();
       window.removeEventListener('beforeunload', saveAudioPosition);
     };
   }, [isMusicOn]);
@@ -247,11 +228,6 @@ const toggleCoinSound = () => {
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
       return;
-    }
-
-    if (isCoinSoundOn) {
-      const audio = new Audio(zvuk);
-      audio.play();
     }
 
     const audio = new Audio(zvuk);
@@ -400,8 +376,6 @@ const toggleCoinSound = () => {
           onClose={toggleSettings}
           isMusicOn={isMusicOn}
           toggleMusic={toggleMusic}
-          isCoinSoundOn={isCoinSoundOn}
-          toggleCoinSound={toggleCoinSound}
         />
           )}
   

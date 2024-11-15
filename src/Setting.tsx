@@ -5,11 +5,9 @@ interface SettingProps {
   onClose: () => void;
   toggleMusic: () => void;
   isMusicOn: boolean;
-  isCoinSoundOn: boolean;
-  toggleCoinSound: () => void;
 }
 
-const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn, isCoinSoundOn, toggleCoinSound }) => {
+const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn }) => {
   return (
     <div className="settings-overlay">
       <div className="settings-container">
@@ -24,7 +22,7 @@ const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn, isCo
           </label>
           <label>
             <span>Звук монеты:</span>
-            <input type="checkbox" checked={isCoinSoundOn} onChange={toggleCoinSound}  />
+            <input type="checkbox" />
           </label>
           <label>
             <span>Уведомления:</span>
