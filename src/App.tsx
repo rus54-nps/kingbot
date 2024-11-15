@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon1, fon2, loadingGif } from './images';
+import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon2, loadingGif } from './images';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
@@ -70,7 +70,7 @@ function App() {
   };
 
   //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВЛ ТАБ)*//
-  const isAutoFarmUnlocked = pointsToAdd >= 0;
+  const isAutoFarmUnlocked = pointsToAdd >= 10;
   const [showLockedMessage, setShowLockedMessage] = useState(false);
   const openAutoFarm = () => {
     if (isAutoFarmUnlocked) {
@@ -185,31 +185,22 @@ function App() {
   };
 
   useEffect(() => {
-    const firstAudio = new Audio(fon1);
-    const secondAudio = new Audio(fon2);
-
-    const playFirstAudio = () => {
-      if (isMusicOn) firstAudio.play();
+    const backgroundAudio = new Audio(fon2);
+    backgroundAudio.loop = true; // Включить зацикливание
+  
+    const playMusic = () => {
+      if (isMusicOn) {
+        backgroundAudio.play();
+      } else {
+        backgroundAudio.pause();
+      }
     };
-
-    const playSecondAudio = () => {
-      if (isMusicOn) secondAudio.play();
-    };
-
-    firstAudio.addEventListener('ended', playSecondAudio);
-    secondAudio.addEventListener('ended', playFirstAudio);
-
-    if (isMusicOn) {
-      playFirstAudio();
-    }
-
+  
+    playMusic();
+  
     return () => {
-      firstAudio.removeEventListener('ended', playSecondAudio);
-      secondAudio.removeEventListener('ended', playFirstAudio);
-      firstAudio.pause();
-      secondAudio.pause();
-      firstAudio.currentTime = 0;
-      secondAudio.currentTime = 0;
+      backgroundAudio.pause();
+      backgroundAudio.currentTime = 0;
     };
   }, [isMusicOn]);
 
