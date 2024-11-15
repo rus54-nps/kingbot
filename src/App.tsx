@@ -174,6 +174,21 @@ function App() {
     }
   }, []);  
 
+  // Добавьте в App.tsx
+const [isCoinSoundOn, setIsCoinSoundOn] = useState(() => {
+  const savedCoinSoundSetting = localStorage.getItem('isCoinSoundOn');
+  return savedCoinSoundSetting ? JSON.parse(savedCoinSoundSetting) : true;
+});
+
+const toggleCoinSound = () => {
+  setIsCoinSoundOn((prev: boolean) => {
+    const newState = !prev;
+    localStorage.setItem('isCoinSoundOn', JSON.stringify(newState));
+    return newState;
+  });
+};
+
+
   const [isMusicOn, setIsMusicOn] = useState(() => {
     const savedMusicSetting = localStorage.getItem('isMusicOn');
     return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
@@ -183,6 +198,12 @@ function App() {
     // Создаём объект аудио один раз
     const backgroundAudio = new Audio(fon2);
     backgroundAudio.loop = true; // Включаем зацикливание
+    
+    // Восстанавливаем время воспроизведения
+    const savedTime = localStorage.getItem('audioCurrentTime');
+    if (savedTime) {
+      backgroundAudio.currentTime = parseFloat(savedTime);
+    }
   
     // Функция для управления воспроизведением
     const manageMusic = () => {
@@ -198,10 +219,20 @@ function App() {
     // Управление музыкой на старте и при изменении состояния
     manageMusic();
   
-    // Возврат очистки: пауза музыки при размонтировании компонента
+    // Сохраняем текущую позицию музыки при выходе из приложения
+    const saveAudioPosition = () => {
+      localStorage.setItem('audioCurrentTime', backgroundAudio.currentTime.toString());
+    };
+  
+    // Добавляем слушатели событий
+    window.addEventListener('beforeunload', saveAudioPosition);
+  
+    // Очистка
     return () => {
       backgroundAudio.pause();
       backgroundAudio.currentTime = 0;
+      saveAudioPosition();
+      window.removeEventListener('beforeunload', saveAudioPosition);
     };
   }, [isMusicOn]);
   
@@ -217,6 +248,12 @@ function App() {
     if (energy - energyToReduce < 0) {
       return;
     }
+
+    if (isCoinSoundOn) {
+      const audio = new Audio(zvuk);
+      audio.play();
+    }
+
     const audio = new Audio(zvuk);
     audio.play();
 
@@ -359,7 +396,13 @@ function App() {
           <img src={sett} alt="Setting" width={24} height={24} />
         </button>
           {showSettings && (
-        <Setting onClose={toggleSettings} isMusicOn={isMusicOn} toggleMusic={toggleMusic} />
+        <Setting
+          onClose={toggleSettings}
+          isMusicOn={isMusicOn}
+          toggleMusic={toggleMusic}
+          isCoinSoundOn={isCoinSoundOn}
+          toggleCoinSound={toggleCoinSound}
+        />
           )}
   
         {/* Отображение содержимого с использованием renderContent */}
