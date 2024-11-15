@@ -184,25 +184,40 @@ function App() {
     localStorage.setItem('isMusicOn', JSON.stringify(!isMusicOn));
   };
 
-  useEffect(() => {
-    const backgroundAudio = new Audio(fon2);
-    backgroundAudio.loop = true; // Включить зацикливание
-  
-    const playMusic = () => {
+  const [musicTime, setMusicTime] = useState(() => {
+    const savedTime = localStorage.getItem('musicTime');
+    return savedTime ? parseFloat(savedTime) : 0;
+});
+
+useEffect(() => {
+  const backgroundAudio = new Audio(fon2);
+  backgroundAudio.loop = true; // Включить зацикливание
+  backgroundAudio.currentTime = musicTime; // Установить сохранённое время
+
+  const playMusic = () => {
       if (isMusicOn) {
-        backgroundAudio.play();
+          backgroundAudio.play();
       } else {
-        backgroundAudio.pause();
+          backgroundAudio.pause();
       }
-    };
-  
-    playMusic();
-  
-    return () => {
+  };
+
+  playMusic();
+
+  // Сохранять текущее время воспроизведения при обновлении состояния
+  const saveTimeInterval = setInterval(() => {
+      if (!backgroundAudio.paused) {
+          setMusicTime(backgroundAudio.currentTime);
+          localStorage.setItem('musicTime', backgroundAudio.currentTime.toString());
+      }
+  }, 1000);
+
+  return () => {
       backgroundAudio.pause();
-      backgroundAudio.currentTime = 0;
-    };
-  }, [isMusicOn]);
+      clearInterval(saveTimeInterval);
+      localStorage.setItem('musicTime', backgroundAudio.currentTime.toString());
+  };
+}, [isMusicOn, musicTime]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
