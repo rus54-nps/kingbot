@@ -178,46 +178,40 @@ function App() {
     const savedMusicSetting = localStorage.getItem('isMusicOn');
     return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
   });
+
+  useEffect(() => {
+    // Создаём объект аудио один раз
+    const backgroundAudio = new Audio(fon2);
+    backgroundAudio.loop = true; // Включаем зацикливание
+  
+    // Функция для управления воспроизведением
+    const manageMusic = () => {
+      if (isMusicOn) {
+        backgroundAudio.play().catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+      } else {
+        backgroundAudio.pause();
+      }
+    };
+  
+    // Управление музыкой на старте и при изменении состояния
+    manageMusic();
+  
+    // Возврат очистки: пауза музыки при размонтировании компонента
+    return () => {
+      backgroundAudio.pause();
+      backgroundAudio.currentTime = 0;
+    };
+  }, [isMusicOn]);
   
   const toggleMusic = () => {
-    setIsMusicOn(!isMusicOn);
-    localStorage.setItem('isMusicOn', JSON.stringify(!isMusicOn));
+    setIsMusicOn((prev: boolean) => {
+      const newState = !prev;
+      localStorage.setItem('isMusicOn', JSON.stringify(newState));
+      return newState;
+    });
   };
-
-  const [musicTime, setMusicTime] = useState(() => {
-    const savedTime = localStorage.getItem('musicTime');
-    return savedTime ? parseFloat(savedTime) : 0;
-});
-
-useEffect(() => {
-  const backgroundAudio = new Audio(fon2);
-  backgroundAudio.loop = true; // Включить зацикливание
-  backgroundAudio.currentTime = musicTime; // Установить сохранённое время
-
-  const playMusic = () => {
-      if (isMusicOn) {
-          backgroundAudio.play();
-      } else {
-          backgroundAudio.pause();
-      }
-  };
-
-  playMusic();
-
-  // Сохранять текущее время воспроизведения при обновлении состояния
-  const saveTimeInterval = setInterval(() => {
-      if (!backgroundAudio.paused) {
-          setMusicTime(backgroundAudio.currentTime);
-          localStorage.setItem('musicTime', backgroundAudio.currentTime.toString());
-      }
-  }, 1000);
-
-  return () => {
-      backgroundAudio.pause();
-      clearInterval(saveTimeInterval);
-      localStorage.setItem('musicTime', backgroundAudio.currentTime.toString());
-  };
-}, [isMusicOn, musicTime]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (energy - energyToReduce < 0) {
