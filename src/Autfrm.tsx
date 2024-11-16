@@ -31,8 +31,6 @@ const AutoFarm: React.FC<{
   const savedItems = localStorage.getItem('autoFarmItems');
   const [items, setItems] = useState<AutoFarmItem[]>(savedItems ? JSON.parse(savedItems) : initialItems);
 
-  const [autoFarmIncome, setAutoFarmIncome] = useState(0);
-
   useEffect(() => {
     const lastExitTime = localStorage.getItem('lastExitTime');
     if (lastExitTime) {
@@ -49,24 +47,6 @@ const AutoFarm: React.FC<{
       const passiveIncome = totalIncomePerHour * hoursToAdd;
       setPoints(prevPoints => prevPoints + Math.floor(passiveIncome));
     }
-  }, [items, setPoints]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      let totalIncome = 0;
-      items.forEach(item => {
-        if (item.level > 0) {
-          totalIncome += item.incomePerHour * (1 / 3600);
-        }
-      });
-      setAutoFarmIncome(totalIncome);
-      setPoints(prevPoints => Math.floor(prevPoints + totalIncome));
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      localStorage.setItem('lastExitTime', Date.now().toString()); // Сохраняем время выхода
-    };
   }, [items, setPoints]);
 
   const handlePurchase = (itemId: number) => {
@@ -104,12 +84,6 @@ const AutoFarm: React.FC<{
       <div className="autofarm-balance">
         <img src={coin} alt="Coin" width={20} height={20} />
         <span>{Math.floor(points)}</span>
-      </div>
-
-      <div className="autofarm-income">
-        <img src={coin} alt="Coin" width={20} height={20} />
-        <span>{Math.floor(autoFarmIncome)}</span>
-        <span>монет в час</span>
       </div>
 
       <div className="autofarm-passive-income">
