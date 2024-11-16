@@ -108,7 +108,7 @@ function App() {
   // Таймер для начисления дохода от автофарма
   useEffect(() => {
     const interval = setInterval(() => {
-      const totalIncome = items.reduce((total, item) => total + item.incomePerHour * (1 / 3600), 0); // Доход в секунду
+      const totalIncome = items.reduce((total, item) => total + item.incomePerHour / (3600), 0); // Доход в секунду
       setPoints(prevPoints => prevPoints + Math.floor(totalIncome));
       localStorage.setItem('points', (points + Math.floor(totalIncome)).toString());
     }, 1000);
