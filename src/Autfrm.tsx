@@ -73,7 +73,7 @@ const handlePurchase = (itemId: number) => {
       if (item.id === itemId) {
         const newLevel = item.level + 1;
         const newPrice = item.price * item.priceIncreaseFactor;
-        const newIncome = item.incomePerHour + item.incomeIncrease;
+        const newIncome = newLevel === 1 ? item.incomePerHour : item.incomePerHour + item.incomeIncrease;
 
         return {
           ...item,
