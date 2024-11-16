@@ -226,7 +226,7 @@ function App() {
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (energy - energyToReduce < 0) {
+    if (energy - energyToReduce < 10) {
       return;
     }
 
