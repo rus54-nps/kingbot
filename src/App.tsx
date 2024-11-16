@@ -176,19 +176,19 @@ function App() {
 
   const [isMusicOn, setIsMusicOn] = useState(() => {
     const savedMusicSetting = localStorage.getItem('isMusicOn');
-    return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
+    return savedMusicSetting ? JSON.parse(savedMusicSetting) : false; // Звук выключен по умолчанию
   });
 
   useEffect(() => {
     const backgroundAudio = new Audio(fon2);
-    backgroundAudio.loop = true; // Включаем зацикливание
-  
-    // Восстановление позиции из localStorage
+    backgroundAudio.loop = true; // Зацикливание музыки
+
+    // Восстанавливаем положение музыки, если оно сохранено в localStorage
     const savedTime = localStorage.getItem('audioCurrentTime');
     if (savedTime) {
       backgroundAudio.currentTime = parseFloat(savedTime);
     }
-  
+
     const manageMusic = async () => {
       if (isMusicOn) {
         try {
@@ -200,15 +200,16 @@ function App() {
         backgroundAudio.pause();
       }
     };
-  
-    manageMusic(); // Запускаем музыку на старте
-  
+
+    manageMusic();
+
+    // Сохраняем текущее время музыки перед выгрузкой страницы
     const saveAudioPosition = () => {
       localStorage.setItem('audioCurrentTime', backgroundAudio.currentTime.toString());
     };
-  
+
     window.addEventListener('beforeunload', saveAudioPosition);
-  
+
     return () => {
       saveAudioPosition();
       backgroundAudio.pause();
@@ -216,11 +217,11 @@ function App() {
       window.removeEventListener('beforeunload', saveAudioPosition);
     };
   }, [isMusicOn]);
-  
+
   const toggleMusic = () => {
     setIsMusicOn((prev: boolean) => {
       const newState = !prev;
-      localStorage.setItem('isMusicOn', JSON.stringify(newState));
+      localStorage.setItem('isMusicOn', JSON.stringify(newState)); // Сохраняем состояние звука
       return newState;
     });
   };
@@ -316,7 +317,7 @@ function App() {
           setCurrentPage={setCurrentPage}
           points={points}
           maxEnergy={maxEnergy}
-           taps={taps}
+          taps={taps}
            />
          );
       default:
