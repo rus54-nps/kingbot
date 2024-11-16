@@ -30,7 +30,6 @@ const AutoFarm: React.FC<{
 
   const savedItems = localStorage.getItem('autoFarmItems');
   const [items, setItems] = useState<AutoFarmItem[]>(savedItems ? JSON.parse(savedItems) : initialItems);
-  const [isAutoFarmActive, setIsAutoFarmActive] = useState(false);
 
   useEffect(() => {
     const lastExitTime = localStorage.getItem('lastExitTime');
@@ -51,23 +50,21 @@ const AutoFarm: React.FC<{
   }, [items, setPoints]);
 
   useEffect(() => {
-    if (isAutoFarmActive) {  // Проверка активности автофермы
-      const interval = setInterval(() => {
-        let totalIncome = 0;
-        items.forEach(item => {
-          if (item.level > 0) {
-            totalIncome += item.incomePerHour / 3600; // Пересчитываем доход за секунду
-          }
-        });
-        setPoints(prevPoints => Math.floor(prevPoints + totalIncome)); // Добавляем доход за секунду
-      }, 1000);
+  const interval = setInterval(() => {
+    let totalIncome = 0;
+    items.forEach(item => {
+      if (item.level > 0) {
+        totalIncome += item.incomePerHour / 3600; // Пересчитываем доход за секунду
+      }
+    });
+    setPoints(prevPoints => Math.floor(prevPoints + totalIncome)); // Добавляем доход за секунду
+  }, 1000);
 
-      return () => {
-        clearInterval(interval);
-        localStorage.setItem('lastExitTime', Date.now().toString()); // Сохраняем время выхода
-      };
-    }
-  }, [isAutoFarmActive, items, setPoints]);
+  return () => {
+    clearInterval(interval);
+    localStorage.setItem('lastExitTime', Date.now().toString()); // Сохраняем время выхода
+  };
+}, [items, setPoints]);
 
 const handlePurchase = (itemId: number) => {
   const itemToPurchase = items.find(item => item.id === itemId);
@@ -130,8 +127,7 @@ const handlePurchase = (itemId: number) => {
           ))}
         </ul>
       </div>
-      <button className="autofarm-back-button" onClick={() => {setCurrentPage('home');  setIsAutoFarmActive(false) ;}}>Назад</button>
-      
+      <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
     </div>
   );
 };
