@@ -42,8 +42,8 @@ function App() {
   const [taps, setTaps] = useState<number>(0);
   const [items, setItems] = useState([
     { id: 1, name: 'Золотые Руки', price: 3000, incomePerHour: 0, level: 1 },
-    { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
-    { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
+    { id: 2, name: 'Счастливая Монета', price: 25000, incomePerHour: 330, level: 1 },
+    { id: 3, name: 'Счаа', price: 2500, incomePerHour: 500, level: 1 },
   ]);
 
   const handleTap = () => {
