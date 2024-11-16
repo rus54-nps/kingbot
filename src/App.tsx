@@ -42,8 +42,8 @@ function App() {
   const [taps, setTaps] = useState<number>(0);
   const [items, setItems] = useState([
     { id: 1, name: 'Золотые Руки', price: 3000, incomePerHour: 0, level: 1 },
-    { id: 2, name: 'Счастливая Монета', price: 25000, incomePerHour: 330, level: 1 },
-    { id: 3, name: 'Счаа', price: 2500, incomePerHour: 500, level: 1 },
+    { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
+    { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
   ]);
 
   const handleTap = () => {
@@ -70,7 +70,7 @@ function App() {
   };
 
   //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВЛ ТАБ)*//
-  const isAutoFarmUnlocked = pointsToAdd >= 0;
+  const isAutoFarmUnlocked = pointsToAdd >= 10;
   const [showLockedMessage, setShowLockedMessage] = useState(false);
   const openAutoFarm = () => {
     if (isAutoFarmUnlocked) {
@@ -108,15 +108,11 @@ function App() {
   // Таймер для начисления дохода от автофарма
   useEffect(() => {
     const interval = setInterval(() => {
-      const totalIncome = items.reduce((total, item) => total + (item.incomePerHour / 3600), 0); // Доход в секунду
-      const reducedIncome = totalIncome / 2.5; // Уменьшаем доход в 2.5 раза
-      setPoints(prevPoints => {
-        const newPoints = prevPoints + Math.floor(reducedIncome); // Обновляем на основе текущих очков
-        localStorage.setItem('points', newPoints.toString());
-        return newPoints;
-      });
-    }, 1000); // 1000 ms = 1 секунда
-  
+      const totalIncome = items.reduce((total, item) => total + item.incomePerHour * (1 / 3600), 0); // Доход в секунду
+      setPoints(prevPoints => prevPoints + Math.floor(totalIncome));
+      localStorage.setItem('points', (points + Math.floor(totalIncome)).toString());
+    }, 1000);
+
     return () => {
       clearInterval(interval);
       localStorage.setItem('lastIncomeTime', Date.now().toString());
@@ -180,19 +176,19 @@ function App() {
 
   const [isMusicOn, setIsMusicOn] = useState(() => {
     const savedMusicSetting = localStorage.getItem('isMusicOn');
-    return savedMusicSetting ? JSON.parse(savedMusicSetting) : false; // Звук выключен по умолчанию
+    return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
   });
 
   useEffect(() => {
     const backgroundAudio = new Audio(fon2);
-    backgroundAudio.loop = true; // Зацикливание музыки
-
-    // Восстанавливаем положение музыки, если оно сохранено в localStorage
+    backgroundAudio.loop = true; // Включаем зацикливание
+  
+    // Восстановление позиции из localStorage
     const savedTime = localStorage.getItem('audioCurrentTime');
     if (savedTime) {
       backgroundAudio.currentTime = parseFloat(savedTime);
     }
-
+  
     const manageMusic = async () => {
       if (isMusicOn) {
         try {
@@ -204,16 +200,15 @@ function App() {
         backgroundAudio.pause();
       }
     };
-
-    manageMusic();
-
-    // Сохраняем текущее время музыки перед выгрузкой страницы
+  
+    manageMusic(); // Запускаем музыку на старте
+  
     const saveAudioPosition = () => {
       localStorage.setItem('audioCurrentTime', backgroundAudio.currentTime.toString());
     };
-
+  
     window.addEventListener('beforeunload', saveAudioPosition);
-
+  
     return () => {
       saveAudioPosition();
       backgroundAudio.pause();
@@ -221,11 +216,11 @@ function App() {
       window.removeEventListener('beforeunload', saveAudioPosition);
     };
   }, [isMusicOn]);
-
+  
   const toggleMusic = () => {
     setIsMusicOn((prev: boolean) => {
       const newState = !prev;
-      localStorage.setItem('isMusicOn', JSON.stringify(newState)); // Сохраняем состояние звука
+      localStorage.setItem('isMusicOn', JSON.stringify(newState));
       return newState;
     });
   };
@@ -321,7 +316,7 @@ function App() {
           setCurrentPage={setCurrentPage}
           points={points}
           maxEnergy={maxEnergy}
-          taps={taps}
+           taps={taps}
            />
          );
       default:

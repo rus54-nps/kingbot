@@ -19,15 +19,25 @@
 }
 
 .shake {
-  animation: shake 0.5s forwards;
+  animation: shake 0.4s forwards;
 }
 
 @keyframes shake {
-  0% { transform: translate(0); }
-  25% { transform: translate(-5px, 0); }
-  50% { transform: translate(5px, 0); }
-  75% { transform: translate(-5px, 0); }
-  100% { transform: translate(0); }
+  0% {
+    transform: translateY(-15) translateX(5); /* Начальная позиция */
+  }
+  25% {
+    transform: translateY(-25) translateX(10); /* Начальная позиция */
+  }
+  50% {
+    transform: translateY(-35px) translateX(15px); /* Поднимается вверх и уходит вправо */
+  }
+  75% {
+    transform: translateY(-25) translateX(10); /* Начальная позиция */
+  }
+  100% {
+    transform: translateY(-15) translateX(5); /* Возвращается на место */
+  }
 }
 
 .relative {
