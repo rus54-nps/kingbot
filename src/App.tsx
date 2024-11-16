@@ -108,16 +108,21 @@ function App() {
   // Таймер для начисления дохода от автофарма
   useEffect(() => {
     const interval = setInterval(() => {
-      const totalIncome = items.reduce((total, item) => total + item.incomePerHour / (3600), 1/2); // Доход в секунду
-      setPoints(prevPoints => prevPoints + Math.floor(totalIncome));
-      localStorage.setItem('points', (points + Math.floor(totalIncome)).toString());
-    }, 1000);
-
+      const totalIncome = items.reduce((total, item) => total + (item.incomePerHour / 3600), 0); // Доход в секунду
+      const reducedIncome = totalIncome / 2; // Уменьшаем доход в 2 раза
+      setPoints(prevPoints => {
+        const newPoints = prevPoints + Math.floor(reducedIncome); // Обновляем на основе текущих очков
+        localStorage.setItem('points', newPoints.toString());
+        return newPoints;
+      });
+    }, 1000); // 1000 ms = 1 секунда
+  
     return () => {
       clearInterval(interval);
       localStorage.setItem('lastIncomeTime', Date.now().toString());
     };
-  }, [items, points]);
+  }, [items]);
+  
 
   useEffect(() => {
     // Показать заставку в течение 3 секунд
