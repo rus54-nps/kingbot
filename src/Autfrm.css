@@ -158,6 +158,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center; /* Вертикальное выравнивание текста */
+    z-index: 2;
 }
 
 .autofarm-item-info h3 {
@@ -166,11 +167,13 @@
     padding: 5px;
     border: 1px solid #f9c035;
     border-radius: 5px;
+    z-index: 2;
 }
 
 .autofarm-item-info p {
     margin: 5px 0;
     color: #f3c45a;
+    z-index: 2;
 }
 
 /* Обновления для кнопки "Купить" */

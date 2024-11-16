@@ -49,6 +49,23 @@ const AutoFarm: React.FC<{
     }
   }, [items, setPoints]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      let totalIncome = 0;
+      items.forEach(item => {
+        if (item.level > 0) {
+          totalIncome += item.incomePerHour / 3600; // Пересчитываем доход за секунду
+        }
+      });
+      setPoints(prevPoints => Math.floor(prevPoints + totalIncome)); // Добавляем доход за секунду
+    }, 1000);
+  
+    return () => {
+      clearInterval(interval);
+      localStorage.setItem('lastExitTime', Date.now().toString()); // Сохраняем время выхода
+    };
+  }, [items, setPoints]);
+
   const handlePurchase = (itemId: number) => {
     const itemToPurchase = items.find(item => item.id === itemId);
     if (itemToPurchase && points >= itemToPurchase.price) {
@@ -57,26 +74,27 @@ const AutoFarm: React.FC<{
           const newLevel = item.level + 1;
           const newPrice = item.price * item.priceIncreaseFactor;
           const newIncome = newLevel === 1 ? item.incomePerHour : item.incomePerHour + item.incomeIncrease;
-
+  
           return {
             ...item,
             level: newLevel,
-            price: Math.round(newPrice),
+            price: Math.round(newPrice), // Обновляем цену
             incomePerHour: newIncome,
-            description: `${newIncome} монет в час.`,
+            description: `${newIncome} монет в час.`, // Обновляем описание
           };
         }
         return item;
       });
-
+  
       setItems(updatedItems);
-      localStorage.setItem('autoFarmItems', JSON.stringify(updatedItems)); // Сохраняем обновленные уровни улучшений
+      localStorage.setItem('autoFarmItems', JSON.stringify(updatedItems)); // Сохраняем обновленные данные
       setPoints(points - itemToPurchase.price);
       alert(`Вы купили ${itemToPurchase.name}! Новый уровень: ${itemToPurchase.level + 1}`);
     } else {
       alert('Недостаточно очков для покупки!');
     }
   };
+  
 
   return (
     <div className="Aut autofarm-overlay">
