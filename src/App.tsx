@@ -229,34 +229,48 @@ function App() {
     if (energy - energyToReduce < 10) {
       return;
     }
-
-    const audio = new Audio(zvuk);
-    audio.play();
-
+  
+    if (isCoinSoundOn) {
+      const audio = new Audio(zvuk);
+      audio.play();
+    }
+  
     handleTap();
-
+  
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
+  
     setPoints((prevPoints) => {
       const newPoints = prevPoints + pointsToAdd;
       localStorage.setItem('points', newPoints.toString());
       return newPoints;
     });
-
+  
     setEnergy(energy - energyToReduce < 0 ? 0 : energy - energyToReduce);
-
-    // Добавляем новую монету
+  
     setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
   };
+  
 
   const handleCoinAnimationEnd = (id: number) => {
     setCoins((prevCoins) => prevCoins.filter(coin => coin.id !== id));
   };
 
+  const [isCoinSoundOn, setIsCoinSoundOn] = useState<boolean>(() => {
+    const savedCoinSoundSetting = localStorage.getItem('isCoinSoundOn');
+    return savedCoinSoundSetting ? JSON.parse(savedCoinSoundSetting) : true; // По умолчанию включен
+  });
+  
+  const toggleCoinSound = () => {
+    setIsCoinSoundOn((prev) => {
+      const newState = !prev;
+      localStorage.setItem('isCoinSoundOn', JSON.stringify(newState));
+      return newState;
+    });
+  };
 
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -376,6 +390,8 @@ function App() {
           onClose={toggleSettings}
           isMusicOn={isMusicOn}
           toggleMusic={toggleMusic}
+          isCoinSoundOn={isCoinSoundOn}
+          toggleCoinSound={toggleCoinSound}
         />
           )}
   
