@@ -251,7 +251,7 @@ function App() {
   
     setCoins((prevCoins) => [...prevCoins, { id: Date.now() + 1000, x, y }]);
     setIsShaking(true);
-    setTimeout(() => setIsShaking(false), 500);
+    setTimeout(() => setIsShaking(false), 300);
   };
   
 

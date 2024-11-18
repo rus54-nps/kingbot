@@ -27,13 +27,13 @@
     transform: translateY(0) scale(1);
   }
   25% {
-    transform: translateY(-15px) translateX(-15px) scale(1.03); /* Поднимается вверх с небольшим увеличением */
+    transform: translateY(-10px) translateX(-10px) scale(1.03); /* Поднимается вверх с небольшим увеличением */
   }
   50% {
     transform: translateY(0) scale(1); /* Возвращается вниз */
   }
   75% {
-    transform: translateY(-15px) translateX(-15px) scale(1.03); /* Легкий отскок */
+    transform: translateY(-10px) translateX(-10px) scale(1.03); /* Легкий отскок */
   }
   100% {
     transform: translateY(0) scale(1); /* Возвращение в исходное состояние */
