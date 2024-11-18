@@ -19,24 +19,24 @@
 }
 
 .shake {
-  animation: shake 0.4s forwards;
+  animation: shake 0.3s forwards;
 }
 
 @keyframes shake {
   0% {
-    transform: translateY(-15) translateX(5); /* Начальная позиция */
+    transform: translateY(0) scale(1);
   }
   25% {
-    transform: translateY(-25) translateX(10); /* Начальная позиция */
+    transform: translateY(-15px) translateX(-15px) scale(1.03); /* Поднимается вверх с небольшим увеличением */
   }
   50% {
-    transform: translateY(-35px) translateX(15px); /* Поднимается вверх и уходит вправо */
+    transform: translateY(0) scale(1); /* Возвращается вниз */
   }
   75% {
-    transform: translateY(-25) translateX(10); /* Начальная позиция */
+    transform: translateY(-15px) translateX(-15px) scale(1.03); /* Легкий отскок */
   }
   100% {
-    transform: translateY(-15) translateX(5); /* Возвращается на место */
+    transform: translateY(0) scale(1); /* Возвращение в исходное состояние */
   }
 }
 
