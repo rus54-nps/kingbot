@@ -5,7 +5,6 @@ import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
 import Autfrm from './Autfrm';
-import TelegramAuth from './TelegramAuth';
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
@@ -273,9 +272,6 @@ function App() {
     });
   };
 
-  const [user, setUser] = useState<null | { first_name: string; photo_url: string }>(null);
-
-
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
     switch (currentPage) {
@@ -294,17 +290,8 @@ function App() {
                 className="absolute text-base flex items-center"
                 style={{ top: 'calc(85px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
               >
-                {user ? (
-                  <>
-                    <img src={user.photo_url} width={24} height={24} alt="User Avatar" style={{ borderRadius: '50%' }} />
-                    <span className="ml-1">{user.first_name}</span>
-                  </>
-                ) : (
-                  <>
-                    <img src={trophy} width={24} height={24} />
-                    <span className="ml-1">Gold</span>
-                  </>
-                )}
+                <img src={trophy} width={24} height={24} />
+                <span className="ml-1">Gold</span>
               </div>
             </div>
           </>
@@ -482,9 +469,6 @@ function App() {
           <span>Скоро появится</span>
         </div>
         )}
-        <div className="telegram-auth-container">
-          {!user && <TelegramAuth setUser={setUser} />}
-        </div>
       </div>
     </div>
   );
