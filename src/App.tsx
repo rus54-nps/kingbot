@@ -108,15 +108,11 @@ function App() {
   // Таймер для начисления дохода от автофарма
   useEffect(() => {
     const interval = setInterval(() => {
-      const totalIncome = items.reduce((total, item) => total + (item.incomePerHour / 3600), 0); // Доход в секунду
-      const reducedIncome = totalIncome / 2.5; // Уменьшаем доход в 2.5 раза
-      setPoints(prevPoints => {
-        const newPoints = prevPoints + Math.floor(reducedIncome); // Обновляем на основе текущих очков
-        localStorage.setItem('points', newPoints.toString());
-        return newPoints;
-      });
-    }, 1000); // 1000 ms = 1 секунда
-  
+      const totalIncome = items.reduce((total, item) => total + item.incomePerHour * (1 / 3600), 0); // Доход в секунду
+      setPoints(prevPoints => prevPoints + Math.floor(totalIncome));
+      localStorage.setItem('points', (points + Math.floor(totalIncome)).toString());
+    }, 1000);
+
     return () => {
       clearInterval(interval);
       localStorage.setItem('lastIncomeTime', Date.now().toString());
@@ -276,6 +272,22 @@ function App() {
     });
   };
 
+  const [userData, setUserData] = useState<{ username: string; photo_url: string } | null>(null);
+
+  useEffect(() => {
+    const telegram = (window as any).Telegram.WebApp;
+    if (telegram) {
+      telegram.expand(); // Расширяет веб-приложение на весь экран
+      const initDataUnsafe = telegram.initDataUnsafe;
+      if (initDataUnsafe && initDataUnsafe.user) {
+        setUserData({
+          username: initDataUnsafe.user.username || initDataUnsafe.user.first_name,
+          photo_url: initDataUnsafe.user.photo_url || '',
+        });
+      }
+    }
+  }, []);
+
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
     switch (currentPage) {
@@ -287,7 +299,17 @@ function App() {
                 className="absolute text-5xl font-bold flex items-center"
                 style={{ top: '70px', left: '50%', transform: 'translateX(-70% )' }}
               >
-                <img src={coinImage} width={44} height={44} alt="Static Coin" />
+                {userData?.photo_url ? (
+                  <img
+                    src={userData.photo_url}
+                    alt="User Avatar"
+                    width={44}
+                    height={44}
+                    style={{ borderRadius: '50%', marginRight: '8px' }}
+                  />
+                ) : (
+                  <img src={trophy} width={44} height={44} alt="Default Trophy" />
+                )}
                 <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </div>
               <div
@@ -295,7 +317,7 @@ function App() {
                 style={{ top: 'calc(85px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
               >
                 <img src={trophy} width={24} height={24} />
-                <span className="ml-1">Gold</span>
+                <span className="ml-1">{userData?.username || 'Gold'}</span>
               </div>
             </div>
           </>
