@@ -272,22 +272,6 @@ function App() {
     });
   };
 
-  const [userData, setUserData] = useState<{ username: string; photo_url: string } | null>(null);
-
-  useEffect(() => {
-    const telegram = (window as any).Telegram.WebApp;
-    if (telegram) {
-      telegram.expand(); // Расширяет веб-приложение на весь экран
-      const initDataUnsafe = telegram.initDataUnsafe;
-      if (initDataUnsafe && initDataUnsafe.user) {
-        setUserData({
-          username: initDataUnsafe.user.username || initDataUnsafe.user.first_name,
-          photo_url: initDataUnsafe.user.photo_url || '',
-        });
-      }
-    }
-  }, []);
-
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
     switch (currentPage) {
@@ -299,17 +283,7 @@ function App() {
                 className="absolute text-5xl font-bold flex items-center"
                 style={{ top: '70px', left: '50%', transform: 'translateX(-70% )' }}
               >
-                {userData?.photo_url ? (
-                  <img
-                    src={userData.photo_url}
-                    alt="User Avatar"
-                    width={44}
-                    height={44}
-                    style={{ borderRadius: '50%', marginRight: '8px' }}
-                  />
-                ) : (
-                  <img src={trophy} width={44} height={44} alt="Default Trophy" />
-                )}
+                <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </div>
               <div
@@ -317,7 +291,7 @@ function App() {
                 style={{ top: 'calc(85px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
               >
                 <img src={trophy} width={24} height={24} />
-                <span className="ml-1">{userData?.username || 'Gold'}</span>
+                <span className="ml-1">Gold</span>
               </div>
             </div>
           </>
