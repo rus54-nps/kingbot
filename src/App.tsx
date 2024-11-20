@@ -11,6 +11,26 @@ function App() {
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
   
+  const [user, setUser] = useState<{ id: number; username: string; photoUrl: string } | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const userData = {
+      id: Number(params.get("id")),
+      username: params.get("username") || '',
+      photoUrl: params.get("photo_url") || '',
+    };
+  
+    if (userData.id && userData.username) {
+      setUser(userData);
+      localStorage.setItem("telegramUser", JSON.stringify(userData)); // Сохранение пользователя
+    } else {
+      const savedUser = localStorage.getItem("telegramUser");
+      if (savedUser) {
+        setUser(JSON.parse(savedUser)); // Восстановление из localStorage
+      }
+    }
+  }, []);
   
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
@@ -282,6 +302,18 @@ function App() {
       case 'home':
         return (
           <>
+             {user && (
+               <div className="flex items-center space-x-4 p-4">
+                  <img
+                    src={user.photoUrl}
+                    alt={user.username}
+                    className="rounded-full"
+                    width={48}
+                    height={48}
+                  />
+                  <span className="text-lg font-medium">{user.username}</span>
+               </div>
+             )}
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
