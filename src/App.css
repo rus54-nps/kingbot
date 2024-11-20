@@ -136,3 +136,18 @@
   text-align: center;
   z-index: 100;
 }
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.user-avatar {
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+.user-name {
+  color: white;
+  font-size: 1.2em;
+}

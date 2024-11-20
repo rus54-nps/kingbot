@@ -11,7 +11,39 @@ function App() {
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
   
-  
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const telegram = window.Telegram.WebApp;
+      telegram.ready();
+
+      const user = telegram.initDataUnsafe?.user;
+      if (user) {
+        setUserData(user);
+      }
+
+      telegram.setBackgroundColor("#242424");
+      telegram.setHeaderColor("theme");
+      telegram.MainButton.setText("Нажми сюда").show();
+
+      telegram.MainButton.onClick(() => {
+        console.log("Кнопка нажата!");
+      });
+
+      return () => {
+        telegram.MainButton.offClick();
+      };
+    }
+  }, []);
+
+  if (!window.Telegram || !window.Telegram.WebApp) {
+    return <div>Пожалуйста, откройте приложение через Telegram Web Apps.</div>;
+  }
+
+  if (!userData) {
+    return <div>Данные пользователя не найдены. Убедитесь, что вы открыли приложение через Telegram.</div>;
+  }
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
     const savedMaxEnergy = localStorage.getItem('maxEnergy');
@@ -359,7 +391,10 @@ function App() {
       </div>
   
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
-  
+        <div>
+          <h1>Добро пожаловать, {userData.first_name}!</h1>
+          <p>Ваше имя пользователя: {userData.username}</p>
+        </div>
         {/* Верхний блок с кнопками*/}
         <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-10">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
