@@ -137,17 +137,69 @@
   z-index: 100;
 }
 
-.user-info {
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-top: 20px;
+  z-index: 1000;
 }
-.user-avatar {
-  border-radius: 50%;
-  border: 2px solid #fff;
+
+.modal {
+  display: flex; /* Включаем Flexbox */
+  flex-direction: column; /* Размещение элементов сверху вниз */
+  align-items: center; /* Выравнивание по центру */
+  justify-content: center; /* Центровка элементов */
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  gap: 15px; /* Расстояние между элементами */
 }
-.user-name {
-  color: white;
-  font-size: 1.2em;
+
+.modal input {
+  padding: 10px;
+  width: 80%;
+  margin-bottom: 10px;
+  font-size: 16px; /* Достаточный размер шрифта */
+  color: #000; /* Цвет текста */
+  background-color: #fff; /* Цвет фона */
+  border: 1px solid #ccc; /* Граница для визуального акцента */
+  border-radius: 5px; /* Скругленные углы */
+}
+
+.modal input::placeholder {
+  color: #aaa; /* Цвет текста подсказки (placeholder) */
+}
+
+
+
+.modal h2 {
+  margin-bottom: 10px;
+}
+
+.modal input {
+  padding: 10px;
+  width: 80%;
+  margin-bottom: 10px;
+}
+
+.modal button {
+  padding: 10px 20px;
+  background: #f9c035;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal button:hover {
+  background: #f3b228;
 }

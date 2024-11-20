@@ -11,56 +11,6 @@ function App() {
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
   
-  interface TelegramUser {
-    id: number;
-    first_name: string;
-    last_name?: string;
-    username?: string;
-    language_code?: string;
-    photo_url?: string;
-  }
-  
-  const [userData, setUserData] = useState<TelegramUser | null>(null);
-
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const telegram = window.Telegram.WebApp;
-      telegram.ready();
-
-      const user = telegram.initDataUnsafe?.user;
-      if (user) {
-        setUserData(user);
-      } else {
-        console.error("User data is not available.");
-      }
-
-      telegram.setBackgroundColor("#242424");
-      telegram.setHeaderColor("theme");
-
-      if (telegram.MainButton) {
-        telegram.MainButton.setText("Нажми сюда").show();
-      
-        telegram.MainButton.onClick(() => {
-          console.log("Кнопка нажата!");
-        });
-      
-        return () => {
-          telegram.MainButton.offClick();
-        };
-      } else {
-        console.error("MainButton is not available.");
-      }
-      
-    }
-  }, []);
-
-  if (!window.Telegram || !window.Telegram.WebApp) {
-    return <div>Пожалуйста, откройте приложение через Telegram Web Apps.</div>;
-  }
-
-  if (!userData) {
-    return <div>Данные пользователя не найдены. Убедитесь, что вы открыли приложение через Telegram.</div>;
-  }
   
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
@@ -326,6 +276,39 @@ function App() {
     });
   };
 
+  const [username, setUsername] = useState<string | null>(() => {
+    return localStorage.getItem('username');
+  });
+  const [isNicknameModalVisible, setNicknameModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (!username) {
+      setNicknameModalVisible(true); // Показываем окно, если ник не задан
+    }
+  }, [username]);
+
+  const handleSaveUsername = (newUsername: string) => {
+    const trimmedUsername = newUsername.trim();
+    
+    // Проверка на английские буквы
+    const isValidUsername = /^[A-Za-z]+$/.test(trimmedUsername);
+    
+    if (!isValidUsername) {
+      alert("Никнейм должен содержать только английские буквы!");
+      return;
+    }
+  
+    if (trimmedUsername.length > 16) {
+      alert("Никнейм не должен превышать 16 символов!");
+      return;
+    }
+  
+    setUsername(trimmedUsername);
+    localStorage.setItem('username', trimmedUsername);
+    setNicknameModalVisible(false);
+  };
+  
+
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
     switch (currentPage) {
@@ -345,7 +328,7 @@ function App() {
                 style={{ top: 'calc(85px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
               >
                 <img src={trophy} width={24} height={24} />
-                <span className="ml-1">Gold</span>
+                <span className="ml-1">{username || "Player"}</span>
               </div>
             </div>
           </>
@@ -409,10 +392,7 @@ function App() {
       </div>
   
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
-        <div>
-          <h1>Добро пожаловать, {userData.first_name}!</h1>
-          <p>Ваше имя пользователя: {userData.username}</p>
-        </div>
+  
         {/* Верхний блок с кнопками*/}
         <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-10">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
@@ -526,6 +506,33 @@ function App() {
           <span>Скоро появится</span>
         </div>
         )}
+        {isNicknameModalVisible && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Придумайте никнейм</h2>
+            <input
+              type="text"
+              placeholder="Введите ник..."
+              maxLength={16}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                  handleSaveUsername(e.currentTarget.value.trim());
+                }
+              }}
+            />
+            <button
+              onClick={() => {
+                const input = document.querySelector<HTMLInputElement>('input');
+                if (input && input.value.trim()) {
+                  handleSaveUsername(input.value.trim());
+                }
+              }}
+            >
+              Сохранить
+            </button>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
