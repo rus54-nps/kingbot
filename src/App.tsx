@@ -22,7 +22,6 @@ function App() {
   
   const [userData, setUserData] = useState<TelegramUser | null>(null);
 
-  
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const telegram = window.Telegram.WebApp;
@@ -62,35 +61,6 @@ function App() {
   if (!userData) {
     return <div>Данные пользователя не найдены. Убедитесь, что вы открыли приложение через Telegram.</div>;
   }
-
-  useEffect(() => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      const telegram = window.Telegram.WebApp;
-  
-      // Убедимся, что метод `ready` существует, прежде чем его вызывать
-      if (typeof telegram.ready === "function") {
-        telegram.ready();
-      }
-  
-      const user = telegram.initDataUnsafe?.user;
-      if (user) {
-        setUserData(user);
-      }
-  
-      telegram.setBackgroundColor("#242424");
-      telegram.setHeaderColor("theme");
-      telegram.MainButton.setText("Нажми сюда").show();
-  
-      telegram.MainButton.onClick(() => {
-        console.log("Кнопка нажата!");
-      });
-  
-      return () => {
-        telegram.MainButton.offClick();
-      };
-    }
-  }, []);
-  
   
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
