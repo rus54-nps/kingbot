@@ -286,15 +286,18 @@ function App() {
       setNicknameModalVisible(true); // Показываем окно, если ник не задан
     }
   }, [username]);
-
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Разрешаем только английские буквы, цифры, символы '-' и '_'
+    const validInput = e.target.value.replace(/[^A-Za-z0-9_-]/g, '');
+    e.target.value = validInput; // Устанавливаем отфильтрованное значение
+  };
+  
   const handleSaveUsername = (newUsername: string) => {
     const trimmedUsername = newUsername.trim();
-    
-    // Проверка на английские буквы, цифры, символы - и _
-    const isValidUsername = /^[A-Za-z0-9_-]+$/.test(trimmedUsername);
-    
-    if (!isValidUsername) {
-      alert("Никнейм может содержать только английские буквы, цифры, символы '-' и '_'!");
+  
+    if (trimmedUsername.length === 0) {
+      alert("Никнейм не может быть пустым!");
       return;
     }
   
@@ -516,6 +519,7 @@ function App() {
               type="text"
               placeholder="Введите ник..."
               maxLength={16}
+              onInput={handleInputChange} // Фильтруем ввод
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && e.currentTarget.value.trim()) {
                   handleSaveUsername(e.currentTarget.value.trim());
