@@ -290,11 +290,11 @@ function App() {
   const handleSaveUsername = (newUsername: string) => {
     const trimmedUsername = newUsername.trim();
     
-    // Проверка на английские буквы
-    const isValidUsername = /^[A-Za-z]+$/.test(trimmedUsername);
+    // Проверка на английские буквы, цифры, символы - и _
+    const isValidUsername = /^[A-Za-z0-9_-]+$/.test(trimmedUsername);
     
     if (!isValidUsername) {
-      alert("Никнейм должен содержать только английские буквы!");
+      alert("Никнейм может содержать только английские буквы, цифры, символы '-' и '_'!");
       return;
     }
   
@@ -307,6 +307,8 @@ function App() {
     localStorage.setItem('username', trimmedUsername);
     setNicknameModalVisible(false);
   };
+  
+  
   
 
   const renderContent = () => {
