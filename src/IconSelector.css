@@ -1,0 +1,68 @@
+/* Панель выбора иконок (модальное окно) */
+.icon-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2d2d2d;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  width: 300px;
+  text-align: center;
+  position: relative; /* Для позиционирования кнопки закрытия */
+}
+
+/* Сетка иконок */
+/* Сетка иконок */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Три столбца */
+  gap: 12px; /* Расстояние между иконками */
+  margin-top: 16px;
+}
+
+/* Кнопки */
+.icon-button {
+  width: 64px; /* Задаём одинаковую ширину */
+  height: 64px; /* И одинаковую высоту */
+  display: flex; /* Центрируем содержимое */
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  border-radius: 0; /* Убираем скругление */
+  background-color: transparent;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+}
+
+/* Изображения внутри кнопок */
+.icon-button img {
+  width: 48px; /* Размер изображения */
+  height: 48px;
+}
+
+/* Выбранная иконка */
+.icon-button.selected {
+  border-color: #48bb78; /* Зеленая рамка */
+  border-radius: 10px;
+}
+
+
+/* Кнопка закрытия */
+.close-button {
+  position: absolute; /* Фиксируем в углу окна */
+  top: 0px;
+  right: 5px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.close-button:hover {
+  color: #f9c035; /* Эффект при наведении */
+}

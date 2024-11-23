@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { coin as coinImage, highVoltage, shp, trophy, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon2, loadingGif } from './images';
+import { coin as coinImage, highVoltage, shp, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon2, loadingGif, dar } from './images';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
 import Autfrm from './Autfrm';
+import IconSelector from './IconSelector';
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
@@ -286,18 +287,15 @@ function App() {
       setNicknameModalVisible(true); // Показываем окно, если ник не задан
     }
   }, [username]);
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Разрешаем только английские буквы, цифры, символы '-' и '_'
-    const validInput = e.target.value.replace(/[^A-Za-z0-9_-]/g, '');
-    e.target.value = validInput; // Устанавливаем отфильтрованное значение
-  };
-  
+
   const handleSaveUsername = (newUsername: string) => {
     const trimmedUsername = newUsername.trim();
-  
-    if (trimmedUsername.length === 0) {
-      alert("Никнейм не может быть пустым!");
+    
+    // Проверка на английские буквы
+    const isValidUsername = /^[A-Za-z]+$/.test(trimmedUsername);
+    
+    if (!isValidUsername) {
+      alert("Никнейм должен содержать только английские буквы!");
       return;
     }
   
@@ -310,8 +308,15 @@ function App() {
     localStorage.setItem('username', trimmedUsername);
     setNicknameModalVisible(false);
   };
+
+  const [selectedIcon, setSelectedIcon] = useState<string>(() => {
+    return localStorage.getItem('selectedIcon') || dar; // Устанавливаем иконку по умолчанию
+  });
   
-  
+  // Сохраняем выбор в localStorage при изменении
+  useEffect(() => {
+    localStorage.setItem('selectedIcon', selectedIcon);
+  }, [selectedIcon]);
   
 
   const renderContent = () => {
@@ -332,8 +337,24 @@ function App() {
                 className="absolute text-base flex items-center"
                 style={{ top: 'calc(85px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
               >
-                <img src={trophy} width={24} height={24} />
-                <span className="ml-1">{username || "Player"}</span>
+                <button
+                  className="avatar-button flex items-center justify-center"
+                  onClick={() => setCurrentPage('IconSelector')}
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: '2px solid #48bb78',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer',
+                    marginRight: '8px',
+                  }}
+                >
+                  <img src={selectedIcon} width={24} height={24} alt="Icon Selector" />
+                </button>
+
+                {/* Имя пользователя */}
+                <span>{username || "Player"}</span>
               </div>
             </div>
           </>
@@ -361,6 +382,13 @@ function App() {
 
       case 'tasks':
         return <h2>Страница "Tasks"</h2>;
+      case 'IconSelector':
+        return (
+          <IconSelector
+          setCurrentPage={setCurrentPage}
+          selectedIcon={selectedIcon}
+          setSelectedIcon={setSelectedIcon}
+          />);
         /*Верхний блок*/
       case 'top':
         return <h2>Страница "Top"</h2>
@@ -519,7 +547,6 @@ function App() {
               type="text"
               placeholder="Введите ник..."
               maxLength={16}
-              onInput={handleInputChange} // Фильтруем ввод
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && e.currentTarget.value.trim()) {
                   handleSaveUsername(e.currentTarget.value.trim());

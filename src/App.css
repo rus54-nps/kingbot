@@ -203,3 +203,17 @@
 .modal button:hover {
   background: #f3b228;
 }
+
+.icon-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon-option img {
+  transition: transform 0.2s;
+}
+
+.icon-option.selected img {
+  transform: scale(1.2);
+}
