@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { coin as coinImage, highVoltage, shp, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon2, loadingGif, dar } from './images';
+import { coin as coinImage, highVoltage, shp, notcoin, sett, hom, top, frnd, medal, autfr, gam, task, zvuk, fon2, loadingGif, ava1 } from './images';
 import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
@@ -100,10 +100,10 @@ function App() {
     }
   }, []);
 
-  const [showGameModal, setShowGameModal] = useState(false);
-  const handleGameClick = () => {
-    setShowGameModal(true);
-    setTimeout(() => setShowGameModal(false), 2000); // Скрываем окно через 2 секунды
+  const [showNoModal, setShowNoModal] = useState(false);
+  const handleNoClick = () => {
+    setShowNoModal(true);
+    setTimeout(() => setShowNoModal(false), 2000); // Скрываем окно через 2 секунды
   };
 
   // Таймер для начисления дохода от автофарма
@@ -310,7 +310,7 @@ function App() {
   };
 
   const [selectedIcon, setSelectedIcon] = useState<string>(() => {
-    return localStorage.getItem('selectedIcon') || dar; // Устанавливаем иконку по умолчанию
+    return localStorage.getItem('selectedIcon') || ava1; // Устанавливаем иконку по умолчанию
   });
   
   // Сохраняем выбор в localStorage при изменении
@@ -328,14 +328,14 @@ function App() {
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '70px', left: '50%', transform: 'translateX(-70% )' }}
+                style={{ top: '65px', left: '50%', transform: 'translateX(-70% )' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
-                style={{ top: 'calc(85px + 44px)', left: '50%', transform: 'translateX(-70%)' }}
+                style={{ top: 'calc(80px + 39px)', left: '50%', transform: 'translateX(-70%)' }}
               >
                 <button
                   className="avatar-button flex items-center justify-center"
@@ -377,9 +377,6 @@ function App() {
           setCurrentPage={setCurrentPage}
           />
         );
-
-      case 'tasks':
-        return <h2>Страница "Tasks"</h2>;
       case 'IconSelector':
         return (
           <IconSelector
@@ -432,12 +429,12 @@ function App() {
               <span>Home</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('top')}>
+            <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
               <img src={top} width={24} height={24} alt="Top" />
               <span>Top</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('friend')}>
+            <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
               <img src={frnd} width={24} height={24} alt="Friend" />
               <span>Friend</span>
             </button>
@@ -470,7 +467,7 @@ function App() {
   
         <div className="relative flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '80px'}}>
           <div className="relative mb-4" onClick={handleClick}>
-            <img src={notcoin} width={250} height={200} className={isShaking ? 'shake' : ''} style={{ transform: 'translateX(-20px)' }} alt="notcoin"/>
+            <img src={notcoin} width={230} height={200} className={isShaking ? 'shake' : ''} style={{ transform: 'translateX(-20px) translateY(15px)'  }} alt="notcoin"/>
             {coins.map((coin) => (
               <div
                 key={coin.id}
@@ -488,7 +485,7 @@ function App() {
           </div>
 
           {/* Энергия под монетой */}
-          <div className="flex flex-col items-center mt-2">
+          <div className="flex flex-col items-center mt-2"style={{ marginTop: '-5px' }}>
             <div className="flex items-center justify-center">
              <img src={highVoltage} width={24} height={24} alt="HighVoltage" className="mr-2" />
               <span className="text-white text-xl font-bold">{energy}</span>
@@ -504,7 +501,7 @@ function App() {
         </div>
   
         {/* Нижний блок с кнопками (frend, earn, shop, achiv) */}
-        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10">
+        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10" style={{ marginTop: '5px' }}>
           <div className="w-full max-w-md  py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
               <img src={shp} width={24} height={24} alt="Shop" />
@@ -516,12 +513,12 @@ function App() {
               <span>Autofarm</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={handleGameClick}>
+            <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
               <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('tasks')}>
+            <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
               <img src={task} width={24} height={24} alt="Tasks" />
               <span>Tasks</span>
             </button>
@@ -532,7 +529,7 @@ function App() {
             <span>Разблокировка будет доступна после улучшение тапа на 10lvl</span>
           </div>
         )}
-        {showGameModal && (
+        {showNoModal && (
           <div className="locked-message">
           <span>Скоро появится</span>
         </div>
