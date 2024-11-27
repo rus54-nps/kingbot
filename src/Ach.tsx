@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Ach.css';
-import { zl, bl, per, zad } from './images';
+import { bl, zad, per, k1, k2, k3, k4, k5, en1, en2, en3, tap1, tap2, tap3, fullach } from './images';
 
 // Определение типа для достижения
 type Achievement = {
@@ -13,21 +13,21 @@ type Achievement = {
 
 const achievements: Achievement[] = [
   /*Заработок монет*/
-  { id: 1, name: "Первый Шаг", description: "Заработайте 1 000 монет", image: zl, unlocked: false },
-  { id: 2, name: "Медленный старт", description: "Заработайте 10 000 монет", image: zl, unlocked: false },
-  { id: 3, name: "Финансовый прорыв", description: "Заработайте 100 000 монет", image: zl, unlocked: false },
-  { id: 4, name: "Монетный Магнат", description: "Заработайте 1 000 000 монет", image: zl, unlocked: false },
-  { id: 5, name: "Золотая Лихорадка", description: "Заработайте 10 000 000 монет", image: zl, unlocked: false },
+  { id: 1, name: "Первый Шаг", description: "Заработайте 1 000 монет", image: k1, unlocked: false },
+  { id: 2, name: "Медленный старт", description: "Заработайте 10 000 монет", image: k2, unlocked: false },
+  { id: 3, name: "Финансовый прорыв", description: "Заработайте 100 000 монет", image: k3, unlocked: false },
+  { id: 4, name: "Монетный Магнат", description: "Заработайте 1 000 000 монет", image: k4, unlocked: false },
+  { id: 5, name: "Золотая Лихорадка", description: "Заработайте 10 000 000 монет", image: k5, unlocked: false },
   /*Максимальная энергия*/
-  { id: 6, name: "Начинающий энергетик", description: "Увеличьте максимальную энергию до 5 000", image: zl, unlocked: false },
-  { id: 7, name: "Энергетик", description: "Увеличьте максимальную энергию до 10 000", image: zl, unlocked: false },
-  { id: 8, name: "Энергетический Гигант", description: "Увеличьте максимальную энергию до 15 000", image: zl, unlocked: false },
+  { id: 6, name: "Начинающий энергетик", description: "Увеличьте максимальную энергию до 5 000", image: en1, unlocked: false },
+  { id: 7, name: "Энергетик", description: "Увеличьте максимальную энергию до 10 000", image: en2, unlocked: false },
+  { id: 8, name: "Энергетический Гигант", description: "Увеличьте максимальную энергию до 15 000", image: en3, unlocked: false },
   /*Количество тапов*/
-  { id: 9, name: "Начинающий тапер", description: "Сделайте 1 000 тапов", image: zl, unlocked: false },
-  { id: 10, name: "Мастери Тапа", description: "Сделайте 100 000 тапов", image: zl, unlocked: false },
-  { id: 11, name: "Владыка Тапов", description: "Сделайте 1 000 000 тапов", image: zl, unlocked: false },
+  { id: 9, name: "Начинающий тапер", description: "Сделайте 1 000 тапов", image: tap1, unlocked: false },
+  { id: 10, name: "Мастери Тапа", description: "Сделайте 100 000 тапов", image: tap2, unlocked: false },
+  { id: 11, name: "Владыка Тапов", description: "Сделайте 1 000 000 тапов", image: tap3, unlocked: false },
   /*Завершение достижений*/
-  { id: 12, name: "Чемпион", description: "Добейтесь 100% выполнения всех достижений", image: zl, unlocked: false },
+  { id: 12, name: "Чемпион", description: "Добейтесь 100% выполнения всех достижений", image: fullach, unlocked: false },
   /*
   { id: 13, name: "Потрачено", description: "Потратьте 1000 монет в магазине", image: zl, unlocked: false },
   /*

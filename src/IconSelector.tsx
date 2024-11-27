@@ -1,5 +1,5 @@
 import React from 'react';
-import { dar, shp, notcoin, gam, medal } from './images';
+import { ava1, ava2, ava3, ava4, ava5, ava6, ava7 } from './images';
 import './IconSelector.css';
 
 type IconSelectorProps = {
@@ -9,7 +9,7 @@ type IconSelectorProps = {
 };
 
 const IconSelector: React.FC<IconSelectorProps> = ({ selectedIcon, setSelectedIcon, setCurrentPage }) => {
-  const icons = [dar, shp, notcoin, gam, medal];
+  const icons = [ava1, ava2, ava3, ava4, ava5, ava6, ava7];
 
   const handleIconClick = (icon: string) => {
     console.log(`Icon clicked: ${icon}`); // Проверка кликов

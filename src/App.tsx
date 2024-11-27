@@ -343,14 +343,12 @@ function App() {
                   style={{
                     width: '40px',
                     height: '40px',
-                    borderRadius: '50%',
-                    border: '2px solid #48bb78',
                     backgroundColor: 'transparent',
                     cursor: 'pointer',
                     marginRight: '8px',
                   }}
                 >
-                  <img src={selectedIcon} width={24} height={24} alt="Icon Selector" />
+                  <img src={selectedIcon} width={35} height={24} alt="Icon Selector" />
                 </button>
 
                 {/* Имя пользователя */}

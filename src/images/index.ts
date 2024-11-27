@@ -40,6 +40,25 @@ import task from './tasks.png';
 import zvuk from './zvuk.mp3'
 import fon1 from './fon1.mp3';
 import fon2 from './fon2.mp3';
+import k1 from './1k.png'
+import k2 from './2k.png'
+import k3 from './3k.png'
+import k4 from './4k.png'
+import k5 from './5k.png'
+import en1 from './en1.png'
+import en2 from './en2.png'
+import en3 from './en3.png'
+import fullach from './fullach.png'
+import tap1 from './tap1.png'
+import tap2 from './tap2.png'
+import tap3 from './tap3.png'
+import ava1 from './ava1.png'
+import ava2 from './ava2.png'
+import ava3 from './ava3.png'
+import ava4 from './ava4.png'
+import ava5 from './ava5.png'
+import ava6 from './ava6.png'
+import ava7 from './ava7.png'
 
 export {
     bear,
@@ -72,7 +91,26 @@ export {
     lackm,
     fon1,
     fon2,
-    zvuk
+    zvuk,
+    k1,
+    k2,
+    k3,
+    k4,
+    k5,
+    en1,
+    en2,
+    en3,
+    fullach,
+    tap1,
+    tap2,
+    tap3,
+    ava1,
+    ava2,
+    ava3,
+    ava4,
+    ava5,
+    ava6,
+    ava7,
 }
 
 // Массив изображений для уровней 1–9
