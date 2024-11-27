@@ -70,6 +70,13 @@
   color: #f30101;
 }
 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Отключаем прокрутку */
+}
+
 .App {
   position: relative;
   text-align: center;

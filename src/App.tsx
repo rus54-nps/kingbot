@@ -352,7 +352,7 @@ function App() {
                 </button>
 
                 {/* Имя пользователя */}
-                <span>{username || "Player"}</span>
+                <span style={ {fontSize: '20px'}}>{username || "Player"}</span>
               </div>
             </div>
           </>
