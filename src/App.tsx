@@ -328,14 +328,14 @@ function App() {
             <div style={{ position: 'relative' }}>
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '65px', left: '50%', transform: 'translateX(-70% )' }}
+                style={{ top: '65px', left: '50%', transform: 'translateX(-70% )', marginTop: '-5px' }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </div>
               <div
                 className="absolute text-base flex items-center"
-                style={{ top: 'calc(80px + 39px)', left: '50%', transform: 'translateX(-70%)' }}
+                style={{ top: 'calc(80px + 39px)', left: '50%', transform: 'translateX(-70%)', marginTop: '-5px' }}
               >
                 <button
                   className="avatar-button flex items-center justify-center"
