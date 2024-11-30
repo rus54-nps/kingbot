@@ -1,15 +1,20 @@
 import React from 'react';
 import './Setting.css';
 
-interface SettingProps {
-  onClose: () => void;
-  toggleMusic: () => void;
-  isMusicOn: boolean;
-  toggleCoinSound: () => void;
-  isCoinSoundOn: boolean;
-}
+/**
+ * @typedef {Object} SettingProps
+ * @property {() => void} onClose
+ * @property {() => void} toggleMusic
+ * @property {boolean} isMusicOn
+ * @property {() => void} toggleCoinSound
+ * @property {boolean} isCoinSoundOn
+ */
 
-const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn, toggleCoinSound, isCoinSoundOn, }) => {
+/**
+ * @param {SettingProps} props
+ */
+
+const Setting = ({ onClose, toggleMusic, isMusicOn, toggleCoinSound, isCoinSoundOn, }) => {
   return (
     <div className="settings-overlay">
       <div className="settings-container">

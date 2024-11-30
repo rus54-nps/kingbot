@@ -2,26 +2,31 @@ import React, { useState, useEffect } from 'react';
 import './Shop.css';
 import { item1, item2, item3, coin, tapImages, tapHighLevelImage } from './images'; // Подключаем нужные изображения
 
-interface ShopItem {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  level: number;
-  regenerationRate: number;
-  nextPrice: number;
-  description: string;
-}
+/**
+ * @typedef {Object} ShopItem
+ * @property {number} id
+ * @property {string} name
+ * @property {number} price
+ * @property {string} image
+ * @property {number} level
+ * @property {number} regenerationRate
+ * @property {number} nextPrice
+ * @property {string} description
+ */
 
-const Shop: React.FC<{
-  points: number;
-  setPoints: React.Dispatch<React.SetStateAction<number>>;
-  setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
-  setEnergyRecoveryRate: React.Dispatch<React.SetStateAction<number>>;
-  setMaxEnergy: React.Dispatch<React.SetStateAction<number>>;
-  setPointsToAdd: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd }) => {
-  const [items, setItems] = useState<ShopItem[]>([
+/**
+ * @param {{
+*   points: number,
+*   setPoints: React.Dispatch<React.SetStateAction<number>>,
+*   setCurrentPage: React.Dispatch<React.SetStateAction<string>>,
+*   setEnergyRecoveryRate: React.Dispatch<React.SetStateAction<number>>,
+*   setMaxEnergy: React.Dispatch<React.SetStateAction<number>>,
+*   setPointsToAdd: React.Dispatch<React.SetStateAction<number>>
+* }} props
+*/
+
+const Shop = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd }) => {
+  const [items, setItems] = useState([
     { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, description: 'Увеличивает получаемые за Тап монеты ' },
     { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, description: 'Добавляет энергии: 500' },
     { id: 3, name: 'Реген lvl 1', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Увеличивает скорость восстановления энергии' },
@@ -39,11 +44,11 @@ const Shop: React.FC<{
   }, [items]);
 
   // Функция для получения изображения уровня "Тап"
-  const getTapImageByLevel = (level: number): string => {
+  const getTapImageByLevel = (level) => {
     return level <= 9 ? tapImages[level - 1] : tapHighLevelImage;
   };
 
-  const handlePurchase = (itemId: number) => {
+  const handlePurchase = (itemId) => {
     const itemToPurchase = items.find(item => item.id === itemId);
     if (itemToPurchase && points >= itemToPurchase.price) {
       const updatedItems = items.map(item => {
