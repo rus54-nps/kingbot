@@ -1,0 +1,78 @@
+.memo-game {
+    position: fixed; /* Фиксируем на экране */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Полная ширина окна */
+    height: 100vh; /* Полная высота окна */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #30d7dd; /* Цвет фона */
+    z-index: 9999; /* Перекрываем остальные элементы */
+  }
+  
+  
+  .memo-game h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Три карточки в ряду */
+    gap: 15px; /* Расстояние между карточками */
+  }
+  
+  .card {
+    width: 80px; /* Ширина карточки */
+    height: 100px; /* Высота карточки */
+    perspective: 1000px; /* Перспектива для эффекта переворота */
+    cursor: pointer;
+    position: relative; /* Для вложенных слоев */
+  }
+  
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Корректное масштабирование изображений */
+    border-radius: 8px; /* Скругленные углы */
+  }
+  
+  .card.flipped .card-front {
+    transform: rotateY(0);
+  }
+  
+  .card.flipped .card-back {
+    transform: rotateY(180deg);
+  }
+  
+  .card-front,
+  .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden; /* Скрывает обратную сторону */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s ease;
+  }
+  
+  .card-front {
+    background: #ffffff; /* Цвет лицевой стороны */
+    transform: rotateY(180deg); /* Скрывает переднюю сторону изначально */
+  }
+  
+  .card-back {
+    background: #f3b228; /* Цвет обратной стороны */
+    color: #fff; /* Цвет текста */
+  }
+  

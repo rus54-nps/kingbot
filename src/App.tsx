@@ -6,6 +6,7 @@ import Setting from './Setting';
 import Achiv from './Ach';
 import Autfrm from './Autfrm';
 import IconSelector from './IconSelector';
+import Game from './Game';
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
@@ -384,6 +385,12 @@ function App() {
           selectedIcon={selectedIcon}
           setSelectedIcon={setSelectedIcon}
           />);
+      case 'game':
+        return (
+          <Game
+          setCurrentPage={setCurrentPage} 
+          
+          />);
         /*Верхний блок*/
       case 'top':
         return <h2>Страница "Top"</h2>
@@ -513,10 +520,11 @@ function App() {
               <span>Autofarm</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('game')}>
               <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
             </button>
+
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
               <img src={task} width={24} height={24} alt="Tasks" />
