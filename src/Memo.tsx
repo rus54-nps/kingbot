@@ -4,15 +4,19 @@ import { k1, k2 } from './images';
 
 interface MemoProps {
   setCurrentPage: (page: string) => void; // Функция для возврата на другие страницы
+  attemptsLeft: number; // Количество оставшихся попыток
+  updateAttempts: (newAttempts: number) => void; // Функция для обновления количества попыток
 }
 
-const Memo: React.FC<MemoProps> = ({ setCurrentPage }) => {
+const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempts }) => {
   // Массив изображений
   const images = [k1, k2];
   const [cards, setCards] = useState<{ image: string; id: number }[]>([]);
   const [flipped, setFlipped] = useState<number[]>([]);
   const [matched, setMatched] = useState<number[]>([]);
   const [disableClick, setDisableClick] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(30); // Время игры в секундах
+  const [gameOver, setGameOver] = useState(false);
 
   // Инициализация карточек
   useEffect(() => {
@@ -21,6 +25,21 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage }) => {
       .map((image) => ({ image, id: Math.random() })); // Создаем массив объектов
     setCards(shuffledCards);
   }, []);
+
+  // Таймер для отсчета времени
+  useEffect(() => {
+    if (gameOver) return; // Останавливаем таймер, если игра окончена
+
+    if (timeRemaining > 0) {
+      const timer = setInterval(() => {
+        setTimeRemaining((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer); // Очистка таймера при выходе из useEffect
+    } else {
+      alert('Время вышло! Вы проиграли!');
+      handleEndGame();
+    }
+  }, [timeRemaining, gameOver]);
 
   // Логика сравнения
   useEffect(() => {
@@ -40,23 +59,47 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage }) => {
   // Проверка на победу
   useEffect(() => {
     if (matched.length === cards.length && cards.length > 0) {
+      setGameOver(true); // Завершаем игру при победе
       setTimeout(() => {
         alert('Вы победили!');
-        setCurrentPage('home'); // Возвращаемся к списку мини-игр
-      }, 500); // Небольшая задержка для завершения анимации
+        handleEndGame();
+      }, 500);
     }
-  }, [matched, cards, setCurrentPage]);
-  
+  }, [matched, cards]);
 
+  // Завершение игры
+  const handleEndGame = () => {
+    if (attemptsLeft > 0) {
+      updateAttempts(attemptsLeft - 1); // Уменьшаем количество оставшихся попыток
+    }
+    setCurrentPage('home'); // Возвращаемся на главную страницу
+  };
+
+  // Обработчик кликов по карточкам
   const handleCardClick = (index: number) => {
     if (!flipped.includes(index) && !matched.includes(index) && !disableClick) {
       setFlipped((prev) => [...prev, index]);
     }
   };
 
+  // Проверка, есть ли оставшиеся попытки
+  if (attemptsLeft <= 0) {
+    return (
+      <div className="memo-game">
+        <h1>Memo Game</h1>
+        <h2>У вас закончились попытки!</h2>
+        <button onClick={() => setCurrentPage('home')}>Назад</button>
+      </div>
+    );
+  }
+
   return (
     <div className="memo-game">
       <h1>Memo Game</h1>
+      <div className="timer">
+        <h2>Оставшееся время: {timeRemaining} сек</h2>
+        <h3>Оставшиеся попытки: {attemptsLeft}</h3>
+      </div>
       <div className="cards-grid">
         {cards.map((card, index) => (
           <div
