@@ -52,7 +52,7 @@ function App() {
 
   const activateBuff = () => {
     setIsBuffActive(true);
-    setBuffTime(60); // Устанавливаем 1 минуту для действия баффа
+    setBuffTime(600); // Устанавливаем 1 минуту для действия баффа
   };
 
   useEffect(() => {
@@ -574,9 +574,6 @@ function App() {
           <span>Скоро появится</span>
         </div>
         )}
-        {isBuffActive &&
-        <div>Бафф активен! Время: {buffTime} сек
-        </div>}
         {isNicknameModalVisible && (
         <div className="modal-overlay">
           <div className="modal">

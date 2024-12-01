@@ -3,6 +3,7 @@ import Memo from './Memo';
 import './Game.css';
 import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
+import { bafx2 } from './images';
 
 interface GameProps {
   setCurrentPage: (page: string) => void;
@@ -79,6 +80,12 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
 
   return (
     <div className="game-container">
+      {isBuffActive && buffTime !== null && (
+        <div className="buff-info">
+          <img src={bafx2} alt="Buff" className="buff-icon" />
+          <span className="buff-time">{buffTime} сек</span>
+        </div>
+      )}
       <button className="back-button" onClick={handleBack}>
         Назад
       </button>
@@ -89,7 +96,7 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
           <h1 className="game-title">Мини-игры</h1>
           <div className="game-list">
             <button className="game-item" onClick={() => setCurrentGame('memo')}>
-              Игра 1
+              Memo
             </button>
             <button className="game-item">Игра 2</button>
           </div>
