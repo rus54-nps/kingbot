@@ -6,9 +6,13 @@ interface MemoProps {
   setCurrentPage: (page: string) => void; // Функция для возврата на другие страницы
   attemptsLeft: number; // Количество оставшихся попыток
   updateAttempts: (newAttempts: number) => void; // Функция для обновления количества попыток
+  activateBuff: () => void;
+  isBuffActive: boolean;
+  buffTime: number | null;
+  taps: number;
 }
 
-const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempts }) => {
+const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempts, activateBuff}) => {
   // Массив изображений
   const images = [k1, k2];
   const [cards, setCards] = useState<{ image: string; id: number }[]>([]);
@@ -60,6 +64,7 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
   useEffect(() => {
     if (matched.length === cards.length && cards.length > 0) {
       setGameOver(true); // Завершаем игру при победе
+      activateBuff(); // Активируем бафф
       setTimeout(() => {
         alert('Вы победили!');
         handleEndGame();
@@ -96,9 +101,10 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
   return (
     <div className="memo-game">
       <h1>Memo Game</h1>
+      <button onClick={() => setCurrentPage('home')}>Назад</button>
+    
       <div className="timer">
         <h2>Оставшееся время: {timeRemaining} сек</h2>
-        <h3>Оставшиеся попытки: {attemptsLeft}</h3>
       </div>
       <div className="cards-grid">
         {cards.map((card, index) => (

@@ -5,10 +5,14 @@ import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 
 interface GameProps {
-  setCurrentPage: (page: string) => void; // Функция для возврата на другие страницы
+  setCurrentPage: (page: string) => void;
+  activateBuff: () => void;
+  isBuffActive: boolean;
+  buffTime: number | null;
+  taps: number;
 }
 
-const Game: React.FC<GameProps> = ({ setCurrentPage }) => {
+const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive, buffTime, taps }) => {
   const [currentGame, setCurrentGame] = useState<string | null>(null);
   const [attemptsLeft, setAttemptsLeft] = useState<number>(5); // Состояние для оставшихся попыток
 
@@ -96,6 +100,10 @@ const Game: React.FC<GameProps> = ({ setCurrentPage }) => {
           setCurrentPage={setCurrentPage}
           attemptsLeft={attemptsLeft}
           updateAttempts={updateAttempts}
+          activateBuff={activateBuff}
+          isBuffActive={isBuffActive}
+          buffTime={buffTime}
+          taps={taps}
         />
       )}
     </div>

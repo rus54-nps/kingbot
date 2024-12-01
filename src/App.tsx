@@ -47,9 +47,31 @@ function App() {
     { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
     { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
   ]);
+  const [isBuffActive, setIsBuffActive] = useState<boolean>(false); // Статус активации баффа
+  const [buffTime, setBuffTime] = useState<number | null>(null); // Время оставшегося действия баффа
+
+  const activateBuff = () => {
+    setIsBuffActive(true);
+    setBuffTime(60); // Устанавливаем 1 минуту для действия баффа
+  };
+
+  useEffect(() => {
+    if (isBuffActive && buffTime !== null && buffTime > 0) {
+      const timer = setInterval(() => {
+        setBuffTime((prev) => (prev ? prev - 1 : 0));
+      }, 1000);
+      return () => clearInterval(timer);
+    } else {
+      setIsBuffActive(false); // Деактивируем бафф по истечении времени
+    }
+  }, [isBuffActive, buffTime]);
 
   const handleTap = () => {
-    setTaps(prevTaps => prevTaps + 1);
+    let coins = 1; // Базовое количество монет за тап
+    if (isBuffActive) {
+      coins *= 2; // Удваиваем количество монет, если бафф активен
+    }
+    setTaps((prevTaps) => prevTaps + coins); // Обновляем счетчик монет
   };
 
   // Рассчитываем восстановленную энергию на основе времени
@@ -389,7 +411,10 @@ function App() {
         return (
           <Game
           setCurrentPage={setCurrentPage} 
-          
+          activateBuff={activateBuff}
+          isBuffActive={isBuffActive}
+          buffTime={buffTime}
+          taps={taps}
           />);
         /*Верхний блок*/
       case 'top':
@@ -524,7 +549,6 @@ function App() {
               <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
             </button>
-
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
               <img src={task} width={24} height={24} alt="Tasks" />
@@ -542,6 +566,9 @@ function App() {
           <span>Скоро появится</span>
         </div>
         )}
+        {isBuffActive &&
+        <div>Бафф активен! Время: {buffTime} сек
+        </div>}
         {isNicknameModalVisible && (
         <div className="modal-overlay">
           <div className="modal">
