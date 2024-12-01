@@ -66,6 +66,14 @@ function App() {
     }
   }, [isBuffActive, buffTime]);
 
+  useEffect(() => {
+    if (isBuffActive) {
+      setPointsToAdd((prev) => prev * 2); // Удваиваем добавляемые очки
+    } else {
+      setPointsToAdd((prev) => Math.max(1, prev / 2)); // Возвращаем к исходному значению
+    }
+  }, [isBuffActive]);
+
   const handleTap = () => {
     let coins = 1; // Базовое количество монет за тап
     if (isBuffActive) {
