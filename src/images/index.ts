@@ -60,6 +60,12 @@ import ava5 from './ava5.png'
 import ava6 from './ava6.png'
 import ava7 from './ava7.png'
 import bafx2 from './bafx2.png'
+import m1 from './m1.jpg'
+import m2 from './m2.jpg'
+import m3 from './m3.jpg'
+import m4 from './m4.jpg'
+import m5 from './m5.jpg'
+import m6 from './m6.jpg'
 
 export {
     bear,
@@ -112,7 +118,13 @@ export {
     ava5,
     ava6,
     ava7,
-    bafx2
+    bafx2,
+    m1,
+    m2,
+    m3,
+    m4,
+    m5,
+    m6,
 }
 
 // Массив изображений для уровней 1–9
