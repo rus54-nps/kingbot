@@ -56,7 +56,7 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
       setTimeout(() => {
         setFlipped([]);
         setDisableClick(false);
-      }, 1000);
+      }, 500);
     }
   }, [flipped, cards]);
 
