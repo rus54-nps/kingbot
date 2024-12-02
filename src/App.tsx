@@ -103,7 +103,7 @@ function App() {
   };
 
   //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВЛ ТАБ)*//
-  const isAutoFarmUnlocked = pointsToAdd >= 10;
+  const isAutoFarmUnlocked = pointsToAdd >= 0;
   const [showLockedMessage, setShowLockedMessage] = useState(false);
   const openAutoFarm = () => {
     if (isAutoFarmUnlocked) {
@@ -349,6 +349,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem('selectedIcon', selectedIcon);
   }, [selectedIcon]);
+
+  const [playerCoins] = useState<number>(points); // Количество монет у игрока
+
   
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -429,6 +432,8 @@ function App() {
         return (
           <Top
           setCurrentPage={setCurrentPage}
+          playerCoins={playerCoins}
+          selectedIcon={selectedIcon}
         />);
       case 'friend':
         return <h2>Страница "Friend"</h2>;
