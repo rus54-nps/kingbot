@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Memo.css';
-import { k1, k2 } from './images';
+import { k1, k2, k3, k4, k5, tap1 } from './images';
 
 interface MemoProps {
   setCurrentPage: (page: string) => void; // Функция для возврата на другие страницы
@@ -14,7 +14,7 @@ interface MemoProps {
 
 const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempts, activateBuff}) => {
   // Массив изображений
-  const images = [k1, k2];
+  const images = [k1, k2, k3, k4, k5, tap1];
   const [cards, setCards] = useState<{ image: string; id: number }[]>([]);
   const [flipped, setFlipped] = useState<number[]>([]);
   const [matched, setMatched] = useState<number[]>([]);
