@@ -76,7 +76,7 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins }) => {
     setTopPlayers(loadPlayers());
 
     // Устанавливаем интервал обновления каждые 20 секунд
-    const interval = setInterval(updateBotRanks, 200);
+    const interval = setInterval(updateBotRanks, 2000);
 
     return () => clearInterval(interval);
   }, [playerCoins]); // Обновление, если изменились монеты игрока
