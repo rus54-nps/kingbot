@@ -56,7 +56,7 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) 
     updatePlayerRanks();
 
     // Устанавливаем интервал обновления раз в сутки
-    const interval = setInterval(updatePlayerRanks, 24 * 60 * 60 * 1000);
+    const interval = setInterval(updatePlayerRanks, 60 * 1000);
 
     return () => clearInterval(interval);
   }, [playerCoins, selectedIcon]); // Зависимость от монет и аватара игрока
