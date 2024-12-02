@@ -35,7 +35,7 @@
   font-size: 2rem;
   font-weight: bold;
   color: #f9c035; /* Цвет текста */
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   z-index: 2;
 }
 
@@ -48,7 +48,7 @@
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
   flex-grow: 1;
   justify-content: flex-start;
   z-index: 2;
@@ -117,22 +117,26 @@
 
 /* Элемент игрока "Вы" */
 .current-player {
-  margin-top: 20px; /* Увеличенный отступ сверху */
+  margin-top: 10px; /* Увеличенный отступ сверху */
   position: relative;
-}
-
-.current-player .player-rank {
-  display: inline; /* Показываем знак # */
-  font-size: 20px;
-  font-weight: bold;
-  color: #f9c035;
-}
-
-.current-player .player-name {
-  margin-left: 5px;
+  background-color: #921a1a; /* Легкий фон для выделения */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для выделения */
 }
 
 /* Для игрока "Вы" добавляем отступ для аватарки */
+/* Для игрока "Вы" добавляем отступ для аватарки */
 .current-player .player-avatar {
-  margin-left: 10px; /* Увеличиваем отступ слева, чтобы аватар был на одном уровне с другими игроками */
+  border: 2px solid #f9c035; /* Золотая рамка для аватара */
+  margin-left: 10px; /* Добавляем отступ слева */
 }
+
+
+.current-player .player-name {
+  color: #f9c035; /* Золотой цвет для имени */
+  font-weight: bold;
+}
+
+.current-player .player-coins {
+  color: #f9c035; /* Золотой цвет для монет */
+}
+

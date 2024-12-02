@@ -433,6 +433,7 @@ function App() {
           <Top
           setCurrentPage={setCurrentPage}
           playerCoins={playerCoins}
+          selectedIcon={selectedIcon}
         />);
       case 'friend':
         return <h2>Страница "Friend"</h2>;
