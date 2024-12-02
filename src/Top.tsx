@@ -97,11 +97,6 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) 
               className={`top-player ${isCurrentPlayer ? 'current-player' : ''}`}
             >
               <div className="player-info">
-                {isCurrentPlayer ? (
-                  <div className="player-rank">#</div> // Знак # для текущего игрока
-                ) : (
-                  <div className="player-rank">#{player.rank}</div>
-                )}
                 <img src={player.avatar} alt={player.name} className="player-avatar" />
                 <span className="player-name">{player.name}</span>
               </div>

@@ -35,7 +35,7 @@
   font-size: 2rem;
   font-weight: bold;
   color: #f9c035; /* Цвет текста */
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   z-index: 2;
 }
 
@@ -48,7 +48,7 @@
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex-grow: 1;
   justify-content: flex-start;
   z-index: 2;
@@ -63,7 +63,7 @@
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px 15px;
-  height: 70px;
+  height: 68px;
   border: 2px solid #f9c035; /* Золотая рамка */
   transition: transform 0.2s ease, background-color 0.3s ease;
   z-index: 2;
@@ -117,7 +117,7 @@
 
 /* Элемент игрока "Вы" */
 .current-player {
-  margin-top: 10px; /* Увеличенный отступ сверху */
+  margin-top: 15px; /* Увеличенный отступ сверху */
   position: relative;
   background-color: #921a1a; /* Легкий фон для выделения */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для выделения */
@@ -127,7 +127,6 @@
 /* Для игрока "Вы" добавляем отступ для аватарки */
 .current-player .player-avatar {
   border: 2px solid #f9c035; /* Золотая рамка для аватара */
-  margin-left: 10px; /* Добавляем отступ слева */
 }
 
 
@@ -139,4 +138,27 @@
 .current-player .player-coins {
   color: #f9c035; /* Золотой цвет для монет */
 }
+
+/* Кнопка назад */
+.achievements-back-button {
+  position: absolute; /* Закрепить кнопку */
+  bottom: 40px; /* Расстояние от нижнего края */
+  left: 50%; /* Центрировать по горизонтали */
+  transform: translateX(-50%); /* Сдвиг на 50% влево для точного центрирования */
+  background-color: #f9c035;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 3; /* Чтобы кнопка была выше других элементов */
+}
+
+.achievements-back-button:hover {
+  background-color: #e2f0f9;
+  transform: scale(1.05) translateX(-50%); /* Центрирование и увеличение при наведении */
+}
+
 
