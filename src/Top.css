@@ -141,9 +141,9 @@
 
 /* Кнопка назад */
 .achievements-back-button {
-  position: absolute; /* Закрепить кнопку */
-  bottom: 40px; /* Расстояние от нижнего края */
-  left: 50%; /* Центрировать по горизонтали */
+  position: absolute; /* Позиционирование относительно контейнера .top-container */
+  bottom: 20px; /* Расстояние от нижнего края контейнера */
+  left: 50%; /* Центрирование по горизонтали */
   transform: translateX(-50%); /* Сдвиг на 50% влево для точного центрирования */
   background-color: #f9c035;
   color: white;
@@ -160,5 +160,12 @@
   background-color: #e2f0f9;
   transform: scale(1.05) translateX(-50%); /* Центрирование и увеличение при наведении */
 }
+
+
+
+
+
+
+
 
 

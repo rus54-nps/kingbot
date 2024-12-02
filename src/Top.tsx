@@ -110,6 +110,7 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) 
         Назад
       </button>
     </div>
+    
   );
 };
 
