@@ -13,61 +13,73 @@ interface Player {
 interface TopProps {
   setCurrentPage: (page: string) => void;
   playerCoins: number; // Количество монет у текущего игрока
-  selectedIcon: string; // Аватар текущего игрока
 }
 
 const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins }) => {
   const initialPlayers: Player[] = [
-    { rank: 1, name: 'Legend', avatar: ava1, coins: 7000, growthRate: 1.45 },
-    { rank: 2, name: 'Champion', avatar: ava2, coins: 6500, growthRate: 1.43 },
-    { rank: 3, name: 'Warrior', avatar: ava3, coins: 6000, growthRate: 1.44 },
-    { rank: 4, name: 'Hunter', avatar: ava4, coins: 5500, growthRate: 1.46 },
-    { rank: 5, name: 'Rogue', avatar: ava5, coins: 5000, growthRate: 1.42 },
-    { rank: 6, name: 'Paladin', avatar: ava6, coins: 4500, growthRate: 1.46 },
+    { rank: 1, name: 'Legend', avatar: ava1, coins: 7000, growthRate: 1.2 },
+    { rank: 2, name: 'Champion', avatar: ava2, coins: 6500, growthRate: 1.15 },
+    { rank: 3, name: 'Warrior', avatar: ava3, coins: 6000, growthRate: 1.1 },
+    { rank: 4, name: 'Hunter', avatar: ava4, coins: 5500, growthRate: 1.08 },
+    { rank: 5, name: 'Rogue', avatar: ava5, coins: 5000, growthRate: 1.12 },
+    { rank: 6, name: 'Paladin', avatar: ava6, coins: 4500, growthRate: 1.05 },
   ];
 
-  const [topPlayers, setTopPlayers] = useState<Player[]>(initialPlayers);
+  const [topPlayers, setTopPlayers] = useState<Player[]>([]);
 
-  // Функция обновления монет у ботов
-  const updatePlayerRanks = () => {
-    const updatedPlayers = initialPlayers.map((player) => ({
-      ...player,
-      coins: Math.ceil(playerCoins * 1.2 * player.growthRate), // Минимум на 20% больше игрока
-    }));
-
-    // Сортируем игроков по количеству монет
-    updatedPlayers.sort((a, b) => b.coins - a.coins);
-
-    // Обновляем ранги
-    updatedPlayers.forEach((player, index) => {
-      player.rank = index + 1;
-    });
-
-    setTopPlayers(updatedPlayers);
+  // Загрузка данных из localStorage или использование начальных значений
+  const loadPlayers = (): Player[] => {
+    const savedPlayers = localStorage.getItem('topPlayers');
+    if (savedPlayers) {
+      return JSON.parse(savedPlayers) as Player[];
+    }
+    return initialPlayers;
   };
 
-  // Проверка и обновление монет раз в сутки
+  // Сохранение данных в localStorage
+  const savePlayers = (players: Player[]) => {
+    localStorage.setItem('topPlayers', JSON.stringify(players));
+  };
+
+  // Обновление данных ботов
+  const updateBotRanks = () => {
+    setTopPlayers((prevPlayers) => {
+      const updatedPlayers = prevPlayers.map((player) => {
+        const isPlayer = player.name === 'Вы';
+  
+        // Для ботов увеличиваем монеты на основе монет игрока
+        if (!isPlayer) {
+          const playerBoost = playerCoins * (1.15 + Math.random() * 0.15); // 15%-30% больше монет игрока
+          return { ...player, coins: Math.max(player.coins, playerBoost) }; // Увеличиваем только вверх
+        }
+  
+        return player; // Игрока не трогаем
+      });
+  
+      // Сортируем игроков по количеству монет (убывание)
+      const sortedPlayers = [...updatedPlayers].sort((a, b) => b.coins - a.coins);
+  
+      // Обновляем ранги на основе сортировки
+      sortedPlayers.forEach((player, index) => {
+        player.rank = index + 1;
+      });
+  
+      savePlayers(sortedPlayers);
+      return sortedPlayers;
+    });
+  };
+  
+  
+
   useEffect(() => {
-    const lastUpdate = localStorage.getItem('lastUpdate');
-    const now = Date.now();
+    // Загрузка начальных игроков
+    setTopPlayers(loadPlayers());
 
-    if (!lastUpdate || now - parseInt(lastUpdate) > 24 * 60 * 60 * 1000) {
-      localStorage.setItem('lastUpdate', now.toString());
-      updatePlayerRanks(); // Обновляем ботов, если прошло 24 часа
-    }
-
-    const interval = setInterval(() => {
-      const lastUpdate = localStorage.getItem('lastUpdate');
-      const now = Date.now();
-
-      if (!lastUpdate || now - parseInt(lastUpdate) > 20 * 1000) {
-        localStorage.setItem('lastUpdate', now.toString());
-        updatePlayerRanks();
-      }
-    }, 60 * 1000); // Проверка каждую минуту
+    // Устанавливаем интервал обновления каждые 20 секунд
+    const interval = setInterval(updateBotRanks, 200);
 
     return () => clearInterval(interval);
-  }, [playerCoins]);
+  }, [playerCoins]); // Обновление, если изменились монеты игрока
 
   return (
     <div className="top-container">
