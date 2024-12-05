@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Memo.css';
-import { m1, m2, m3, m4, m5, m6} from './images';
+import { m1, m2, m3, m4, m5, m6 } from './images';
 
 interface MemoProps {
   setCurrentPage: (page: string) => void; // Функция для возврата на другие страницы
@@ -12,7 +12,12 @@ interface MemoProps {
   taps: number;
 }
 
-const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempts, activateBuff}) => {
+const Memo: React.FC<MemoProps> = ({
+  setCurrentPage,
+  attemptsLeft,
+  updateAttempts,
+  activateBuff,
+}) => {
   // Массив изображений
   const images = [m1, m2, m3, m4, m5, m6];
   const [cards, setCards] = useState<{ image: string; id: number }[]>([]);
@@ -21,24 +26,25 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
   const [disableClick, setDisableClick] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(30); // Время игры в секундах
   const [gameOver, setGameOver] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false); // Новое состояние
 
   // Инициализация карточек
   useEffect(() => {
-    const shuffledCards = [...images, ...images] // Дублируем изображения
-      .sort(() => Math.random() - 0.5) // Перемешиваем
-      .map((image) => ({ image, id: Math.random() })); // Создаем массив объектов
+    const shuffledCards = [...images, ...images]
+      .sort(() => Math.random() - 0.5)
+      .map((image) => ({ image, id: Math.random() }));
     setCards(shuffledCards);
   }, []);
 
   // Таймер для отсчета времени
   useEffect(() => {
-    if (gameOver) return; // Останавливаем таймер, если игра окончена
+    if (gameOver) return;
 
     if (timeRemaining > 0) {
       const timer = setInterval(() => {
         setTimeRemaining((prev) => prev - 1);
       }, 1000);
-      return () => clearInterval(timer); // Очистка таймера при выходе из useEffect
+      return () => clearInterval(timer);
     } else {
       alert('Время вышло! Вы проиграли!');
       handleEndGame();
@@ -63,8 +69,8 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
   // Проверка на победу
   useEffect(() => {
     if (matched.length === cards.length && cards.length > 0) {
-      setGameOver(true); // Завершаем игру при победе
-      activateBuff(); // Активируем бафф
+      setGameOver(true);
+      activateBuff();
       setTimeout(() => {
         alert('Вы победили!');
         handleEndGame();
@@ -72,20 +78,27 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
     }
   }, [matched, cards]);
 
-  // Завершение игры
-  const handleEndGame = () => {
-    if (attemptsLeft > 0) {
-      updateAttempts(attemptsLeft - 1); // Уменьшаем количество оставшихся попыток
-    }
-    setCurrentPage('home'); // Возвращаемся на главную страницу
-  };
+ // Завершение игры
+const handleEndGame = () => {
+  if (hasInteracted && attemptsLeft > 0) {
+    updateAttempts(attemptsLeft - 1); // Уменьшаем попытки только если было взаимодействие
+  }
+  setCurrentPage('home'); // Возвращаемся на главную страницу
+};
 
-  // Обработчик кликов по карточкам
-  const handleCardClick = (index: number) => {
-    if (!flipped.includes(index) && !matched.includes(index) && !disableClick) {
-      setFlipped((prev) => [...prev, index]);
+// Обработчик кликов по карточкам
+const handleCardClick = (index: number) => {
+  if (!flipped.includes(index) && !matched.includes(index) && !disableClick) {
+    setFlipped((prev) => [...prev, index]);
+    if (!hasInteracted) {
+      setHasInteracted(true); // Устанавливаем факт взаимодействия только при первом действии
     }
-  };
+  }
+};
+// Обработчик кнопки "Назад"
+const handleExit = () => {
+  handleEndGame(); // Завершаем игру и проверяем попытки
+};
 
   // Проверка, есть ли оставшиеся попытки
   if (attemptsLeft <= 0) {
@@ -101,8 +114,8 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
   return (
     <div className="memo-game">
       <h1>Memo Game</h1>
-      <button onClick={() => setCurrentPage('home')}>Назад</button>
-    
+      <button onClick={handleExit}>Назад</button>
+
       <div className="timer">
         <h2>Оставшееся время: {timeRemaining} сек</h2>
       </div>
@@ -110,7 +123,9 @@ const Memo: React.FC<MemoProps> = ({ setCurrentPage, attemptsLeft, updateAttempt
         {cards.map((card, index) => (
           <div
             key={card.id}
-            className={`card ${flipped.includes(index) || matched.includes(index) ? 'flipped' : ''}`}
+            className={`card ${
+              flipped.includes(index) || matched.includes(index) ? 'flipped' : ''
+            }`}
             onClick={() => handleCardClick(index)}
           >
             <div className="card-front">
