@@ -6,18 +6,19 @@ type IconSelectorProps = {
   selectedIcon: string;
   setSelectedIcon: (icon: string) => void;
   setCurrentPage: (page: string) => void;
+  closeIconSelector: () => void; // Добавили prop для закрытия окна
 };
 
-const IconSelector: React.FC<IconSelectorProps> = ({ selectedIcon, setSelectedIcon, setCurrentPage }) => {
+const IconSelector: React.FC<IconSelectorProps> = ({ selectedIcon, setSelectedIcon, closeIconSelector }) => {
   const icons = [ava1, ava2, ava3, ava4, ava5, ava6, ava7];
 
   const handleIconClick = (icon: string) => {
-    console.log(`Icon clicked: ${icon}`); // Проверка кликов
+    console.log(`Icon clicked: ${icon}`);
     setSelectedIcon(icon);
   };
 
   return (
-    <div 
+    <div
       className="icon-panel"
       style={{
         position: 'fixed',
@@ -26,15 +27,13 @@ const IconSelector: React.FC<IconSelectorProps> = ({ selectedIcon, setSelectedIc
         transform: 'translate(-50%, -50%)',
         backgroundColor: '#2d2d2d',
         padding: '16px',
-       borderRadius: '12px',
+        borderRadius: '12px',
         zIndex: 1000,
         width: '300px',
-       textAlign: 'center',
-      }}>
-      <button
-        className="close-button"
-        onClick={() => setCurrentPage('home')}
-      >
+        textAlign: 'center',
+      }}
+    >
+      <button className="close-button" onClick={closeIconSelector}>
         ✖
       </button>
       <div className="icon-grid">

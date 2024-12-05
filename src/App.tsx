@@ -5,9 +5,10 @@ import Shop from './Shop';
 import Setting from './Setting';
 import Achiv from './Ach';
 import Autfrm from './Autfrm';
-import IconSelector from './IconSelector';
 import Game from './Game';
 import Top from './Top';
+import Profil from './Profil';
+
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
@@ -360,37 +361,39 @@ function App() {
         return (
           <>
             <div style={{ position: 'relative' }}>
+              {/* Отображение очков */}
               <div
                 className="absolute text-5xl font-bold flex items-center"
-                style={{ top: '65px', left: '50%', transform: 'translateX(-70% )', marginTop: '-5px' }}
+                style={{
+                  top: '65px',
+                  left: '50%',
+                  transform: 'translateX(-70%)',
+                  marginTop: '-5px',
+                }}
               >
                 <img src={coinImage} width={44} height={44} alt="Static Coin" />
                 <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </div>
-              <div
-                className="absolute text-base flex items-center"
-                style={{ top: 'calc(80px + 39px)', left: '50%', transform: 'translateX(-70%)', marginTop: '-5px' }}
+              {/* Кнопка открытия профиля (фиксированная позиция) */}
+              <button
+                className="profile-button fixed  right-4" style={{ marginTop: '17px' }} onClick={() => setCurrentPage('profil')} // Переход на страницу профиля
               >
-                <button
-                  className="avatar-button flex items-center justify-center"
-                  onClick={() => setCurrentPage('IconSelector')}
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer',
-                    marginRight: '8px',
-                  }}
-                >
-                  <img src={selectedIcon} width={35} height={24} alt="Icon Selector" />
-                </button>
-
-                {/* Имя пользователя */}
-                <span style={ {fontSize: '20px'}}>{username || "Player"}</span>
-              </div>
+                <img src={selectedIcon} alt="Profile Icon" width={320} height={32} />
+              </button>
             </div>
           </>
         );
+        case 'profil':
+          return (
+            <Profil
+              username={username || 'Player'} // Передаём имя пользователя
+              selectedIcon={selectedIcon} // Передаём текущую аватарку
+              setSelectedIcon={setSelectedIcon} // Функция для смены аватарки
+              onBack={() => setCurrentPage('home')} // Возврат на домашнюю страницу
+            />
+          );
+
+
         /*Нижний блок*/
       case 'shop':
         return (
@@ -411,13 +414,6 @@ function App() {
           setCurrentPage={setCurrentPage}
           />
         );
-      case 'IconSelector':
-        return (
-          <IconSelector
-          setCurrentPage={setCurrentPage}
-          selectedIcon={selectedIcon}
-          setSelectedIcon={setSelectedIcon}
-          />);
       case 'game':
         return (
           <Game
