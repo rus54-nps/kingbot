@@ -8,7 +8,7 @@ const FriendPage = () => {
   useEffect(() => {
     // Получение уникального идентификатора пользователя
     const userId = localStorage.getItem('userId') || 'defaultUser';
-    setReferralLink(`${window.location.origin}/?ref=${userId}`);
+    setReferralLink(`https://t.me/KingCoinClick_bot/KingCoin?ref=${userId}`);
 
     // Проверка, если текущий пользователь пришел по реферальной ссылке
     const urlParams = new URLSearchParams(window.location.search);
