@@ -8,6 +8,7 @@ import Autfrm from './Autfrm';
 import Game from './Game';
 import Top from './Top';
 import Profil from './Profil';
+import FriendPage from './Frend';
 
 
 function App() {
@@ -432,7 +433,10 @@ function App() {
           selectedIcon={selectedIcon}
         />);
       case 'friend':
-        return <h2>Страница "Friend"</h2>;
+        return (
+          <FriendPage
+
+          />);
       case 'achiv':
         return (
           <Achiv
@@ -478,7 +482,7 @@ function App() {
               <span>Top</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('friend')}>
               <img src={frnd} width={24} height={24} alt="Friend" />
               <span>Friend</span>
             </button>
