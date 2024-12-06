@@ -214,10 +214,7 @@ function App() {
     }
   }, []);  
 
-  const [isMusicOn, setIsMusicOn] = useState(() => {
-    const savedMusicSetting = localStorage.getItem('isMusicOn');
-    return savedMusicSetting ? JSON.parse(savedMusicSetting) : false;
-  });
+  const [isMusicOn, setIsMusicOn] = useState(false);
 
   useEffect(() => {
     const backgroundAudio = new Audio(fon2);
