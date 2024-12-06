@@ -372,7 +372,7 @@ function App() {
   // Обработка получения бонуса
   const handleBonusReceived = () => {
     setPoints((prev) => {
-      const newPoints = prev +2500;
+      const newPoints = prev + 2500;
       localStorage.setItem('points', newPoints.toString()); // Сохраняем количество очков
       return newPoints;
     });

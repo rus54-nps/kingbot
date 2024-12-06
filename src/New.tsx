@@ -10,7 +10,7 @@ const New: React.FC<NewProps> = ({ onBonusReceived }) => {
     <div className="new-container">
       <div className="new-message">
         <h1>Приветственный бонус</h1>
-        <p>Вы получили 1000 монет !</p>
+        <p>Вы получили 2500 монет !</p>
         <button onClick={onBonusReceived}>Забрать</button> {/* Кнопка для получения бонуса */}
       </div>
     </div>
