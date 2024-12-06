@@ -3,7 +3,7 @@ import './Frend.css'; // Подключение CSS
 
 const FriendPage = () => {
   const [referralLink, setReferralLink] = useState('');
-  const [referralsCount, setReferralsCount] = useState(0);
+  const [, setReferralsCount] = useState(0);
 
   useEffect(() => {
     // Получение уникального идентификатора пользователя
@@ -51,10 +51,6 @@ const FriendPage = () => {
         readOnly 
       />
       <button onClick={copyReferralLink}>Скопировать ссылку</button>
-      
-      <div className="referrals-count">
-        <h2>Количество людей, перешедших по вашей ссылке: {referralsCount}</h2>
-      </div>
     </div>
   );
 };

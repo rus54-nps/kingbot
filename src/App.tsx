@@ -9,6 +9,7 @@ import Game from './Game';
 import Top from './Top';
 import Profil from './Profil';
 import FriendPage from './Frend';
+import New from './New';
 
 
 function App() {
@@ -354,6 +355,29 @@ function App() {
 
   const [playerCoins] = useState<number>(points); // Количество монет у игрока
 
+
+  /* */
+  const [showWelcome, setShowWelcome] = useState<boolean>(false);
+  useEffect(() => {
+    const isFirstVisit = localStorage.getItem('firstVisit') === null;
+    if (isFirstVisit) {
+      setShowWelcome(true); // Показываем приветствие
+      localStorage.setItem('firstVisit', 'true'); // Помечаем, что игрок уже заходил
+    } else {
+      const savedPoints = localStorage.getItem('points');
+      if (savedPoints) setPoints(Number(savedPoints)); // Восстанавливаем количество очков
+    }
+  }, []);
+
+  // Обработка получения бонуса
+  const handleBonusReceived = () => {
+    setPoints((prev) => {
+      const newPoints = prev + 1000;
+      localStorage.setItem('points', newPoints.toString()); // Сохраняем количество очков
+      return newPoints;
+    });
+    setShowWelcome(false); // Закрываем приветствие
+  };
   
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -582,6 +606,7 @@ function App() {
           <span>Скоро появится</span>
         </div>
         )}
+        {showWelcome && <New onBonusReceived={handleBonusReceived} />}
         {isNicknameModalVisible && (
         <div className="modal-overlay">
           <div className="modal">
