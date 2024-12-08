@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Den.css';
+import './Denn.css';
 
 type DenProps = {
   onClose: () => void;
