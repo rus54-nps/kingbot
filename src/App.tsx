@@ -11,7 +11,7 @@ import Profil from './Profil';
 import FriendPage from './Frend';
 import New from './New';
 import Task from './Task';
-import Den from './Den';
+import Den from './Denn';
 
 
 function App() {
