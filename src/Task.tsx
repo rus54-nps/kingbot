@@ -1,5 +1,5 @@
-// Task.tsx
 import React, { useState } from 'react';
+import './Task.css'
 
 interface TaskProps {
   onRewardClaimed: () => void; // Функция для обработки получения награды
