@@ -1,41 +1,57 @@
-/* Task.css */
 .task-container {
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 400px;
-    margin: 20px auto;
-    text-align: center;
-    background-color: #5a1010;
-  }
-  
-  .task-container h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-  }
-  
-  .task-container p {
-    font-size: 1em;
-    margin-bottom: 10px;
-  }
-  
-  .task-container button {
-    padding: 10px 20px;
-    font-size: 1em;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 5px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-  }
-  
-  .task-container button:hover {
-    background-color: #45a049;
-  }
-  
-  .task-container button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
+  border: 2px solid #4caf50;
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 300px;
+  margin: 20px auto;
+  text-align: center;
+  background-color: #2d2d2d; /* Темный фон */
+  color: #fff; /* Белый текст */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.task-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.task-container h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.reward-text {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  color: #fbc02d;
+  font-weight: bold;
+}
+
+.reward-received {
+  font-size: 1em;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.task-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.task-button:hover {
+  background-color: #45a049;
+}
+
+.task-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

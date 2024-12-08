@@ -371,9 +371,11 @@ function App() {
   };
 
   const handleRewardClaimed = () => {
-    setCoins(coins.map(coin => ({ ...coin, x: coin.x + 1000 })));
-    // Увеличиваем количество монет на 1000
-    alert('Вы получили 1000 монет!');
+    setPoints((prev) => {
+      const newPoints = prev + 2500;
+      localStorage.setItem('points', newPoints.toString()); // Сохраняем количество очков
+      return newPoints;
+    });
   };
   
   const renderContent = () => {

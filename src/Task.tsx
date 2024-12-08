@@ -1,44 +1,55 @@
-import React, { useState } from 'react';
-import './Task.css'
+import React, { useState, useEffect } from 'react';
+import './Task.css';
 
 interface TaskProps {
   onRewardClaimed: () => void; // Функция для обработки получения награды
 }
 
 const Task: React.FC<TaskProps> = ({ onRewardClaimed }) => {
-  const [isSubscribed] = useState(false); // Состояние для подписки
-  const [hasClaimedReward, setHasClaimedReward] = useState(false); // Состояние для получения награды
+  const [hasClaimedReward, setHasClaimedReward] = useState<boolean>(false); 
+  const [hasVisitedGroup, setHasVisitedGroup] = useState<boolean>(false); 
+
+  // Загружаем состояние из localStorage при загрузке компонента
+  useEffect(() => {
+    const claimed = localStorage.getItem('taskRewardClaimed');
+    const visited = localStorage.getItem('taskGroupVisited');
+    if (claimed === 'true') setHasClaimedReward(true);
+    if (visited === 'true') setHasVisitedGroup(true);
+  }, []);
 
   const handleGoToGroup = () => {
-    window.open('https://t.me/+wC_j77d7MXNjYmZi', '_blank'); // Переход в группу
+    window.open('https://t.me/+wC_j77d7MXNjYmZi', '_blank');
+    setHasVisitedGroup(true);
+    localStorage.setItem('taskGroupVisited', 'true'); // Сохраняем в localStorage
   };
 
   const handleClaimReward = () => {
-    if (isSubscribed && !hasClaimedReward) {
+    if (!hasClaimedReward && hasVisitedGroup) {
       setHasClaimedReward(true);
-      onRewardClaimed(); // Вызов функции для получения награды (1000 монет)
+      localStorage.setItem('taskRewardClaimed', 'true'); // Сохраняем в localStorage
+      onRewardClaimed(); // Вызов функции для добавления награды
     }
   };
 
   return (
     <div className="task-container">
-      <h2>Задание: Подпишитесь на нашу группу</h2>
-      <p>Описание: Подпишитесь на нашу группу в Telegram, чтобы получить награду!</p>
-      <p>Награда: 1000 монет</p>
+      <h2>Подпишитесь на Telegram</h2>
 
-      {/* Кнопка перехода в группу */}
-      <button onClick={handleGoToGroup}>Перейти</button>
+      <p className="reward-text">🏆 Награда: 1000 монет</p>
 
-      {/* Кнопка получения награды, доступна только после подписки */}
-      {isSubscribed && !hasClaimedReward && (
-        <button onClick={handleClaimReward}>Забрать награду</button>
+      {!hasVisitedGroup && (
+        <button onClick={handleGoToGroup} className="task-button">
+          Перейти
+        </button>
       )}
 
-      {/* Сообщение о том, что пользователь подписался */}
-      {isSubscribed && <p>Вы подписались на группу!</p>}
+      {hasVisitedGroup && !hasClaimedReward && (
+        <button onClick={handleClaimReward} className="task-button">
+          Забрать награду
+        </button>
+      )}
 
-      {/* Состояние задания */}
-      {hasClaimedReward && <p>Награда получена!</p>}
+      {hasClaimedReward && <p className="reward-received">Награда получена! 🎉</p>}
     </div>
   );
 };
