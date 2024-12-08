@@ -1,0 +1,41 @@
+/* Task.css */
+.task-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+    background-color: #5a1010;
+  }
+  
+  .task-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .task-container p {
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+  
+  .task-container button {
+    padding: 10px 20px;
+    font-size: 1em;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+  }
+  
+  .task-container button:hover {
+    background-color: #45a049;
+  }
+  
+  .task-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

@@ -10,13 +10,13 @@ import Top from './Top';
 import Profil from './Profil';
 import FriendPage from './Frend';
 import New from './New';
+import Task from './Task';
 
 
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
   const energyToReduce = 1; // Энергия за нажатие
   const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
-  
   
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
@@ -134,12 +134,6 @@ function App() {
       setPoints(prevPoints => prevPoints + Math.floor(passiveIncome));
     }
   }, []);
-
-  const [showNoModal, setShowNoModal] = useState(false);
-  const handleNoClick = () => {
-    setShowNoModal(true);
-    setTimeout(() => setShowNoModal(false), 2000); // Скрываем окно через 2 секунды
-  };
 
   // Таймер для начисления дохода от автофарма
   useEffect(() => {
@@ -375,6 +369,12 @@ function App() {
     });
     setShowWelcome(false); // Закрываем приветствие
   };
+
+  const handleRewardClaimed = () => {
+    setCoins(coins.map(coin => ({ ...coin, x: coin.x + 1000 })));
+    // Увеличиваем количество монет на 1000
+    alert('Вы получили 1000 монет!');
+  };
   
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -444,7 +444,14 @@ function App() {
           isBuffActive={isBuffActive}
           buffTime={buffTime}
           taps={taps}
-          />);
+          />
+        );
+      case 'task':
+        return (
+          <Task
+          onRewardClaimed={handleRewardClaimed}
+          />
+        );
         /*Верхний блок*/
       case 'top':
         return (
@@ -456,7 +463,6 @@ function App() {
       case 'friend':
         return (
           <FriendPage
-
           />);
       case 'achiv':
         return (
@@ -587,9 +593,9 @@ function App() {
               <span>Game</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={handleNoClick}>
-              <img src={task} width={24} height={24} alt="Tasks" />
-              <span>Tasks</span>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('task')}>
+              <img src={task} width={24} height={24} alt="Task" />
+              <span>Task</span>
             </button>
           </div>
         </div>
@@ -597,11 +603,6 @@ function App() {
           <div className="locked-message">
             <span>Разблокировка будет доступна после улучшение тапа на 10lvl</span>
           </div>
-        )}
-        {showNoModal && (
-          <div className="locked-message">
-          <span>Скоро появится</span>
-        </div>
         )}
         {showWelcome && <New onBonusReceived={handleBonusReceived} />}
         {isNicknameModalVisible && (
