@@ -107,7 +107,7 @@ function App() {
   };
 
   //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВЛ ТАБ)*//
-  const isAutoFarmUnlocked = pointsToAdd >= 0;
+  const isAutoFarmUnlocked = pointsToAdd >= 10;
   const [showLockedMessage, setShowLockedMessage] = useState(false);
   const openAutoFarm = () => {
     if (isAutoFarmUnlocked) {
