@@ -11,6 +11,7 @@ import Profil from './Profil';
 import FriendPage from './Frend';
 import New from './New';
 import Task from './Task';
+import Den from './Den';
 
 
 function App() {
@@ -378,6 +379,14 @@ function App() {
     });
   };
   
+  
+  const [showDen, setShowDen] = useState<boolean>(true); // Видимость вкладки награды
+
+  // Функция для обновления баланса
+  const handleCollectReward = (rewardAmount: number) => {
+    setPoints((prev) => prev + rewardAmount); // Увеличиваем points
+  };
+  
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
     switch (currentPage) {
@@ -606,6 +615,16 @@ function App() {
             <span>Разблокировка будет доступна после улучшение тапа на 10lvl</span>
           </div>
         )}
+
+
+{showDen && (
+        <Den
+          onClose={() => setShowDen(false)} // Закрываем вкладку
+          onCollectReward={handleCollectReward} // Передаем функцию для обновления баланса
+        />
+      )}
+
+          
         {showWelcome && <New onBonusReceived={handleBonusReceived} />}
         {isNicknameModalVisible && (
         <div className="modal-overlay">

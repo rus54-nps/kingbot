@@ -1,0 +1,63 @@
+/* Основной стиль для модального окна */
+.den-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    background-color: #2d2d2d;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    z-index: 1000;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+    color: #fff;
+  }
+  
+  /* Анимация появления модального окна */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -55%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  /* Заголовок модального окна */
+  .den-modal h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #f9c035;
+  }
+  
+  /* Текст награды */
+  .den-modal p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  /* Кнопка "Забрать" */
+  .den-modal button {
+    background-color: #48bb78;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .den-modal button:hover {
+    background-color: #3a9d64;
+  }
+  
+  .den-modal button:active {
+    background-color: #2e814e;
+  }
+  

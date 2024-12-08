@@ -35,7 +35,7 @@ const Task: React.FC<TaskProps> = ({ onRewardClaimed }) => {
     <div className="task-container">
       <h2>Подпишитесь на Telegram</h2>
 
-      <p className="reward-text">🏆 Награда: 1000 монет</p>
+      <p className="reward-text">🏆 Награда: 2500 монет</p>
 
       {!hasVisitedGroup && (
         <button onClick={handleGoToGroup} className="task-button">
