@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Memo from './Memo';
+import Svet from './Svet';
 import './Game.css';
 import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
@@ -79,7 +80,9 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
         <button className="game-item" onClick={() => setCurrentGame('memo')}>
           Memo
         </button>
-        <button className="game-item">Игра 2</button>
+        <button className="game-item" onClick={() => setCurrentGame('svet')}>
+          Svet
+        </button>
       </div>
 
       <h3 className="attempts-left">Оставшиеся попытки: {attemptsLeft}</h3>
@@ -91,16 +94,33 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
         </div>
       )}
 
-      {currentGame === 'memo' && (
-        <Memo
-          setCurrentPage={setCurrentPage}
-          attemptsLeft={attemptsLeft}
-          updateAttempts={updateAttempts}
-          activateBuff={activateBuff}
-          isBuffActive={isBuffActive}
-          buffTime={buffTime}
-          taps={taps}
-        />
+      {/* Отображение модального окна с текущей игрой */}
+      {currentGame && (
+        <div className="game-modal">
+          <div className="modal-content">
+            <button className="close-button" onClick={() => setCurrentGame(null)}>
+              Закрыть
+            </button>
+            {currentGame === 'memo' && (
+              <Memo
+                setCurrentPage={setCurrentPage}
+                attemptsLeft={attemptsLeft}
+                updateAttempts={updateAttempts}
+                activateBuff={activateBuff}
+                isBuffActive={isBuffActive}
+                buffTime={buffTime}
+                taps={taps}
+              />
+            )}
+            {currentGame === 'svet' && (
+              <Svet
+                setCurrentPage={setCurrentPage}
+                attemptsLeft={attemptsLeft}
+                updateAttempts={updateAttempts}
+              />
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
