@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Memo from './Memo';
-import Svet from './Svet';
 import './Game.css';
 import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 import { bafx2 } from './images';
+import Sap from './Sap';
 
 interface GameProps {
   setCurrentPage: (page: string) => void;
@@ -18,13 +18,11 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
   const [currentGame, setCurrentGame] = useState<string | null>(null);
   const [attemptsLeft, setAttemptsLeft] = useState<number>(5);
 
-  // Reset attempts
   const resetAttempts = () => {
     setAttemptsLeft(5);
     localStorage.setItem('attemptsLeft', '5');
   };
 
-  // Check for a new day in Moscow time
   const checkNewDay = () => {
     const storedDate = localStorage.getItem('lastCheckedDate');
     const currentDate = new Date();
@@ -80,8 +78,8 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
         <button className="game-item" onClick={() => setCurrentGame('memo')}>
           Memo
         </button>
-        <button className="game-item" onClick={() => setCurrentGame('svet')}>
-          Svet
+        <button className="game-item" onClick={() => setCurrentGame('sap')}>
+          Sapper
         </button>
       </div>
 
@@ -112,13 +110,17 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
                 taps={taps}
               />
             )}
-            {currentGame === 'svet' && (
-              <Svet
-                setCurrentPage={setCurrentPage}
-                attemptsLeft={attemptsLeft}
-                updateAttempts={updateAttempts}
-              />
-            )}
+            {currentGame === 'sap' && (
+  <div className="game-modal">
+    <div className="modal-content">
+      {/* Добавляем Сапёр */}
+      <Sap />
+      <button className="close-button" onClick={() => setCurrentGame(null)}>
+        Закрыть
+      </button>
+    </div>
+  </div>
+)}
           </div>
         </div>
       )}
