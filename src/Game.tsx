@@ -45,7 +45,7 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, activateBuffS
     checkNewDay();
 
     const mskTime = toZonedTime(new Date(), 'Europe/Moscow');
-    const nextMidnight = new Date(mskTime.setHours(2, 0, 0, 0));
+    const nextMidnight = new Date(mskTime.setHours(24, 0, 0, 0));
     const timeUntilMidnight = nextMidnight.getTime() - new Date().getTime();
 
     const timeoutId = setTimeout(() => {
