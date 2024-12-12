@@ -66,8 +66,14 @@ import m3 from './m3.jpg'
 import m4 from './m4.jpg'
 import m5 from './m5.jpg'
 import m6 from './m6.jpg'
+import mina from './mina.png'
+import flg from './flg.png'
+import sapbafx2 from './sapbafx2.png'
 
 export {
+    sapbafx2,
+    mina,
+    flg,
     bear,
     coin,
     highVoltage,

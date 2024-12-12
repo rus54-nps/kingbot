@@ -1,12 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./Sap.css";
-
+import React, { useState, useEffect, useRef } from 'react';
+import './Sap.css';
+import { mina, flg } from './images';
 
 interface Cell {
   isMine: boolean;
   isOpen: boolean;
   isFlagged: boolean;
   adjacentMines: number;
+  
+}
+
+interface SapProps {
+  setCurrentPage: (page: string) => void;
+  attemptsLeft: number; // Количество оставшихся попыток
+  updateAttempts: (newAttempts: number) => void; // Функция для обновления количества попыток
+  activateBuffSap: () => void;
 }
 
 const generateField = (rows: number, cols: number, mineCount: number): Cell[][] => {
@@ -19,7 +27,6 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
     }))
   );
 
-  // Place mines randomly
   let minesPlaced = 0;
   while (minesPlaced < mineCount) {
     const row = Math.floor(Math.random() * rows);
@@ -30,7 +37,6 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
     }
   }
 
-  // Calculate adjacent mine counts
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       if (field[row][col].isMine) continue;
@@ -40,7 +46,13 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
         for (let c = -1; c <= 1; c++) {
           const nr = row + r;
           const nc = col + c;
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && field[nr][nc].isMine) {
+          if (
+            nr >= 0 &&
+            nr < rows &&
+            nc >= 0 &&
+            nc < cols &&
+            field[nr][nc].isMine
+          ) {
             mineCount++;
           }
         }
@@ -52,21 +64,24 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
   return field;
 };
 
-const Sap: React.FC = () => {
-  const rows = 9;
-  const cols = 9;
-  const mineCount = 10;
-  const timeLimit = 90; // Ограничение по времени в секундах
+const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts, activateBuffSap }) => {
+  const rows = 12;
+  const cols = 7;
+  const mineCount = 2;
+  const timeLimit = 160;
 
   const [field, setField] = useState<Cell[][]>(() => generateField(rows, cols, mineCount));
   const [gameOver, setGameOver] = useState(false);
   const [victory, setVictory] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(timeLimit); // Оставшееся время
+  const [timeLeft, setTimeLeft] = useState(timeLimit);
+  const [isFlagMode, setIsFlagMode] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false); // Для отслеживания взаимодействий
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Запуск таймера при старте игры
+    if (attemptsLeft <= 0) return;
+
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -78,10 +93,8 @@ const Sap: React.FC = () => {
       });
     }, 1000);
 
-    return () => {
-      clearInterval(timerRef.current!); // Очистка таймера при размонтировании
-    };
-  }, []);
+    return () => clearInterval(timerRef.current!);
+  }, [attemptsLeft]);
 
   const openCell = (row: number, col: number) => {
     if (gameOver || field[row][col].isOpen || field[row][col].isFlagged) return;
@@ -97,6 +110,10 @@ const Sap: React.FC = () => {
       checkVictory(newField);
     }
     setField(newField);
+
+    if (!hasInteracted) {
+      setHasInteracted(true); // Отмечаем первое взаимодействие
+    }
   };
 
   const revealCells = (field: Cell[][], row: number, col: number) => {
@@ -128,8 +145,7 @@ const Sap: React.FC = () => {
     }
   };
 
-  const toggleFlag = (e: React.MouseEvent, row: number, col: number) => {
-    e.preventDefault();
+  const toggleFlag = (row: number, col: number) => {
     if (gameOver || field[row][col].isOpen) return;
 
     const newField = field.slice();
@@ -138,57 +154,69 @@ const Sap: React.FC = () => {
   };
 
   const checkVictory = (field: Cell[][]) => {
-    const isVictory = field.every((row) =>
-      row.every((cell) => (cell.isMine && cell.isFlagged) || (!cell.isMine && cell.isOpen))
-    );
-    if (isVictory) {
+    let allNonMinesOpen = true;
+  
+    for (let row of field) {
+      for (let cell of row) {
+        if (!cell.isMine && !cell.isOpen) {
+          allNonMinesOpen = false;
+        }
+      }
+    }
+  
+    if (allNonMinesOpen) {
       setVictory(true);
-      clearInterval(timerRef.current!); // Остановить таймер при победе
+      clearInterval(timerRef.current!);
+      activateBuffSap(); // Активируем баф только при победе
     }
   };
+  
+  
 
-  const restartGame = () => {
-    setField(generateField(rows, cols, mineCount));
-    setGameOver(false);
-    setVictory(false);
-    setTimeLeft(timeLimit); // Сброс времени
-    clearInterval(timerRef.current!);
-    timerRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current!);
-          setGameOver(true);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+  const handleExit = () => {
+    if (hasInteracted && attemptsLeft > 0) {
+      updateAttempts(attemptsLeft - 1); // Уменьшаем количество попыток
+    }
+    setCurrentPage('home');
   };
 
+  // Если попытки закончились
+  if (attemptsLeft <= 0) {
+    return (
+      <div className="sap-game">
+        <h1>Сапёр</h1>
+        <h2>У вас закончились попытки!</h2>
+        <button onClick={() => setCurrentPage('home')}>Назад</button>
+      </div>
+    );
+  }
+
   return (
-    <div className="sap-container">
+    <div className="sap-game">
       <h1>Сапёр</h1>
       <div>Оставшееся время: {timeLeft} секунд</div>
       {gameOver && <div className="message">Игра окончена!</div>}
       {victory && <div className="message">Победа!</div>}
+
+      <button className="flag-mode-button" onClick={() => setIsFlagMode(!isFlagMode)}>
+        <img src={isFlagMode ? flg : mina} alt="Переключить режим" />
+      </button>
+
       <div className="sap-field">
         {field.map((row, rIdx) =>
           row.map((cell, cIdx) => (
             <div
               key={`${rIdx}-${cIdx}`}
-              className={`cell ${cell.isOpen ? "open" : ""} ${
-                cell.isMine && gameOver ? "mine" : ""
-              } ${cell.isFlagged ? "flag" : ""}`}
-              onClick={() => openCell(rIdx, cIdx)}
-              onContextMenu={(e) => toggleFlag(e, rIdx, cIdx)}
+              className={`cell ${cell.isOpen ? 'open' : ''} ${cell.isMine && gameOver ? 'mine' : ''} ${cell.isFlagged ? 'flag' : ''}`}
+              onClick={() => (isFlagMode ? toggleFlag(rIdx, cIdx) : openCell(rIdx, cIdx))}
             >
               {cell.isOpen && cell.adjacentMines > 0 && !cell.isMine && cell.adjacentMines}
             </div>
           ))
         )}
       </div>
-      <button className="restart-button" onClick={restartGame}>
-        Начать заново
+      <button className="restart-button" onClick={handleExit}>
+        Назад
       </button>
     </div>
   );

@@ -7,9 +7,6 @@ interface MemoProps {
   attemptsLeft: number; // Количество оставшихся попыток
   updateAttempts: (newAttempts: number) => void; // Функция для обновления количества попыток
   activateBuff: () => void;
-  isBuffActive: boolean;
-  buffTime: number | null;
-  taps: number;
 }
 
 const Memo: React.FC<MemoProps> = ({

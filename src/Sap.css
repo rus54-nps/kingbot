@@ -1,57 +1,16 @@
 .sap-container {
     text-align: center;
     padding: 20px;
-  }
-  
-  .sap-field {
-    display: grid;
-    grid-template-columns: repeat(9, 30px); /* Изменено с 12 на 9 */
-    grid-gap: 2px;
+    background-color: #1a1f36; /* Темно-синий фон игры */
+    color: #ffffff; /* Белый текст */
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
-  }
-  
-  .cell {
-    width: 30px;
-    height: 30px;
-    background-color: #b8e994;
-    border: 1px solid #68b36b;
-    text-align: center;
-    line-height: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-  }
-  
-  .cell.open {
-    background-color: #e5e5e5;
-    border-color: #cccccc;
-  }
-  
-  .cell.mine {
-    background-color: red;
-  }
-  
-  .cell.flag {
-    background-color: yellow;
-  }
-  
-  .message {
-    font-size: 1.5em;
-    color: red;
-  }
-  
-  .restart-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #68b36b;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .restart-button:hover {
-    background-color: #5aa15a;
+    align-items: center;
+    overflow: hidden;
   }
   
   .game-modal {
@@ -60,7 +19,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(26, 31, 54, 1); /* Фон модального окна */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,33 +27,63 @@
   }
   
   .modal-content {
-    background-color: rgb(122, 56, 56);
+    background-color: #333658; /* Тёмно-серый фон игрового поля */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для объёма */
+    width: 100%;
     max-width: 800px;
   }
   
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
+  .sap-field {
+    display: grid;
+    grid-template-columns: repeat(7, 40px); /* Игровое поле */
+    grid-gap: 2px;
+    justify-content: center;
+    margin: 10px auto;
+    max-width: calc(9 * 42px + 16px);
+    background-color: #2d2f4b; /* Совпадает с фоном поля */
+    padding: 5px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .cell {
+    width: 40px;
+    height: 40px;
+    background-color: #3e445e; /* Нейтральный серый для клеток */
+    border: 1px solid #4b4f72; /* Темно-серые границы */
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ffffff; /* Белый текст */
     cursor: pointer;
-    color: #333;
+    user-select: none;
+  }
+  
+  .cell.open {
+    background-color: #596381; /* Светло-синий для открытых клеток */
   }
   
   .cell.mine {
-    background-image: url('./images/1k.png'); /* Укажите правильный путь */
+    background-color: transparent;
+    background-image: url('./images/mina.png'); /* Темно-синяя иконка мины */
     background-size: cover;
-    background-color: transparent; /* Убираем цвет фона */
   }
   
   .cell.flag {
-    background-image: url('./images/5k.png'); /* Укажите правильный путь */
+    background-color: transparent;
+    background-image: url('./images/flg.png'); /* Темно-синяя иконка флага */
     background-size: cover;
-    background-color: transparent; /* Убираем цвет фона */
+  }
+  
+  .flag-mode-button img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .message {
+    font-size: 1.5em;
+    color: #3cbddd; /* Красный для сообщения об ошибке */
   }

@@ -3,18 +3,19 @@ import Memo from './Memo';
 import './Game.css';
 import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
-import { bafx2 } from './images';
+import { bafx2, sapbafx2 } from './images';
 import Sap from './Sap';
 
 interface GameProps {
   setCurrentPage: (page: string) => void;
   activateBuff: () => void;
+  activateBuffSap: () => void;
   isBuffActive: boolean;
+  isBuffActiveSap: boolean;
   buffTime: number | null;
-  taps: number;
 }
 
-const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive, buffTime, taps }) => {
+const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, activateBuffSap, isBuffActive, isBuffActiveSap, buffTime }) => {
   const [currentGame, setCurrentGame] = useState<string | null>(null);
   const [attemptsLeft, setAttemptsLeft] = useState<number>(5);
 
@@ -92,35 +93,33 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, isBuffActive,
         </div>
       )}
 
+      {isBuffActiveSap && buffTime !== null && (
+        <div className="buff-info">
+          <img src={sapbafx2} alt="SapBuff" className="buff-icon" />
+          <span className="buff-time">{buffTime} сек</span>
+        </div>
+      )}
+
       {/* Отображение модального окна с текущей игрой */}
       {currentGame && (
         <div className="game-modal">
           <div className="modal-content">
-            <button className="close-button" onClick={() => setCurrentGame(null)}>
-              Закрыть
-            </button>
             {currentGame === 'memo' && (
               <Memo
                 setCurrentPage={setCurrentPage}
                 attemptsLeft={attemptsLeft}
                 updateAttempts={updateAttempts}
                 activateBuff={activateBuff}
-                isBuffActive={isBuffActive}
-                buffTime={buffTime}
-                taps={taps}
               />
             )}
             {currentGame === 'sap' && (
-  <div className="game-modal">
-    <div className="modal-content">
-      {/* Добавляем Сапёр */}
-      <Sap />
-      <button className="close-button" onClick={() => setCurrentGame(null)}>
-        Закрыть
-      </button>
-    </div>
-  </div>
-)}
+              <Sap
+                setCurrentPage={setCurrentPage}
+                attemptsLeft={attemptsLeft}
+                updateAttempts={updateAttempts}
+                activateBuffSap={activateBuffSap}
+              />
+            )}
           </div>
         </div>
       )}

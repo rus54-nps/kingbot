@@ -52,8 +52,11 @@ function App() {
     { id: 2, name: 'Счастливая Монета', price: 2500, incomePerHour: 330, level: 1 },
     { id: 3, name: 'Счастливая Монета', price: 2500, incomePerHour: 500, level: 1 },
   ]);
-  const [isBuffActive, setIsBuffActive] = useState<boolean>(false); // Статус активации баффа
+  const [isBuffActive, setIsBuffActive] = useState<boolean>(false);
+  const [isBuffActiveSap, setIsBuffActiveSap] = useState<boolean>(false); // Статус активации баффа
   const [buffTime, setBuffTime] = useState<number | null>(null); // Время оставшегося действия баффа
+  const [buffTimeSap] = useState<number>(0);
+  
 
   const activateBuff = () => {
     setIsBuffActive(true);
@@ -70,6 +73,17 @@ function App() {
       setIsBuffActive(false); // Деактивируем бафф по истечении времени
     }
   }, [isBuffActive, buffTime]);
+
+  useEffect(() => {
+    if (isBuffActiveSap && buffTime !== null && buffTime > 0) {
+      const timer = setInterval(() => {
+        setBuffTime((prev) => (prev ? prev - 1 : 0));
+      }, 1000);
+      return () => clearInterval(timer);
+    } else {
+      setIsBuffActiveSap(false); // Деактивируем бафф по истечении времени
+    }
+  }, [isBuffActiveSap, buffTime]);
 
   useEffect(() => {
     if (isBuffActive) {
@@ -92,12 +106,20 @@ function App() {
     if (isNaN(energy)) {
       return maxEnergy; // Если энергия не определена, возвращаем максимальное значение
     }
-    
     const currentTime = Date.now();
     const timeElapsed = currentTime - lastUpdateTime;
-    const energyRecovered = Math.floor((timeElapsed / recoveryInterval) * energyRecoveryRate);
+    let energyRecovered = Math.floor((timeElapsed / recoveryInterval) * energyRecoveryRate);
+
+    if (isBuffActiveSap && buffTimeSap > 0) {
+      const missEnergy = maxEnergy - energy; // Рассчитываем недостающую энергию
+      const energyToRestore = Math.floor(missEnergy * 0.5);
+      energyRecovered += energyToRestore; // Увеличиваем восстановление энергии
+    }
+
     return Math.min(energy + energyRecovered, maxEnergy);
   };
+
+  
 
   const [showSettings, setShowSettings] = useState(false); // для управления отображением настроек
 
@@ -176,26 +198,78 @@ function App() {
     localStorage.setItem('lastUpdateTime', lastUpdateTime.toString());
   }, [energy, lastUpdateTime]);
 
+
+  //-------------------------------------------
   useEffect(() => {
-    // Восстановление энергии каждые 1000ms
+    if (!isBuffActiveSap) {
+      // Обычное восстановление энергии, если баф не активен
+      const interval = setInterval(() => {
+        setEnergy((prevEnergy) => {
+          const nextEnergy = prevEnergy + energyRecoveryRate; // Добавляем прирост энергии
+          if (nextEnergy !== prevEnergy) {
+            setLastUpdateTime(Date.now()); // Обновляем время последнего изменения энергии
+          }
+          return nextEnergy >= maxEnergy ? maxEnergy : nextEnergy; // Ограничиваем значение maxEnergy
+        });
+      }, recoveryInterval);
+  
+      return () => clearInterval(interval);
+    }
+  }, [energyRecoveryRate, maxEnergy, isBuffActiveSap]); // Учитываем активность бафа
+  
+  useEffect(() => {
+    if (isBuffActiveSap) {
+      // Если баф активен, восстанавливаем 50% недостающей энергии за 20 секунд
+      const missingEnergy = maxEnergy - energy;
+      const energyPerTick = Math.floor((missingEnergy * 0.5) / 20); // Распределяем восстановление на 20 секунд
+  
+      const interval = setInterval(() => {
+        setEnergy((prevEnergy) => {
+          const nextEnergy = prevEnergy + energyPerTick;
+          return nextEnergy >= maxEnergy ? maxEnergy : nextEnergy; // Ограничиваем значение maxEnergy
+        });
+      }, 1000); // Восстанавливаем по 1/20 энергии каждую секунду
+  
+      // Останавливаем баф через 20 секунд
+      const timeout = setTimeout(() => {
+        setIsBuffActiveSap(false); // Деактивируем баф
+      }, 20000);
+  
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
+      };
+    }
+  }, [isBuffActiveSap, energy, maxEnergy]);
+  
+  const activateBuffSap = () => {
+    if (isBuffActiveSap) return; // Если баф уже активен, ничего не делаем
+  
+    setIsBuffActiveSap(true); // Активируем баф
+    setBuffTime(20); // Устанавливаем длительность бафа
+  
+    const missingEnergy = maxEnergy - energy; // Рассчитываем недостающую энергию
+    const energyIncrement = Math.floor((missingEnergy * 0.6) / 20); // Делим 50% на 20 секунд
+  
+    // Плавное восстановление энергии за 20 секунд
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => {
-        const newEnergy = Math.min(prevEnergy + energyRecoveryRate, maxEnergy);
-        setLastUpdateTime(Date.now());
-        return newEnergy;
+        const newEnergy = prevEnergy + energyIncrement;
+        return newEnergy >= maxEnergy ? maxEnergy : newEnergy;
       });
-    }, recoveryInterval);
+    }, 1000); // Восстановление каждую секунду
+  
+    // Деактивация бафа через 20 секунд
+    setTimeout(() => {
+      clearInterval(interval);
+      setIsBuffActiveSap(false); // Деактивируем баф
+      setBuffTime(null); // Сбрасываем время бафа
+    }, 20000);
+  };
+  
+  
+//---------------------------------------------------
 
-    return () => clearInterval(interval);
-  }, [energyRecoveryRate, maxEnergy]); // Добавляем зависимость от maxEnergy
-
-  useEffect(() => {
-    // Сохраняем максимальную энергию в localStorage при её изменении
-    localStorage.setItem('maxEnergy', maxEnergy.toString());
-    if (energy > maxEnergy) {
-      setEnergy(maxEnergy); // Обновляем энергию, если она превышает новый максимум
-    }
-  }, [maxEnergy, energy]);
 
   useEffect(() => {
     const savedPointsToAdd = localStorage.getItem('pointsToAdd');
@@ -451,10 +525,11 @@ function App() {
         return (
           <Game
           setCurrentPage={setCurrentPage} 
+          activateBuffSap={activateBuffSap}
           activateBuff={activateBuff}
           isBuffActive={isBuffActive}
+          isBuffActiveSap={isBuffActiveSap}
           buffTime={buffTime}
-          taps={taps}
           />
         );
       case 'task':
