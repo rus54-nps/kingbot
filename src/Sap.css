@@ -51,7 +51,6 @@
   .cell {
     width: 40px;
     height: 40px;
-    background-color: #3e445e; /* Нейтральный серый для клеток */
     border: 1px solid #4b4f72; /* Темно-серые границы */
     text-align: center;
     line-height: 40px;
@@ -62,8 +61,20 @@
     user-select: none;
   }
   
-  .cell.open {
-    background-color: #596381; /* Светло-синий для открытых клеток */
+  .cell:nth-child(odd) {
+    background-color: #3e445e; /* Тёмно-серый для нечётных клеток */
+  }
+  
+  .cell:nth-child(even) {
+    background-color: #4b5169; /* Светло-серый для чётных клеток */
+  }
+  
+  .cell.open:nth-child(odd) {
+    background-color: #6e778f; /* Светло-синий для открытых нечётных клеток */
+  }
+  
+  .cell.open:nth-child(even) {
+    background-color: #7a829b; /* Ещё светлее для открытых чётных клеток */
   }
   
   .cell.mine {
@@ -82,8 +93,73 @@
     width: 40px;
     height: 40px;
   }
-
+  
   .message {
     font-size: 1.5em;
     color: #3cbddd; /* Красный для сообщения об ошибке */
   }
+  
+  /* Цвета текста для разных чисел */
+.cell.open {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #ffffff; /* Базовый цвет для текста */
+}
+
+.cell.open[data-adjacent='1'] {
+  color: #243bbb; /* Синий для 1 */
+}
+
+.cell.open[data-adjacent='2'] {
+  color: #0cb149; /* Зелёный для 2 */
+}
+
+.cell.open[data-adjacent='3'] {
+  color: #af1111; /* Красный для 3 */
+}
+
+.cell.open[data-adjacent='4'] {
+  color: #591bc4; /* Фиолетовый для 4 */
+}
+
+.cell.open[data-adjacent='5'] {
+  color: #ccc90b; /* Оранжевый для 5 */
+}
+
+.cell.open[data-adjacent='6'] {
+  color: #7bb5d6; /* Голубой для 6 */
+}
+
+.cell.open[data-adjacent='7'] {
+  color: #0f172a; /* Тёмно-синий для 7 */
+}
+
+.cell.open[data-adjacent='8'] {
+  color: #f08408; /* Золотистый для 8 */
+}
+
+.cell.mistake {
+  background-color: #22284d; /* Светло-красный фон */
+  position: relative;
+}
+
+.cell.mistake::after,
+.cell.mistake::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: red; /* Красная линия */
+  transform-origin: center;
+}
+
+.cell.mistake::after {
+  transform: rotate(-45deg); /* Первая линия, повернута на -45 градусов */
+}
+
+.cell.mistake::before {
+  transform: rotate(45deg); /* Вторая линия, повернута на 45 градусов */
+}
+

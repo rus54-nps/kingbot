@@ -7,8 +7,9 @@ interface Cell {
   isOpen: boolean;
   isFlagged: boolean;
   adjacentMines: number;
-  
+  isMistake?: boolean; // Новое свойство для пометки ошибочных флагов
 }
+
 
 interface SapProps {
   setCurrentPage: (page: string) => void;
@@ -67,7 +68,7 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
 const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts, activateBuffSap }) => {
   const rows = 12;
   const cols = 7;
-  const mineCount = 2;
+  const mineCount = 13;
   const timeLimit = 160;
 
   const [field, setField] = useState<Cell[][]>(() => generateField(rows, cols, mineCount));
@@ -98,23 +99,43 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
 
   const openCell = (row: number, col: number) => {
     if (gameOver || field[row][col].isOpen || field[row][col].isFlagged) return;
-
-    const newField = field.slice();
+  
+    const newField = field.map((r) =>
+      r.map((c) => ({
+        ...c,
+      }))
+    );
+  
     const cell = newField[row][col];
-
+  
     if (cell.isMine) {
       cell.isOpen = true;
       setGameOver(true);
+  
+      // Убираем флаги, открываем мины и помечаем ошибочные флаги
+      const updatedField = newField.map((r) =>
+        r.map((c) => ({
+          ...c,
+          isFlagged: false, // Убираем все флаги
+          isOpen: c.isMine ? true : c.isOpen, // Открываем все мины
+          isMistake: c.isFlagged && !c.isMine, // Помечаем ошибочные флаги
+        }))
+      );
+  
+      setField(updatedField); // Обновляем поле
     } else {
       revealCells(newField, row, col);
       checkVictory(newField);
+      setField(newField);
     }
-    setField(newField);
-
+  
     if (!hasInteracted) {
       setHasInteracted(true); // Отмечаем первое взаимодействие
     }
   };
+  
+  
+  
 
   const revealCells = (field: Cell[][], row: number, col: number) => {
     const stack = [[row, col]];
@@ -144,6 +165,8 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
       }
     }
   };
+
+  
 
   const toggleFlag = (row: number, col: number) => {
     if (gameOver || field[row][col].isOpen) return;
@@ -207,7 +230,8 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
           row.map((cell, cIdx) => (
             <div
               key={`${rIdx}-${cIdx}`}
-              className={`cell ${cell.isOpen ? 'open' : ''} ${cell.isMine && gameOver ? 'mine' : ''} ${cell.isFlagged ? 'flag' : ''}`}
+              className={`cell ${cell.isOpen ? 'open' : ''} ${cell.isMine && gameOver ? 'mine' : ''} ${cell.isFlagged ? 'flag' : ''} ${cell.isMistake ? 'mistake' : ''}`}
+              data-adjacent={cell.isOpen && cell.adjacentMines > 0 ? cell.adjacentMines : undefined}
               onClick={() => (isFlagMode ? toggleFlag(rIdx, cIdx) : openCell(rIdx, cIdx))}
             >
               {cell.isOpen && cell.adjacentMines > 0 && !cell.isMine && cell.adjacentMines}
