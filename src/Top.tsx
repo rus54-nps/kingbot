@@ -18,12 +18,12 @@ interface TopProps {
 
 const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) => {
   const initialPlayers: Player[] = [
-    { rank: 1, name: 'Legend', avatar: ava1, coins: 6068, growthRate: 1.45 },
-    { rank: 2, name: 'Champion', avatar: ava2, coins: 5601, growthRate: 1.43 },
-    { rank: 3, name: 'Warrior', avatar: ava3, coins: 4052, growthRate: 1.44 },
-    { rank: 4, name: 'Hunter', avatar: ava4, coins: 4901, growthRate: 1.46 },
-    { rank: 5, name: 'Rogue', avatar: ava5, coins: 4835, growthRate: 1.42 },
-    { rank: 6, name: 'Paladin', avatar: ava6, coins: 3721, growthRate: 1.46 },
+    { rank: 1, name: 'Tifer', avatar: ava1, coins: 6068, growthRate: 1.45 },
+    { rank: 2, name: 'Smuzi', avatar: ava2, coins: 5601, growthRate: 1.43 },
+    { rank: 3, name: 'IIIyxep', avatar: ava3, coins: 4052, growthRate: 1.44 },
+    { rank: 4, name: 'qwerty', avatar: ava4, coins: 4901, growthRate: 1.46 },
+    { rank: 5, name: 'OtVaL', avatar: ava5, coins: 4835, growthRate: 1.42 },
+    { rank: 6, name: 'Invoker', avatar: ava6, coins: 3721, growthRate: 1.46 },
   ];
 
   const [topPlayers, setTopPlayers] = useState<Player[]>(initialPlayers);
