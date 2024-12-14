@@ -54,7 +54,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .modal-content {
@@ -121,7 +121,7 @@ body, html {
   justify-content: center; /* Центрирование по горизонтали */
   align-items: center; /* Центрирование по вертикали */
   background-color: rgba(0, 0, 0, 0.7); /* Прозрачный фон, если нужно */
-  z-index: 9999; /* Убедитесь, что заставка поверх остальных элементов */
+  z-index: 999; /* Убедитесь, что заставка поверх остальных элементов */
 }
 
 .loading-screen img {
@@ -234,11 +234,16 @@ body, html {
   border: none;
   background-color: transparent;
   cursor: pointer;
-  z-index: 10;
+  z-index: 1;
 }
 
 .profile-button img {
   width: 80%;
   height: 80%;
   border-radius: 50%;
+}
+
+
+.mani {
+  z-index: -1;
 }

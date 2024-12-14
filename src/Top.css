@@ -15,7 +15,7 @@
   overflow: hidden; /* Скрываем лишние элементы */
   padding: 20px;
   box-sizing: border-box;
-  z-index: 9999;
+  z-index: 999;
 }
 
 /* Затемнение фона */

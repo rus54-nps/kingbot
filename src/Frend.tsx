@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import './Frend.css'; // Подключение CSS
+import React, { useState, useEffect } from 'react';
+import './Frend.css';
 
-const FriendPage = () => {
+const FriendPage: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [referralLink, setReferralLink] = useState('');
   const [, setReferralsCount] = useState(0);
 
@@ -41,16 +41,24 @@ const FriendPage = () => {
     });
   };
 
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLDivElement).classList.contains('friend-page-overlay')) {
+      onClose(); // Закрываем вкладку
+    }
+  };
+
   return (
-    <div className="friend-page-container">
-      <h1>Пригласить друзей</h1>
-      <p>Поделитесь своей реферальной ссылкой:</p>
-      <input 
-        type="text" 
-        value={referralLink} 
-        readOnly 
-      />
-      <button onClick={copyReferralLink}>Скопировать ссылку</button>
+    <div className="friend-page-overlay" onClick={handleOverlayClick}>
+      <div className="friend-page-container">
+        <h1>Пригласить друзей</h1>
+        <p>Поделитесь своей реферальной ссылкой:</p>
+        <input 
+          type="text" 
+          value={referralLink} 
+          readOnly 
+        />
+        <button onClick={copyReferralLink}>Скопировать ссылку</button>
+      </div>
     </div>
   );
 };

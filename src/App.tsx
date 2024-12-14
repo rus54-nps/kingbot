@@ -460,6 +460,10 @@ function App() {
   const handleCollectReward = (rewardAmount: number) => {
     setPoints((prev) => prev + rewardAmount); // Увеличиваем points
   };
+
+  const [isFriendPageVisible, setIsFriendPageVisible] = useState(false);
+  const openFriendPage = () => setIsFriendPageVisible(true);
+  const closeFriendPage = () => setIsFriendPageVisible(false);
   
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -468,25 +472,7 @@ function App() {
         return (
           <>
             <div style={{ position: 'relative' }}>
-              {/* Отображение очков */}
-              <div
-                className="absolute text-5xl font-bold flex items-center"
-                style={{
-                  top: '95px',
-                  left: '50%',
-                  transform: 'translateX(-70%)',
-                  marginTop: '-5px',
-                }}
-              >
-                <img src={coinImage} width={44} height={44} alt="Static Coin" />
-                <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
-              </div>
-              {/* Кнопка открытия профиля (фиксированная позиция) */}
-              <button
-                className="profile-button fixed  right-4" style={{ marginTop: '17px' }} onClick={() => setCurrentPage('profil')} // Переход на страницу профиля
-              >
-                <img src={selectedIcon} alt="Profile Icon" width={320} height={32} />
-              </button>
+               
             </div>
           </>
         );
@@ -549,6 +535,7 @@ function App() {
       case 'friend':
         return (
           <FriendPage
+          onClose={closeFriendPage}
           />);
       case 'achiv':
         return (
@@ -572,7 +559,6 @@ function App() {
       </div>
     );
   }
-
   return (
     <div className="App min-h-screen px-4 flex flex-col items-center text-white font-medium">
       <div className="absolute inset-0 h-1/2 bg-gradient-overlay z-0"></div>
@@ -595,10 +581,11 @@ function App() {
               <span>Top</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('friend')}>
+            <button className="flex flex-col items-center gap-1" onClick={openFriendPage}>
               <img src={frnd} width={24} height={24} alt="Friend" />
               <span>Friend</span>
             </button>
+            {isFriendPageVisible && <FriendPage onClose={closeFriendPage} />}
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
               <img src={medal} width={24} height={24} alt="Achiv" />
@@ -606,20 +593,20 @@ function App() {
             </button>
           </div>
         </div>
-
-        {/*Кнопка настрек*/}
+  
+        {/*Кнопка настроек*/}
         <button className="setting-button fixed top-20 right-4" style={{ marginTop: '30px' }} onClick={toggleSettings}>
           <img src={sett} alt="Setting" width={24} height={24} />
         </button>
-          {showSettings && (
-        <Setting
-          onClose={toggleSettings}
-          isMusicOn={isMusicOn}
-          toggleMusic={toggleMusic}
-          isCoinSoundOn={isCoinSoundOn}
-          toggleCoinSound={toggleCoinSound}
-        />
-          )}
+        {showSettings && (
+          <Setting
+            onClose={toggleSettings}
+            isMusicOn={isMusicOn}
+            toggleMusic={toggleMusic}
+            isCoinSoundOn={isCoinSoundOn}
+            toggleCoinSound={toggleCoinSound}
+          />
+        )}
   
         {/* Отображение содержимого с использованием renderContent */}
         <div className="fixed top-20 left-0 w-full px-4 pt-2 z-20 flex flex-col items-center text-white">
@@ -628,7 +615,7 @@ function App() {
   
         <div className="relative flex-grow flex flex-col items-center justify-center relative" style={{ marginTop: '80px'}}>
           <div className="relative mb-4" onClick={handleClick}>
-            <img src={notcoin} width={230} height={200} className={isShaking ? 'shake' : ''} style={{ transform: 'translateX(-20px) translateY(15px)'  }} alt="notcoin"/>
+            <img src={notcoin} width={230} height={200} className={isShaking ? 'shake' : ''} style={{ transform: 'translateX(-20px) translateY(15px)' }} alt="notcoin"/>
             {coins.map((coin) => (
               <div
                 key={coin.id}
@@ -644,15 +631,15 @@ function App() {
               </div>
             ))}
           </div>
-
+  
           {/* Энергия под монетой */}
           <div className="flex flex-col items-center mt-2"style={{ marginTop: '-5px' }}>
             <div className="flex items-center justify-center">
-             <img src={highVoltage} width={24} height={24} alt="HighVoltage" className="mr-2" />
+              <img src={highVoltage} width={24} height={24} alt="HighVoltage" className="mr-2" />
               <span className="text-white text-xl font-bold">{energy}</span>
             </div>
             <span className="text-white opacity-75 text-sm">/ {maxEnergy}</span>
-    
+  
             {/* Увеличенная полоска энергии */}
             <div className="bg-[#f9c035] rounded-full mt-2" style={{ width: '300px' }}>
               <div className="bg-gradient-to-r from-[#f3c45a] to-[#fffad0] h-4 rounded-full" style={{ width: `${(energy /  maxEnergy) * 100}%` }}>
@@ -662,7 +649,7 @@ function App() {
         </div>
   
         {/* Нижний блок с кнопками (frend, earn, shop, achiv) */}
-        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10" style={{ marginTop: '5px' }}>
+        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-1" style={{ marginTop: '5px' }}>
           <div className="w-full max-w-md  py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
               <img src={shp} width={24} height={24} alt="Shop" />
@@ -685,52 +672,72 @@ function App() {
             </button>
           </div>
         </div>
+        
         {showLockedMessage && (
           <div className="locked-message">
             <span>Разблокировка будет доступна после улучшение тапа на 10lvl</span>
           </div>
         )}
+  
+        {showDen && (
+          <Den
+            onClose={() => setShowDen(false)} // Закрываем вкладку
+            onCollectReward={handleCollectReward} // Передаем функцию для обновления баланса
+          />
+        )}
+              {/*Кнопка Профиля*/}
+              <button
+                className="profile-button fixed  right-4" style={{ marginTop: '17px' }} onClick={() => setCurrentPage('profil')} // Переход на страницу профиля
+              >
+                <img src={selectedIcon} alt="Profile Icon" width={320} height={32} />
+              </button>
+  
+        {/* Отображение очков */}
+        <button
+                className="absolute text-5xl font-bold flex items-center z-1"
+                style={{
+                  top: '185px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  marginTop: '-5px',
+                }}
+              >
+                <img src={coinImage} width={44} height={44} alt="Static Coin" />
+                <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
+              </button>
 
-
-{showDen && (
-        <Den
-          onClose={() => setShowDen(false)} // Закрываем вкладку
-          onCollectReward={handleCollectReward} // Передаем функцию для обновления баланса
-        />
-      )}
-
-          
         {showWelcome && <New onBonusReceived={handleBonusReceived} />}
         {isNicknameModalVisible && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>Придумайте никнейм</h2>
-            <input
-              type="text"
-              placeholder="Введите ник..."
-              maxLength={16}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-                  handleSaveUsername(e.currentTarget.value.trim());
-                }
-              }}
-            />
-            <button
-              onClick={() => {
-                const input = document.querySelector<HTMLInputElement>('input');
-                if (input && input.value.trim()) {
-                  handleSaveUsername(input.value.trim());
-                }
-              }}
-            >
-              Сохранить
-            </button>
+          <div className="modal-overlay">
+            <div className="modal">
+              <h2>Придумайте никнейм</h2>
+              <input
+                type="text"
+                placeholder="Введите ник..."
+                maxLength={16}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                    handleSaveUsername(e.currentTarget.value.trim());
+                  }
+                }}
+              />
+              <button
+                onClick={() => {
+                  const input = document.querySelector<HTMLInputElement>('input');
+                  if (input && input.value.trim()) {
+                    handleSaveUsername(input.value.trim());
+                  }
+                }}
+              >
+                Сохранить
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );
+  
   
   
 

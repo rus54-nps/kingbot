@@ -1,64 +1,88 @@
-/* FriendPage.css */
+.friend-page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Поднимаем затемнение выше */
+}
+
+
 .friend-page-container {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .friend-page-container h1 {
-    font-size: 2rem;
-    text-align: center;
-    color: #333;
-  }
-  
-  .friend-page-container p {
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    color: #555;
-  }
-  
-  .friend-page-container input {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    background-color: #b62525;
-  }
-  
-  .friend-page-container button {
-    width: 100%;
-    padding: 10px;
-    font-size: 1.1rem;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .friend-page-container button:hover {
-    background-color: #45a049;
-  }
-  
-  .friend-page-container button:active {
-    background-color: #388e3c;
-  }
-  
-  /* FriendPage.css */
+  border: 2px solid #4caf50; /* Зеленая рамка */
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 600px;
+  background-color: #2d2d2d; /* Темный фон */
+  color: #fff; /* Белый текст */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.friend-page-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.friend-page-container h1 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ffffff; /* Белый текст */
+}
+
+.friend-page-container p {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #fbc02d; /* Золотистый текст */
+}
+
+.friend-page-container input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #4caf50; /* Зеленая рамка */
+  border-radius: 5px;
+  margin-bottom: 15px;
+  background-color: #444; /* Темный фон */
+  color: #fff; /* Белый текст */
+}
+
+.friend-page-container button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 10px;
+  background-color: #4caf50; /* Зеленый фон */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.friend-page-container button:hover {
+  background-color: #45a049; /* Более темный зеленый */
+}
+
+.friend-page-container button:active {
+  background-color: #388e3c;
+}
+
 .referrals-count {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #e8f5e9;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 1.2rem;
-    color: #388e3c;
-  }
-  
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #1b5e20; /* Темно-зеленый фон */
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #fbc02d; /* Золотистый текст */
+  font-weight: bold;
+}
+
+
