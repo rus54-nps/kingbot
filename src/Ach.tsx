@@ -178,14 +178,20 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
       </div>
 
       {selectedAchiv && (
-        <div className="achievement-modal">
-          <div className="modal-content">
-            <h2>{selectedAchiv.name}</h2>
-            <p>{selectedAchiv.unlocked ? selectedAchiv.description : "Достижение закрыто"}</p>
-            <button onClick={handleClose}>Close</button>
-          </div>
-        </div>
-      )}
+  <div 
+    className="achievement-modal-overlay" 
+    onClick={handleClose} // Закрытие при клике на оверлей
+  >
+    <div 
+      className="modal-content" 
+      onClick={(e) => e.stopPropagation()} // Остановка всплытия события, чтобы не закрывать при клике на содержимое
+    >
+      <h2>{selectedAchiv.name}</h2>
+      <p>{selectedAchiv.unlocked ? selectedAchiv.description : "Достижение закрыто"}</p>
+    </div>
+  </div>
+)}
+
       <button className="achievements-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
       
       {/* Кнопки навигации с изображениями */}
