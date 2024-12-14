@@ -464,6 +464,12 @@ function App() {
   const [isFriendPageVisible, setIsFriendPageVisible] = useState(false);
   const openFriendPage = () => setIsFriendPageVisible(true);
   const closeFriendPage = () => setIsFriendPageVisible(false);
+
+  const [isTaskVisible, setIsTaskVisible] = useState<boolean>(false);
+
+  const openTask = () => setIsTaskVisible(true);
+  const closeTask = () => setIsTaskVisible(false);
+  
   
   const renderContent = () => {
     console.log("Текущая страница:", currentPage); // Отладочная информация
@@ -522,6 +528,7 @@ function App() {
         return (
           <Task
           onRewardClaimed={handleRewardClaimed}
+          onClose={closeTask}
           />
         );
         /*Верхний блок*/
@@ -569,7 +576,7 @@ function App() {
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
   
         {/* Верхний блок с кнопками*/}
-        <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-10">
+        <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-20">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('home')}>
               <img src={hom} width={24} height={24} alt="Home" />
@@ -581,11 +588,10 @@ function App() {
               <span>Top</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={openFriendPage}>
-              <img src={frnd} width={24} height={24} alt="Friend" />
-              <span>Friend</span>
+            <button className="flex flex-col items-center gap-1" onClick={openAutoFarm}>
+              <img src={autfr} width={24} height={24} alt="Autofarm" style={{ opacity: isAutoFarmUnlocked ? 1 : 0.5 }} />
+              <span>Autofarm</span>
             </button>
-            {isFriendPageVisible && <FriendPage onClose={closeFriendPage} />}
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
               <img src={medal} width={24} height={24} alt="Achiv" />
@@ -649,27 +655,31 @@ function App() {
         </div>
   
         {/* Нижний блок с кнопками (frend, earn, shop, achiv) */}
-        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-1" style={{ marginTop: '5px' }}>
+        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-30" style={{ marginTop: '5px' }}>
           <div className="w-full max-w-md  py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
               <img src={shp} width={24} height={24} alt="Shop" />
               <span>Shop</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={openAutoFarm}>
-              <img src={autfr} width={24} height={24} alt="Autofarm" style={{ opacity: isAutoFarmUnlocked ? 1 : 0.5 }} />
-              <span>Autofarm</span>
+            <button className="flex flex-col items-center gap-1" onClick={openFriendPage}>
+              <img src={frnd} width={24} height={24} alt="Friend" />
+              <span>Friend</span>
             </button>
+            {isFriendPageVisible && <FriendPage onClose={closeFriendPage} />}
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('game')}>
               <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('task')}>
+            <button className="flex flex-col items-center gap-1" onClick={openTask}>
               <img src={task} width={24} height={24} alt="Task" />
               <span>Task</span>
             </button>
+            {isTaskVisible && (
+              <Task onRewardClaimed={handleRewardClaimed} onClose={closeTask} />
+            )}
           </div>
         </div>
         
@@ -692,8 +702,8 @@ function App() {
                 <img src={selectedIcon} alt="Profile Icon" width={320} height={32} />
               </button>
   
-        {/* Отображение очков */}
-        <button
+              {/* Отображение очков */}
+              <button
                 className="absolute text-5xl font-bold flex items-center z-1"
                 style={{
                   top: '185px',
@@ -706,21 +716,21 @@ function App() {
                 <span className="ml-2">{Math.floor(points).toLocaleString()}</span>
               </button>
 
-        {showWelcome && <New onBonusReceived={handleBonusReceived} />}
-        {isNicknameModalVisible && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <h2>Придумайте никнейм</h2>
-              <input
-                type="text"
-                placeholder="Введите ник..."
-                maxLength={16}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-                    handleSaveUsername(e.currentTarget.value.trim());
-                  }
-                }}
-              />
+              {showWelcome && <New onBonusReceived={handleBonusReceived} />}
+              {isNicknameModalVisible && (
+                <div className="modal-overlay">
+                  <div className="modal">
+                    <h2>Придумайте никнейм</h2>
+                    <input
+                      type="text"
+                      placeholder="Введите ник..."
+                      maxLength={16}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                          handleSaveUsername(e.currentTarget.value.trim());
+                        }
+                      }}
+                    />
               <button
                 onClick={() => {
                   const input = document.querySelector<HTMLInputElement>('input');

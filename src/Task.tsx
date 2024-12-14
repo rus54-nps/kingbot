@@ -3,9 +3,10 @@ import './Task.css';
 
 interface TaskProps {
   onRewardClaimed: () => void; // Функция для обработки получения награды
+  onClose: () => void; // Функция для закрытия вкладки
 }
 
-const Task: React.FC<TaskProps> = ({ onRewardClaimed }) => {
+const Task: React.FC<TaskProps> = ({ onRewardClaimed, onClose }) => {
   const [hasClaimedReward, setHasClaimedReward] = useState<boolean>(false); 
   const [hasVisitedGroup, setHasVisitedGroup] = useState<boolean>(false); 
 
@@ -31,25 +32,33 @@ const Task: React.FC<TaskProps> = ({ onRewardClaimed }) => {
     }
   };
 
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if ((event.target as HTMLDivElement).classList.contains('task-page-overlay')) {
+      onClose(); // Закрываем вкладку при клике на затемнённую область
+    }
+  };
+
   return (
-    <div className="task-container">
-      <h2>Подпишитесь на Telegram</h2>
+    <div className="task-page-overlay " onClick={handleOverlayClick}>
+      <div className="task-container">
+        <h2>Подпишитесь на Telegram</h2>
 
-      <p className="reward-text">🏆 Награда: 2500 монет</p>
+        <p className="reward-text">🏆 Награда: 2500 монет</p>
 
-      {!hasVisitedGroup && (
-        <button onClick={handleGoToGroup} className="task-button">
-          Перейти
-        </button>
-      )}
+        {!hasVisitedGroup && (
+          <button onClick={handleGoToGroup} className="task-button">
+            Перейти
+          </button>
+        )}
 
-      {hasVisitedGroup && !hasClaimedReward && (
-        <button onClick={handleClaimReward} className="task-button">
-          Забрать награду
-        </button>
-      )}
+        {hasVisitedGroup && !hasClaimedReward && (
+          <button onClick={handleClaimReward} className="task-button">
+            Забрать награду
+          </button>
+        )}
 
-      {hasClaimedReward && <p className="reward-received">Награда получена! 🎉</p>}
+        {hasClaimedReward && <p className="reward-received">Награда получена! 🎉</p>}
+      </div>
     </div>
   );
 };
