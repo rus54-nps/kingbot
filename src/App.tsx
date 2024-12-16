@@ -576,7 +576,7 @@ function App() {
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
   
         {/* Верхний блок с кнопками*/}
-        <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-20">
+        <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-3">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('home')}>
               <img src={hom} width={24} height={24} alt="Home" />
@@ -655,7 +655,7 @@ function App() {
         </div>
   
         {/* Нижний блок с кнопками (frend, earn, shop, achiv) */}
-        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-30" style={{ marginTop: '5px' }}>
+        <div className="fixed bottom-4 left-0 w-full px-4 flex justify-center z-10" style={{ marginTop: '5px' }}>
           <div className="w-full max-w-md  py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
               <img src={shp} width={24} height={24} alt="Shop" />
