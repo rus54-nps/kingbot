@@ -66,10 +66,10 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
 };
 
 const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts, activateBuffSap }) => {
-  const rows = 12;
+  const rows = 9;
   const cols = 7;
-  const mineCount = 12;
-  const timeLimit = 160;
+  const mineCount = 7;
+  const timeLimit = 100;
 
   const [field, setField] = useState<Cell[][]>(() => generateField(rows, cols, mineCount));
   const [gameOver, setGameOver] = useState(false);

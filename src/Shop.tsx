@@ -115,6 +115,10 @@ const Shop: React.FC<{
   return (
     <div className="Shp shop-overlay">
       <h2 className="shop-title">Магазин</h2>
+        <div className="balance">
+          <img src={coin} alt="Coin" width={20} height={20} />
+          <span>{Math.floor(points)}</span>
+        </div>
       <div className="shop-frame">
         <div className="shop-items-container">
           <ul className="shop-items">
