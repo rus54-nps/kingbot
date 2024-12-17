@@ -100,7 +100,12 @@ const handlePurchase = (itemId: number) => {
     setItems(updatedItems);
     localStorage.setItem('autoFarmItems', JSON.stringify(updatedItems)); // Сохраняем обновленные данные
     setPoints(points - itemToPurchase.price);
-    alert(`${language === 'ru' ? 'Вы купили' : 'You bought'} ${itemToPurchase.name}! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`);
+    alert(
+      `${language === 'ru' ? 'Вы купили' : 'You bought'} ${
+        itemNames[itemToPurchase.name as keyof typeof itemNames][language]
+      }! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`
+    );
+    
   } else {
     alert(language === 'ru' ? 'Недостаточно очков для покупки!' : 'Not enough points to buy!');
   }
@@ -127,7 +132,11 @@ const handlePurchase = (itemId: number) => {
                 <div className="autofarm-item-level">Lvl {item.level}</div>
               </div>
               <div className="autofarm-item-info">
-              <h3>{itemNames[item.name as keyof typeof itemNames][language]}</h3>
+              <h3>
+                {itemNames[item.name as keyof typeof itemNames]?.[language] || item.name}
+              </h3>
+
+
                 <p>{item.description}</p>
                 <button className="buy-button" onClick={() => handlePurchase(item.id)}>
                   <img src={coin} alt="Coin" width={16} height={16} />
