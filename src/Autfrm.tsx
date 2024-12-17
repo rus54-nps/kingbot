@@ -5,7 +5,7 @@ import { useLanguage } from './LanguageContext';
 
 interface AutoFarmItem {
   id: number;
-  name: 'goldHands' | 'luckyCoin' | 'richHarvest' | 'giftOfFate' | 'treasureSeeker';
+  name: string;
   price: number;
   image: string;
   level: number;
@@ -16,11 +16,11 @@ interface AutoFarmItem {
 }
 
 const itemNames = {
-  goldHands: { ru: 'Золотые Руки', en: 'Golden Hands' },
-  luckyCoin: { ru: 'Счастливая Монета', en: 'Lucky Coin' },
-  richHarvest: { ru: 'Богатый Урожай', en: 'Rich Harvest' },
-  giftOfFate: { ru: 'Дар Судьбы', en: 'Gift of Fate' },
-  treasureSeeker: { ru: 'Искатель Сокровищ', en: 'Treasure Seeker' },
+  gold: { ru: 'Золотые Руки', en: 'Golden Hands' },
+  lucky: { ru: 'Счастливая Монета', en: 'Lucky Coin' },
+  rich: { ru: 'Богатый Урожай', en: 'Rich Harvest' },
+  gift: { ru: 'Дар Судьбы', en: 'Gift of Fate' },
+  treasure: { ru: 'Искатель Сокровищ', en: 'Treasure Seeker' },
 };
 
 
@@ -29,21 +29,13 @@ const AutoFarm: React.FC<{
   setPoints: React.Dispatch<React.SetStateAction<number>>;
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ points, setPoints, setCurrentPage }) => {
-  // Инициализация `items` из `localStorage` или начальных значений
   const initialItems: AutoFarmItem[] = [
-    { id: 1, name: 'goldHands', price: 8000, image: goldh, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
-    { id: 2, name: 'luckyCoin', price: 10000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 80 },
-    { id: 3, name: 'richHarvest', price: 12000, image: bogy, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
-    { id: 4, name: 'giftOfFate', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
-    { id: 5, name: 'treasureSeeker', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
+    { id: 1, name: 'gold', price: 8000, image: goldh, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
+    { id: 2, name: 'luckyC', price: 10000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 80 },
+    { id: 3, name: 'rich', price: 12000, image: bogy, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
+    { id: 4, name: 'gift', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
+    { id: 5, name: 'treasure', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
   ];
-
-  type ItemNameKeys = 'goldHands' | 'luckyCoin' | 'richHarvest' | 'giftOfFate' | 'treasureSeeker';
-
-const getItemName = (name: ItemNameKeys, lang: string) => {
-  return itemNames[name][lang as keyof typeof itemNames[ItemNameKeys]];
-};
-
 
   const { language } = useLanguage();
 
@@ -108,12 +100,7 @@ const handlePurchase = (itemId: number) => {
     setItems(updatedItems);
     localStorage.setItem('autoFarmItems', JSON.stringify(updatedItems)); // Сохраняем обновленные данные
     setPoints(points - itemToPurchase.price);
-    alert(
-      `${language === 'ru' ? 'Вы купили' : 'You bought'} ${
-        itemNames[itemToPurchase.name as keyof typeof itemNames][language]
-      }! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`
-    );
-    
+    alert(`{language === 'ru' ? 'Вы купили' : 'You bought'} ${itemToPurchase.name}! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`);
   } else {
     alert(language === 'ru' ? 'Недостаточно очков для покупки!' : 'Not enough points to buy!');
   }
@@ -142,12 +129,9 @@ const handlePurchase = (itemId: number) => {
                 <div className="autofarm-item-level">Lvl {item.level}</div>
               </div>
               <div className="autofarm-item-info">
-              <h3>{getItemName(item.name, language)}</h3>
-
-
-
-
-
+              <h3>
+                {itemNames[item.name as keyof typeof itemNames][language]}
+              </h3>
                 <p>{item.description}</p>
                 <button className="buy-button" onClick={() => handlePurchase(item.id)}>
                   <img src={coin} alt="Coin" width={16} height={16} />
