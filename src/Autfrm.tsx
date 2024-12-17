@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Autfrm.css';
 import { bogy, goldh, dar, huntg, lackm, coin } from './images';
+import { useLanguage } from './LanguageContext';
 
 interface AutoFarmItem {
   id: number;
@@ -13,6 +14,8 @@ interface AutoFarmItem {
   priceIncreaseFactor: number;
   incomeIncrease: number;
 }
+
+
 
 const AutoFarm: React.FC<{
   points: number;
@@ -27,6 +30,8 @@ const AutoFarm: React.FC<{
     { id: 4, name: 'Дар Судьбы', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
     { id: 5, name: 'Искатель Сокровищ', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
   ];
+
+  const { language } = useLanguage();
 
   const savedItems = localStorage.getItem('autoFarmItems');
   const [items, setItems] = useState<AutoFarmItem[]>(savedItems ? JSON.parse(savedItems) : initialItems);
@@ -89,23 +94,23 @@ const handlePurchase = (itemId: number) => {
     setItems(updatedItems);
     localStorage.setItem('autoFarmItems', JSON.stringify(updatedItems)); // Сохраняем обновленные данные
     setPoints(points - itemToPurchase.price);
-    alert(`Вы купили ${itemToPurchase.name}! Новый уровень: ${itemToPurchase.level + 1}`);
+    alert(`${language === 'ru' ? 'Вы купили' : 'You bought'} ${itemToPurchase.name}! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`);
   } else {
-    alert('Недостаточно очков для покупки!');
+    alert(language === 'ru' ? 'Недостаточно очков для покупки!' : 'Not enough points to buy!');
   }
 };
 
   return (
     <div className="Aut autofarm-overlay">
-      <h2 className="autofarm-title">Автофарм</h2>
+      <h2 className="autofarm-title">{language === 'ru' ? 'Автофарм' : 'Autofarm'}</h2>
       <div className="autofarm-balance">
         <img src={coin} alt="Coin" width={20} height={20} />
         <span>{Math.floor(points)}</span>
       </div>
 
       <div className="autofarm-passive-income">
-        <div className="autofarm-passive-title">Пассивный доход</div>
-        <p className="autofarm-passive-text">После того как ты закрыл игру, пассивный доход копится 3 часа.</p>
+        <div className="autofarm-passive-title">{language === 'ru' ? 'Пассивный доход' : 'Passive income'}</div>
+        <p className="autofarm-passive-text">{language === 'ru' ? 'После того как ты закрыл игру, пассивный доход копится 3 часа.' : 'After you close the game, passive income accumulates for 3 hours.'}</p>
       </div>
       <div className="autofarm-items-container">
         <ul className="autofarm-items">
@@ -127,7 +132,7 @@ const handlePurchase = (itemId: number) => {
           ))}
         </ul>
       </div>
-      <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
+      <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'back'}</button>
     </div>
   );
 };
