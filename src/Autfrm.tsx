@@ -5,7 +5,7 @@ import { useLanguage } from './LanguageContext';
 
 interface AutoFarmItem {
   id: number;
-  name: string;
+  name: 'goldHands' | 'luckyCoin' | 'richHarvest' | 'giftOfFate' | 'treasureSeeker';
   price: number;
   image: string;
   level: number;
@@ -37,6 +37,13 @@ const AutoFarm: React.FC<{
     { id: 4, name: 'giftOfFate', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
     { id: 5, name: 'treasureSeeker', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
   ];
+
+  type ItemNameKeys = 'goldHands' | 'luckyCoin' | 'richHarvest' | 'giftOfFate' | 'treasureSeeker';
+
+const getItemName = (name: ItemNameKeys, lang: string) => {
+  return itemNames[name][lang as keyof typeof itemNames[ItemNameKeys]];
+};
+
 
   const { language } = useLanguage();
 
@@ -112,13 +119,6 @@ const handlePurchase = (itemId: number) => {
   }
 };
 
-const getItemName = (name: string, lang: string) => {
-  if (name in itemNames) {
-    return itemNames[name as keyof typeof itemNames][lang as keyof typeof itemNames[keyof typeof itemNames]];
-  }
-  return name;
-};
-
 
 
   return (
@@ -143,6 +143,7 @@ const getItemName = (name: string, lang: string) => {
               </div>
               <div className="autofarm-item-info">
               <h3>{getItemName(item.name, language)}</h3>
+
 
 
 
