@@ -69,8 +69,12 @@ import m6 from './m6.jpg'
 import mina from './mina.png'
 import flg from './flg.png'
 import sapbafx2 from './sapbafx2.png'
+import ruFlag from './ru.png'
+import enFlag from './en.png'
 
 export {
+    ruFlag,
+    enFlag,
     sapbafx2,
     mina,
     flg,

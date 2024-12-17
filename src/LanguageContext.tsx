@@ -1,25 +1,18 @@
-// src/LanguageContext.tsx
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type Language = 'ru' | 'en';
-
-interface LanguageContextProps {
-  language: Language;
-  toggleLanguage: () => void;
+interface LanguageContextType {
+  language: 'ru' | 'en';
+  toggleLanguage: (lang: 'ru' | 'en') => void;
 }
 
-const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>(() => {
-    // Сохраняем язык в localStorage, чтобы он сохранялся между сеансами
-    return localStorage.getItem('language') as Language || 'ru';
-  });
+  const [language, setLanguage] = useState<'ru' | 'en'>('en');
 
-  const toggleLanguage = () => {
-    const newLanguage = language === 'ru' ? 'en' : 'ru';
-    setLanguage(newLanguage);
-    localStorage.setItem('language', newLanguage);
+  const toggleLanguage = (lang: 'ru' | 'en') => {
+    setLanguage(lang);
+    localStorage.setItem('language', lang);  // сохраняем в localStorage, если нужно
   };
 
   return (
@@ -29,7 +22,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   );
 };
 
-export const useLanguage = () => {
+export const useLanguage = (): LanguageContextType => {
   const context = useContext(LanguageContext);
   if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');

@@ -1,7 +1,9 @@
-// src/Setting.tsx
 import React from 'react';
 import './Setting.css';
 import { useLanguage } from './LanguageContext';
+
+// Подключим иконки флагов
+import {ruFlag, enFlag} from './images'
 
 interface SettingProps {
   onClose: () => void;
@@ -30,15 +32,23 @@ const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn, togg
             <span>{language === 'ru' ? 'Звук монеты:' : 'Coin sound:'}</span>
             <input type="checkbox" checked={isCoinSoundOn} onChange={toggleCoinSound} />
           </label>
+          {/* Переключатель языка с флагами */}
           <label>
-            <span>{language === 'ru' ? 'Уведомления:' : 'Notifications:'}</span>
-            <input type="checkbox" />
-          </label>
-          <label>
-            <span>{language === 'ru' ? 'Язык (русский/английский):' : 'Language (Russian/English):'}</span>
-            <button onClick={toggleLanguage}>
-              {language === 'ru' ? 'Переключить на Английский' : 'Switch to Russian'}
-            </button>
+            <span>{language === 'ru' ? 'Язык:' : 'Language:'}</span>
+            <div className="language-switch">
+              <img 
+                src={ruFlag} 
+                alt="Russian" 
+                onClick={() => toggleLanguage('ru')} 
+                style={{ border: language === 'ru' ? '2px solid #fff' : 'none' }} 
+              />
+              <img 
+                src={enFlag} 
+                alt="English" 
+                onClick={() => toggleLanguage('en')} 
+                style={{ border: language === 'en' ? '2px solid #fff' : 'none' }} 
+              />
+            </div>
           </label>
         </div>
       </div>
