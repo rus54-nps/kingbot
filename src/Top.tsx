@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Top.css';
 import { ava1, ava2, ava3, ava4, ava5, ava6 } from './images';
+import { useLanguage } from './LanguageContext';
 
 interface Player {
   rank: number;
@@ -8,6 +9,7 @@ interface Player {
   avatar: string;
   coins: number;
   growthRate: number; // Модификатор роста монет
+  
 }
 
 interface TopProps {
@@ -28,6 +30,8 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) 
 
   const [topPlayers, setTopPlayers] = useState<Player[]>(initialPlayers);
 
+  const { language } = useLanguage();
+
   // Функция для обновления монет ботов в зависимости от монет игрока
   const updateBotCoins = (playerCoins: number): Player[] => {
     return initialPlayers.map((player) => {
@@ -38,11 +42,13 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) 
     });
   };
 
+
   useEffect(() => {
     const updatePlayerRanks = () => {
+      const currentPlayerName = language === 'ru' ? 'Вы' : 'You'; 
       const player: Player = {
         rank: 0, // Ранг будет обновлен
-        name: 'Вы', // Имя текущего игрока
+        name: currentPlayerName, // Имя текущего игрока
         avatar: selectedIcon,
         coins: playerCoins,
         growthRate: 1, // Текущий игрок имеет фиксированный рост
@@ -87,10 +93,11 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) 
 
   return (
     <div className="top-container">
-      <h1 className="top-title">Топ игроков</h1>
+      <h1 className="top-title">{language === 'ru' ? 'Топ игроков' : 'Top players'}</h1>
       <ul className="top-list">
         {topPlayers.map((player) => {
-          const isCurrentPlayer = player.name === 'Вы';
+          const currentPlayerName = language === 'ru' ? 'Вы' : 'You'; 
+          const isCurrentPlayer = player.name === currentPlayerName;
           return (
             <li
               key={isCurrentPlayer ? 'current-player' : player.rank}
@@ -107,7 +114,7 @@ const Top: React.FC<TopProps> = ({ setCurrentPage, playerCoins, selectedIcon }) 
       </ul>
 
       <button className="achievements-back-button" onClick={() => setCurrentPage('home')}>
-        Назад
+      {language === 'ru' ? 'Назад' : 'Back'}
       </button>
     </div>
     

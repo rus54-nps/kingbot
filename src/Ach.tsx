@@ -1,33 +1,52 @@
 import { useEffect, useState } from 'react';
 import './Ach.css';
 import { bl, zad, per, k1, k2, k3, k4, k5, en1, en2, en3, tap1, tap2, tap3, fullach } from './images';
+import { useLanguage } from './LanguageContext';
 
 // Определение типа для достижения
 type Achievement = {
   id: number;
   name: string;
-  description: string;
+  description: { ru: string; en: string };
   image: string;
   unlocked: boolean;
 };
 
+const itemNames = {
+  firstStep: { ru: 'Первый Шаг', en: 'The First Step' },
+  slowStart: { ru: 'Медленный старт', en: 'Slow start' },
+  financial: { ru: 'Финансовый прорыв', en: 'Financial breakthrough' },
+  coinMagnate: { ru: 'Монетный Магнат', en: 'The Coin Magnate' },
+  goldRush: { ru: 'Золотая Лихорадка', en: 'The Gold Rush' },
+  //
+  novicePower : { ru: 'Начинающий энергетик', en: 'A novice power engineer' },
+  engineer: { ru: 'Энергетик', en: 'The power engineer' },
+  giant: { ru: 'Энергетический Гигант"', en: 'The Energy Giant' },
+  //
+  beginner: { ru: 'Начинающий тапер', en: 'Beginner piano player' },
+  masters: { ru: 'Мастери Тапа', en: 'Tapa Masters' },
+  lord: { ru: 'Владыка Тапов', en: 'The Lord of Taps' },
+  //
+  champion: { ru: 'Чемпион', en: 'Champion' },
+};
+
 const achievements: Achievement[] = [
   /*Заработок монет*/
-  { id: 1, name: "Первый Шаг", description: "Заработайте 1 000 монет", image: k1, unlocked: false },
-  { id: 2, name: "Медленный старт", description: "Заработайте 10 000 монет", image: k2, unlocked: false },
-  { id: 3, name: "Финансовый прорыв", description: "Заработайте 100 000 монет", image: k3, unlocked: false },
-  { id: 4, name: "Монетный Магнат", description: "Заработайте 1 000 000 монет", image: k4, unlocked: false },
-  { id: 5, name: "Золотая Лихорадка", description: "Заработайте 10 000 000 монет", image: k5, unlocked: false },
+  { id: 1, name: "firstStep", description: { ru: "Заработайте 1 000 монет", en: "Earn 1 000 coins" }, image: k1, unlocked: false },
+  { id: 2, name: "slowStart", description: { ru: "Заработайте 10 000 монет", en: "Earn 10 000 coins" }, image: k2, unlocked: false },
+  { id: 3, name: "financial", description: { ru: "Заработайте 100 000 монет", en: "Earn 100 000 coins" }, image: k3, unlocked: false },
+  { id: 4, name: " coinMagnate", description: { ru: "Заработайте 1 000 000 монет", en: "Earn 1 000 000 coins" }, image: k4, unlocked: false },
+  { id: 5, name: "goldRush", description: { ru: "Заработайте 10 000 000 монет", en: "Earn 10 000 000 coins" }, image: k5, unlocked: false },
   /*Максимальная энергия*/
-  { id: 6, name: "Начинающий энергетик", description: "Увеличьте максимальную энергию до 5 000", image: en1, unlocked: false },
-  { id: 7, name: "Энергетик", description: "Увеличьте максимальную энергию до 10 000", image: en2, unlocked: false },
-  { id: 8, name: "Энергетический Гигант", description: "Увеличьте максимальную энергию до 15 000", image: en3, unlocked: false },
+  { id: 6, name: "novicePower", description: { ru: "Увеличьте максимальную энергию до 5 000", en: "Increase max energy to 5,000" }, image: en1, unlocked: false },
+  { id: 7, name: "engineer", description: { ru: "Увеличьте максимальную энергию до 10 000", en: "Increase max energy to 10 000" }, image: en2, unlocked: false },
+  { id: 8, name: "giant", description: { ru: "Увеличьте максимальную энергию до 15 000", en: "Increase max energy to 15 000" }, image: en3, unlocked: false },
   /*Количество тапов*/
-  { id: 9, name: "Начинающий тапер", description: "Сделайте 1 000 тапов", image: tap1, unlocked: false },
-  { id: 10, name: "Мастери Тапа", description: "Сделайте 100 000 тапов", image: tap2, unlocked: false },
-  { id: 11, name: "Владыка Тапов", description: "Сделайте 1 000 000 тапов", image: tap3, unlocked: false },
+  { id: 9, name: "beginner", description:  { ru: "Сделайте 1 000 тапов", en: "Make 1,000 taps" }, image: tap1, unlocked: false },
+  { id: 10, name: "masters", description:  { ru: "Сделайте 100 000 тапов", en: "Make 100 000 taps" }, image: tap2, unlocked: false },
+  { id: 11, name: "lord", description:  { ru: "Сделайте 1 000 000 тапов", en: "Make 1 000 000 taps" }, image: tap3, unlocked: false },
   /*Завершение достижений*/
-  { id: 12, name: "Чемпион", description: "Добейтесь 100% выполнения всех достижений", image: fullach, unlocked: false },
+  { id: 12, name: "champion", description: { ru: "Добейтесь 100% выполнения всех достижений", en: "Achieve 100% completion of all achievements" }, image: fullach, unlocked: false },
   /*
   { id: 13, name: "Потрачено", description: "Потратьте 1000 монет в магазине", image: zl, unlocked: false },
   /*
@@ -54,7 +73,8 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
   const [selectedAchiv, setSelectedAchiv] = useState<Achievement | null>(null);
   const [currentPage, setCurrentPageState] = useState(0);
   const achievementsPerPage = 12;
-  
+
+  const { language } = useLanguage();
 
   /*Заработок монет*/
   useEffect(() => {
@@ -162,9 +182,17 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
 
   const hasNextPage = (currentPage + 1) * achievementsPerPage < achievements.length; // Проверка наличия достижений на следующей странице
 
+  const closeach = {
+    achievementLocked: {
+      ru: "Достижение закрыто",
+      en: "Achievement locked",
+    },
+  };
+  
   return (
     <div className="Ach achievements-overlay">
-      <h1 className="achievements-title">Achievements</h1>
+      <h1 className="achievements-title">
+      {language === 'ru' ? 'Достижения' : 'Achievements'}</h1>
       <div className="achievements-grid">
         {currentAchievements.map((achiv) => (
           <div key={achiv.id} className="achievement" onClick={() => handleClick(achiv)}>
@@ -186,13 +214,14 @@ function Achiv({ setCurrentPage, points, maxEnergy, taps }: AchivProps) {
       className="modal-content" 
       onClick={(e) => e.stopPropagation()} // Остановка всплытия события, чтобы не закрывать при клике на содержимое
     >
-      <h2>{selectedAchiv.name}</h2>
-      <p>{selectedAchiv.unlocked ? selectedAchiv.description : "Достижение закрыто"}</p>
+      <h2>{itemNames[selectedAchiv.name as keyof typeof itemNames][language]}</h2>
+      <p>{selectedAchiv.unlocked ? selectedAchiv.description[language] : 
+      closeach.achievementLocked[language]}</p>
     </div>
   </div>
 )}
 
-      <button className="achievements-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
+      <button className="achievements-back-button" onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'Back'}</button>
       
       {/* Кнопки навигации с изображениями */}
       <div className="navigation-buttons">

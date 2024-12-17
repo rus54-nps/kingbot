@@ -12,6 +12,7 @@ import FriendPage from './Frend';
 import New from './New';
 import Task from './Task';
 import Den from './Denn';
+import { LanguageProvider } from './LanguageContext';
 
 
 function App() {
@@ -566,7 +567,10 @@ function App() {
       </div>
     );
   }
+
+  
   return (
+    <LanguageProvider>
     <div className="App min-h-screen px-4 flex flex-col items-center text-white font-medium">
       <div className="absolute inset-0 h-1/2 bg-gradient-overlay z-0"></div>
       <div className="absolute inset-0 flex items-center justify-center z-0">
@@ -574,7 +578,7 @@ function App() {
       </div>
   
       <div className="w-full z-10 min-h-screen flex flex-col items-center text-white">
-  
+
         {/* Верхний блок с кнопками*/}
         <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-3">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
@@ -586,16 +590,18 @@ function App() {
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('top')}>
               <img src={top} width={24} height={24} alt="Top" />
               <span>Top</span>
+              
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={openAutoFarm}>
               <img src={autfr} width={24} height={24} alt="Autofarm" style={{ opacity: isAutoFarmUnlocked ? 1 : 0.5 }} />
               <span>Autofarm</span>
+              
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('achiv')}>
               <img src={medal} width={24} height={24} alt="Achiv" />
-              <span>Medals</span>
+              <span>Medal</span>
             </button>
           </div>
         </div>
@@ -660,22 +666,26 @@ function App() {
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('shop')}>
               <img src={shp} width={24} height={24} alt="Shop" />
               <span>Shop</span>
+              
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={openFriendPage}>
               <img src={frnd} width={24} height={24} alt="Friend" />
               <span>Friend</span>
+              
             </button>
             {isFriendPageVisible && <FriendPage onClose={closeFriendPage} />}
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('game')}>
               <img src={gam} width={24} height={24} alt="Game" />
               <span>Game</span>
+              
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={openTask}>
               <img src={task} width={24} height={24} alt="Task" />
               <span>Task</span>
+              
             </button>
             {isTaskVisible && (
               <Task onRewardClaimed={handleRewardClaimed} onClose={closeTask} />
@@ -746,6 +756,7 @@ function App() {
         )}
       </div>
     </div>
+    </LanguageProvider>
   );
   
   

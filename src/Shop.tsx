@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Shop.css';
 import { item1, item2, item3, coin, tapImages, tapHighLevelImage } from './images'; // Подключаем нужные изображения
+import { useLanguage } from './LanguageContext';
 
 interface ShopItem {
   id: number;
@@ -10,8 +11,13 @@ interface ShopItem {
   level: number;
   regenerationRate: number;
   nextPrice: number;
-  description: string;
 }
+
+const itemNames = {
+  tap: { ru: 'Тап lvl 1', en: 'Tap lvl 1' },
+  energy: { ru: 'Энергия lvl 1', en: 'Energy lvl 1' },
+  regen: { ru: 'Реген lvl 1', en: 'Regen lvl 1' },
+};
 
 const Shop: React.FC<{
   points: number;
@@ -22,10 +28,12 @@ const Shop: React.FC<{
   setPointsToAdd: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ points, setPoints, setCurrentPage, setEnergyRecoveryRate, setMaxEnergy, setPointsToAdd }) => {
   const [items, setItems] = useState<ShopItem[]>([
-    { id: 1, name: 'Тап lvl 1', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000, description: 'Увеличивает получаемые за Тап монеты ' },
-    { id: 2, name: 'Энергия lvl 1', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000, description: 'Добавляет энергии: 500' },
-    { id: 3, name: 'Реген lvl 1', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000, description: 'Увеличивает скорость восстановления энергии' },
+    { id: 1, name: 'tap', price: 3000, image: item1, level: 1, regenerationRate: 1, nextPrice: 6000},
+    { id: 2, name: 'energy', price: 2500, image: item2, level: 1, regenerationRate: 500, nextPrice: 5000},
+    { id: 3, name: 'regen', price: 2500, image: item3, level: 1, regenerationRate: 1, nextPrice: 5000},
   ]);
+
+  const { language } = useLanguage();
 
   useEffect(() => {
     const savedItems = localStorage.getItem('shop-items');
@@ -95,7 +103,7 @@ const Shop: React.FC<{
             level: newLevel,
             regenerationRate: newRegenerationRate,
             price: newPrice,
-            name: `${item.name.split(' lvl')[0]} lvl ${newLevel}`,
+            // Убираем изменение name
             image: item.id === 1 ? getTapImageByLevel(newLevel) : item.image, // Устанавливаем изображение для "Тап"
           };
         }
@@ -106,15 +114,15 @@ const Shop: React.FC<{
       setPoints(points - itemToPurchase.price);
       localStorage.setItem('shop-items', JSON.stringify(updatedItems));
 
-      alert(`Вы купили ${itemToPurchase.name}! Новый уровень: ${itemToPurchase.level + 1}`);
+      alert(`{language === 'ru' ? 'Вы купили' : 'You bought'} ${itemToPurchase.name}! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`);
     } else {
-      alert('Недостаточно очков для покупки!');
+      alert(language === 'ru' ? 'Недостаточно очков для покупки!' : 'Not enough points to buy!');
     }
   };
 
   return (
     <div className="Shp shop-overlay">
-      <h2 className="shop-title">Магазин</h2>
+      <h2 className="shop-title">{language === 'ru' ? 'Магазин' : 'Shop'}</h2>
         <div className="balance">
           <img src={coin} alt="Coin" width={20} height={20} />
           <span>{Math.floor(points)}</span>
@@ -129,16 +137,21 @@ const Shop: React.FC<{
                   <p className="shop-item-level">lvl {item.level}</p>
                 </div>
                 <div className="shop-item-info">
-                  <h3>{item.name}</h3>
-                  <p>Цена: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
-                  <button onClick={() => handlePurchase(item.id)}>Купить</button>
+                <h3>
+  {itemNames[item.name as keyof typeof itemNames][language].split(' lvl')[0]} lvl {item.level}
+</h3>
+
+
+
+                  <p>{language === 'ru' ? 'Цена' : 'Price'}: {item.price} <img src={coin} alt="Coin" width={16} height={16} /></p>
+                  <button onClick={() => handlePurchase(item.id)}>{language === 'ru' ? 'Купить' : 'Buy'}</button>
                 </div>
               </li>
             ))}
           </ul>
         </div>
       </div>
-      <button className="shop-back-button" onClick={() => setCurrentPage('home')}>Назад</button>
+      <button className="shop-back-button" onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'Back'}</button>
     </div>
   );
 };

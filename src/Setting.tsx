@@ -1,5 +1,7 @@
+// src/Setting.tsx
 import React from 'react';
 import './Setting.css';
+import { useLanguage } from './LanguageContext';
 
 interface SettingProps {
   onClose: () => void;
@@ -9,30 +11,34 @@ interface SettingProps {
   isCoinSoundOn: boolean;
 }
 
-const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn, toggleCoinSound, isCoinSoundOn, }) => {
+const Setting: React.FC<SettingProps> = ({ onClose, toggleMusic, isMusicOn, toggleCoinSound, isCoinSoundOn }) => {
+  const { language, toggleLanguage } = useLanguage();
+
   return (
     <div className="settings-overlay">
       <div className="settings-container">
         <button className="close-button" onClick={onClose}>
           ✖
         </button>
-        <h2>Настройки</h2>
+        <h2>{language === 'ru' ? 'Настройки' : 'Settings'}</h2>
         <div className="settings-content">
           <label>
-            <span>Звук фона:</span>
+            <span>{language === 'ru' ? 'Звук фона:' : 'Background sound:'}</span>
             <input type="checkbox" checked={isMusicOn} onChange={toggleMusic} />
           </label>
           <label>
-            <span>Звук монеты:</span>
+            <span>{language === 'ru' ? 'Звук монеты:' : 'Coin sound:'}</span>
             <input type="checkbox" checked={isCoinSoundOn} onChange={toggleCoinSound} />
           </label>
           <label>
-            <span>Уведомления:</span>
+            <span>{language === 'ru' ? 'Уведомления:' : 'Notifications:'}</span>
             <input type="checkbox" />
           </label>
           <label>
-            <span>Язык:</span>
-            <input type="checkbox" />
+            <span>{language === 'ru' ? 'Язык (русский/английский):' : 'Language (Russian/English):'}</span>
+            <button onClick={toggleLanguage}>
+              {language === 'ru' ? 'Переключить на Английский' : 'Switch to Russian'}
+            </button>
           </label>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Frend.css';
+import { useLanguage } from './LanguageContext';
 
 const FriendPage: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [referralLink, setReferralLink] = useState('');
@@ -9,6 +10,7 @@ const FriendPage: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     // Получение уникального идентификатора пользователя
     const userId = localStorage.getItem('userId') || 'defaultUser';
     setReferralLink(`https://t.me/KingCoinClick_bot/KingCoin?ref=${userId}`);
+
 
     // Проверка, если текущий пользователь пришел по реферальной ссылке
     const urlParams = new URLSearchParams(window.location.search);
@@ -46,18 +48,19 @@ const FriendPage: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       onClose(); // Закрываем вкладку
     }
   };
+  const { language } = useLanguage();
 
   return (
     <div className="friend-page-overlay" onClick={handleOverlayClick}>
       <div className="friend-page-container">
-        <h1>Пригласить друзей</h1>
-        <p>Поделитесь своей реферальной ссылкой:</p>
+        <h1>{language === 'ru' ? 'Пригласить друзей' : 'Invite friends'}</h1>
+        <p>{language === 'ru' ? 'Поделитесь своей реферальной ссылкой' : 'Share your referral link'}:</p>
         <input 
           type="text" 
           value={referralLink} 
           readOnly 
         />
-        <button onClick={copyReferralLink}>Скопировать ссылку</button>
+        <button onClick={copyReferralLink}>{language === 'ru' ? 'Скопировать ссылку' : 'Copy the link'}</button>
       </div>
     </div>
   );

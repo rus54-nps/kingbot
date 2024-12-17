@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Denn.css';
+import { useLanguage } from './LanguageContext';
 
 type DenProps = {
   onClose: () => void;
@@ -11,6 +12,8 @@ const Den: React.FC<DenProps> = ({ onCollectReward }) => {
   const [canClaim, setCanClaim] = useState<boolean>(false); // Флаг, можно ли забрать награду
   const [isVisible, setIsVisible] = useState<boolean>(false); // Флаг, нужно ли показывать окно
   const [, setConsecutiveDays] = useState<number>(0); // Количество дней подряд
+
+  const { language } = useLanguage();
 
   useEffect(() => {
     const now = new Date();
@@ -63,11 +66,14 @@ const Den: React.FC<DenProps> = ({ onCollectReward }) => {
 
   return (
     <div className="den-modal">
-      <h2>Ежедневная награда</h2>
-      <p>{reward} монет</p>
+      <h2>{language === 'ru' ? 'Ежедневная награда' : 'Daily Reward'}</h2>
+      <p>{reward} {language === 'ru' ? 'Монет' : 'Coins'}</p>
       <button onClick={handleCollect} disabled={!canClaim}>
-        {canClaim ? 'Забрать' : 'Уже забрано'}
-      </button>
+  {canClaim
+    ? (language === 'ru' ? 'Забрать' : 'Claim')
+    : (language === 'ru' ? 'Уже забрано' : 'Already claimed')}
+</button>
+
     </div>
   );
 };

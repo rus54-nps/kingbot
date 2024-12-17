@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import IconSelector from './IconSelector';
 import './Profil.css';
+import { useLanguage } from './LanguageContext';
 
 type ProfilProps = {
   username: string;
@@ -13,6 +14,8 @@ const Profil: React.FC<ProfilProps> = ({ username, selectedIcon, setSelectedIcon
   const [showIconSelector, setShowIconSelector] = useState(false);
   const [daysSinceFirstLogin, setDaysSinceFirstLogin] = useState(0);
   const [registrationDate, setRegistrationDate] = useState('');
+
+   const { language } = useLanguage();
 
   useEffect(() => {
     const firstLoginDate = localStorage.getItem('firstLoginDate');
@@ -36,7 +39,7 @@ const Profil: React.FC<ProfilProps> = ({ username, selectedIcon, setSelectedIcon
       {!showIconSelector ? (
         <div className="profil-container">
           <div className="profil-header">
-            <h2>Профиль</h2>
+            <h2>{language === 'ru' ? 'Профиль' : 'Profile'}</h2>
           </div>
           <div className="profil-content">
             <img
@@ -47,13 +50,13 @@ const Profil: React.FC<ProfilProps> = ({ username, selectedIcon, setSelectedIcon
             />
             <ul className="profil-info-list">
               <li>
-                <strong>Ник:</strong> {username}
+                <strong>{language === 'ru' ? 'Ник' : 'Name'}:</strong> {username}
               </li>
               <li>
-                <strong>Количество дней в игре:</strong> {daysSinceFirstLogin}
+                <strong>{language === 'ru' ? 'Количество дней в игре' : 'Number of days in the game'}:</strong> {daysSinceFirstLogin}
               </li>
               <li>
-                <strong>Дата регистрации:</strong> {registrationDate}
+                <strong>{language === 'ru' ? 'Дата регистрации' : 'Date of registration'}:</strong> {registrationDate}
               </li>
             </ul>
           </div>

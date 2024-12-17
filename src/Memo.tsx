@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Memo.css';
 import { m1, m2, m3, m4, m5, m6 } from './images';
+import { useLanguage } from './LanguageContext';
 
 interface MemoProps {
   setCurrentPage: (page: string) => void; // Функция для возврата на другие страницы
@@ -25,6 +26,8 @@ const Memo: React.FC<MemoProps> = ({
   const [gameOver, setGameOver] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false); // Новое состояние
 
+  const { language } = useLanguage();
+
   // Инициализация карточек
   useEffect(() => {
     const shuffledCards = [...images, ...images]
@@ -43,7 +46,7 @@ const Memo: React.FC<MemoProps> = ({
       }, 1000);
       return () => clearInterval(timer);
     } else {
-      alert('Время вышло! Вы проиграли!');
+      alert(language === 'ru' ? 'Время вышло! Вы проиграли!' : 'Time up! You lost!');
       handleEndGame();
     }
   }, [timeRemaining, gameOver]);
@@ -69,7 +72,7 @@ const Memo: React.FC<MemoProps> = ({
       setGameOver(true);
       activateBuff();
       setTimeout(() => {
-        alert('Вы победили!');
+        alert(language === 'ru' ? 'Вы победили!' : 'You have win!');
         handleEndGame();
       }, 500);
     }
@@ -101,20 +104,21 @@ const handleExit = () => {
   if (attemptsLeft <= 0) {
     return (
       <div className="memo-game">
-        <h1>Memo Game</h1>
-        <h2>У вас закончились попытки!</h2>
-        <button onClick={() => setCurrentPage('home')}>Назад</button>
+        <h1>{language === 'ru' ? 'Мемо' : 'Memo'}</h1>
+        <h2>{language === 'ru' ? 'У вас закончились попытки' : 'You run out of attempts'}</h2>
+        <button onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'Back'}</button>
       </div>
     );
   }
 
+
   return (
     <div className="memo-game">
-      <h1>Memo Game</h1>
-      <button onClick={handleExit}>Назад</button>
+      <h1>{language === 'ru' ? 'Мемо' : 'Memo'}</h1>
+      <button onClick={handleExit}>{language === 'ru' ? 'Назад' : 'Back'}</button>
 
       <div className="timer">
-        <h2>Оставшееся время: {timeRemaining} сек</h2>
+        <h2>{language === 'ru' ? 'Оставшееся время' : 'Remaining time'}: {timeRemaining} {language === 'ru' ? 'Секунд' : 'Seconds'}</h2>
       </div>
       <div className="cards-grid">
         {cards.map((card, index) => (

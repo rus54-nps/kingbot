@@ -32,10 +32,6 @@
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.back-button:hover {
-  background-color: #d04e3b;
-  transform: scale(1.05);
-}
 
 /* Заголовок Мини-игры */
 .game-title {

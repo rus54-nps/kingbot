@@ -5,6 +5,7 @@ import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 import { bafx2, sapbafx2 } from './images';
 import Sap from './Sap';
+import { useLanguage } from './LanguageContext';
 
 interface GameProps {
   setCurrentPage: (page: string) => void;
@@ -45,7 +46,7 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, activateBuffS
     checkNewDay();
 
     const mskTime = toZonedTime(new Date(), 'Europe/Moscow');
-    const nextMidnight = new Date(mskTime.setHours(4, 0, 0, 0));
+    const nextMidnight = new Date(mskTime.setHours(24, 0, 0, 0));
     const timeUntilMidnight = nextMidnight.getTime() - new Date().getTime();
 
     const timeoutId = setTimeout(() => {
@@ -68,35 +69,37 @@ const Game: React.FC<GameProps> = ({ setCurrentPage, activateBuff, activateBuffS
     }
   };
 
+  const { language } = useLanguage();
+
   return (
     <div className="game game-container">
       <button className="back-button" onClick={handleBack}>
-        Назад
+        {language === 'ru' ? 'Назад' : 'Back'}
       </button>
 
-      <h1 className="game-title">Мини-игры</h1>
+      <h1 className="game-title">{language === 'ru' ? 'Мини-игры' : 'Mini-games'}</h1>
       <div className="game-list">
         <button className="game-item" onClick={() => setCurrentGame('memo')}>
-          Memo
+          {language === 'ru' ? 'Мемо' : 'Memo'}
         </button>
         <button className="game-item" onClick={() => setCurrentGame('sap')}>
-          Sapper
+        {language === 'ru' ? 'Сапёр' : 'Sapper'}
         </button>
       </div>
 
-      <h3 className="attempts-left">Оставшиеся попытки: {attemptsLeft}</h3>
+      <h3 className="attempts-left">{language === 'ru' ? 'Оставшиеся попытки' : 'Remaining attempts'}: {attemptsLeft}</h3>
 
       {isBuffActive && buffTime !== null && (
         <div className="buff-info">
           <img src={bafx2} alt="Buff" className="buff-icon" />
-          <span className="buff-time">{buffTime} сек</span>
+          <span className="buff-time">{buffTime} {language === 'ru' ? 'Секунд' : 'Seconds'}</span>
         </div>
       )}
 
       {isBuffActiveSap && buffTime !== null && (
         <div className="buff-info">
           <img src={sapbafx2} alt="SapBuff" className="buff-icon" />
-          <span className="buff-time">{buffTime} сек</span>
+          <span className="buff-time">{buffTime} {language === 'ru' ? 'Секунд' : 'Seconds'}</span>
         </div>
       )}
 

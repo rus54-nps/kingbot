@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Sap.css';
 import { mina, flg } from './images';
+import { useLanguage } from './LanguageContext';
 
 interface Cell {
   isMine: boolean;
@@ -27,6 +28,7 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
       adjacentMines: 0,
     }))
   );
+
 
   let minesPlaced = 0;
   while (minesPlaced < mineCount) {
@@ -77,6 +79,8 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
   const [timeLeft, setTimeLeft] = useState(timeLimit);
   const [isFlagMode, setIsFlagMode] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false); // Для отслеживания взаимодействий
+
+  const { language } = useLanguage();
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -207,8 +211,8 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
   if (attemptsLeft <= 0) {
     return (
       <div className="sap-game">
-        <h1>Сапёр</h1>
-        <h2>У вас закончились попытки!</h2>
+        <h1>{language === 'ru' ? 'Сапёр' : 'Sapper'}</h1>
+        <h2>{language === 'ru' ? 'У вас закончились попытки' : 'You run out of attempts'}!</h2>
         <button onClick={() => setCurrentPage('home')}>Назад</button>
       </div>
     );
@@ -216,10 +220,10 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
 
   return (
     <div className="sap-game">
-      <h1>Сапёр</h1>
-      <div>Оставшееся время: {timeLeft} секунд</div>
-      {gameOver && <div className="message">Игра окончена!</div>}
-      {victory && <div className="message">Победа!</div>}
+      <h1>{language === 'ru' ? 'Сапёр' : 'Sapper'}</h1>
+      <div>{language === 'ru' ? 'Оставшееся время' : 'Remaining time'}: {timeLeft} {language === 'ru' ? 'Секунд' : 'Second'}</div>
+      {gameOver && <div className="message">{language === 'ru' ? 'Проигрыш' : 'Loss'}</div>}
+      {victory && <div className="message">{language === 'ru' ? 'Победа' : 'Win'}!</div>}
 
       <button className="flag-mode-button" onClick={() => setIsFlagMode(!isFlagMode)}>
         <img src={isFlagMode ? flg : mina} alt="Переключить режим" />
@@ -240,7 +244,7 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
         )}
       </div>
       <button className="restart-button" onClick={handleExit}>
-        Назад
+      {language === 'ru' ? 'Назад' : 'Back'}
       </button>
     </div>
   );

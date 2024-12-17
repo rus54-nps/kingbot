@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Task.css';
+import { useLanguage } from './LanguageContext';
 
 interface TaskProps {
   onRewardClaimed: () => void; // Функция для обработки получения награды
@@ -9,6 +10,8 @@ interface TaskProps {
 const Task: React.FC<TaskProps> = ({ onRewardClaimed, onClose }) => {
   const [hasClaimedReward, setHasClaimedReward] = useState<boolean>(false); 
   const [hasVisitedGroup, setHasVisitedGroup] = useState<boolean>(false); 
+
+  const { language } = useLanguage();
 
   // Загружаем состояние из localStorage при загрузке компонента
   useEffect(() => {
@@ -41,23 +44,23 @@ const Task: React.FC<TaskProps> = ({ onRewardClaimed, onClose }) => {
   return (
     <div className="task-page-overlay " onClick={handleOverlayClick}>
       <div className="task-container">
-        <h2>Подпишитесь на Telegram</h2>
+        <h2>{language === 'ru' ? 'Подпишитесь на Telegram' : 'Subscribe to Telegram Welcome Bonus'}</h2>
 
-        <p className="reward-text">🏆 Награда: 2500 монет</p>
+        <p className="reward-text">🏆 {language === 'ru' ? 'Награда: 2500 монет' : 'Reward: 2500 coins'}</p>
 
         {!hasVisitedGroup && (
           <button onClick={handleGoToGroup} className="task-button">
-            Перейти
+            {language === 'ru' ? 'Перейти' : 'Go over'}
           </button>
         )}
 
         {hasVisitedGroup && !hasClaimedReward && (
           <button onClick={handleClaimReward} className="task-button">
-            Забрать награду
+            {language === 'ru' ? 'Забрать награду' : 'To collect the reward'}
           </button>
         )}
 
-        {hasClaimedReward && <p className="reward-received">Награда получена! 🎉</p>}
+        {hasClaimedReward && <p className="reward-received">{language === 'ru' ? 'Награда получена' : 'The reward has been received'}! 🎉</p>}
       </div>
     </div>
   );
