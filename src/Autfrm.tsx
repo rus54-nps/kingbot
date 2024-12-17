@@ -56,7 +56,7 @@ const AutoFarm: React.FC<{
       });
 
       const passiveIncome = totalIncomePerHour * hoursToAdd;
-      setPoints(prevPoints => prevPoints + Math.floor(passiveIncome));
+      setPoints(prevPoints => prevPoints + Math.trunc(passiveIncome));
     }
   }, [items, setPoints]);
 
