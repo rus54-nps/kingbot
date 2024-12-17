@@ -34,8 +34,14 @@ const Profil: React.FC<ProfilProps> = ({ username, selectedIcon, setSelectedIcon
     }
   }, []);
 
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onBack(); // Закрываем вкладку
+    }
+  };
+
   return (
-    <div className="profil-modal">
+    <div className="profil-modal" onClick={handleOverlayClick}>
       {!showIconSelector ? (
         <div className="profil-container">
           <div className="profil-header">
@@ -53,7 +59,7 @@ const Profil: React.FC<ProfilProps> = ({ username, selectedIcon, setSelectedIcon
                 <strong>{language === 'ru' ? 'Ник' : 'Name'}:</strong> {username}
               </li>
               <li>
-                <strong>{language === 'ru' ? 'Количество дней в игре' : 'Number of days in the game'}:</strong> {daysSinceFirstLogin}
+                <strong>{language === 'ru' ? 'Количество дней в игре' : 'Days in the game'}:</strong> {daysSinceFirstLogin}
               </li>
               <li>
                 <strong>{language === 'ru' ? 'Дата регистрации' : 'Date of registration'}:</strong> {registrationDate}
@@ -61,9 +67,6 @@ const Profil: React.FC<ProfilProps> = ({ username, selectedIcon, setSelectedIcon
             </ul>
           </div>
           <div className="profil-footer">
-            <button className="close-button" onClick={onBack}>
-              ✖
-            </button>
           </div>
         </div>
       ) : (
