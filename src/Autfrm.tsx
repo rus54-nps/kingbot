@@ -23,6 +23,7 @@ const itemNames = {
   treasureSeeker: { ru: 'Искатель Сокровищ', en: 'Treasure Seeker' },
 };
 
+
 const AutoFarm: React.FC<{
   points: number;
   setPoints: React.Dispatch<React.SetStateAction<number>>;
@@ -111,6 +112,15 @@ const handlePurchase = (itemId: number) => {
   }
 };
 
+const getItemName = (name: string, lang: string) => {
+  if (name in itemNames) {
+    return itemNames[name as keyof typeof itemNames][lang as keyof typeof itemNames[keyof typeof itemNames]];
+  }
+  return name;
+};
+
+
+
   return (
     <div className="Aut autofarm-overlay">
       <h2 className="autofarm-title">{language === 'ru' ? 'Автофарм' : 'Autofarm'}</h2>
@@ -132,9 +142,9 @@ const handlePurchase = (itemId: number) => {
                 <div className="autofarm-item-level">Lvl {item.level}</div>
               </div>
               <div className="autofarm-item-info">
-              <h3>
-                {itemNames[item.name as keyof typeof itemNames]?.[language] || item.name}
-              </h3>
+              <h3>{getItemName(item.name, language)}</h3>
+
+
 
 
                 <p>{item.description}</p>
