@@ -31,7 +31,7 @@ const AutoFarm: React.FC<{
 }> = ({ points, setPoints, setCurrentPage }) => {
   const initialItems: AutoFarmItem[] = [
     { id: 1, name: 'gold', price: 8000, image: goldh, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
-    { id: 2, name: 'luckyC', price: 10000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 80 },
+    { id: 2, name: 'lucky', price: 10000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 80 },
     { id: 3, name: 'rich', price: 12000, image: bogy, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
     { id: 4, name: 'gift', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
     { id: 5, name: 'treasure', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
