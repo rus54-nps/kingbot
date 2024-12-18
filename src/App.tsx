@@ -596,7 +596,7 @@ function App() {
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={openAutoFarm}>
               <img src={autfr} width={24} height={24} alt="Autofarm" style={{ opacity: isAutoFarmUnlocked ? 1 : 0.5 }} />
-              <span>Autofarm</span>
+              <span>Farm</span>
               
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
