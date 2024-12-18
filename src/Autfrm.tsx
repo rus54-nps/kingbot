@@ -9,20 +9,11 @@ interface AutoFarmItem {
   price: number;
   image: string;
   level: number;
-  description: string;
+  description: { ru: string; en: string };
   incomePerHour: number;
   priceIncreaseFactor: number;
   incomeIncrease: number;
 }
-
-const itemNames = {
-  gold: { ru: 'Золотые Руки', en: 'Golden Hands' },
-  lucky: { ru: 'Счастливая Монета', en: 'Lucky Coin' },
-  rich: { ru: 'Богатый Урожай', en: 'Rich Harvest' },
-  gift: { ru: 'Дар Судьбы', en: 'Gift of Fate' },
-  treasure: { ru: 'Искатель Сокровищ', en: 'Treasure Seeker' },
-};
-
 
 const AutoFarm: React.FC<{
   points: number;
@@ -30,11 +21,11 @@ const AutoFarm: React.FC<{
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
 }> = ({ points, setPoints, setCurrentPage }) => {
   const initialItems: AutoFarmItem[] = [
-    { id: 1, name: 'gold', price: 8000, image: goldh, level: 0, description: '0 монет в час', incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
-    { id: 2, name: 'lucky', price: 10000, image: lackm, level: 0, description: '0 монет в час', incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 80 },
-    { id: 3, name: 'rich', price: 12000, image: bogy, level: 0, description: '0 монет в час', incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
-    { id: 4, name: 'gift', price: 15000, image: dar, level: 0, description: '0 монет в час', incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
-    { id: 5, name: 'treasure', price: 18800, image: huntg, level: 0, description: '0 монет в час', incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
+    { id: 1, name: 'Golden Hands', price: 8000, image: goldh, level: 0, description: { ru: '0 монет в час', en: '0 coins per hour' }, incomePerHour: 4000, priceIncreaseFactor: 1.4, incomeIncrease: 150 },
+    { id: 2, name: 'Lucky Coin', price: 10000, image: lackm, level: 0, description: { ru: '0 монет в час', en: '0 coins per hour' }, incomePerHour: 5000, priceIncreaseFactor: 1.45, incomeIncrease: 80 },
+    { id: 3, name: 'Rich Harvest', price: 12000, image: bogy, level: 0, description: { ru: '0 монет в час', en: '0 coins per hour' }, incomePerHour: 6000, priceIncreaseFactor: 1.5, incomeIncrease: 200 },
+    { id: 4, name: 'Gift of Fate', price: 15000, image: dar, level: 0, description: { ru: '0 монет в час', en: '0 coins per hour' }, incomePerHour: 7000, priceIncreaseFactor: 1.5, incomeIncrease: 300 },
+    { id: 5, name: 'Treasure Seeker', price: 18800, image: huntg, level: 0, description: { ru: '0 монет в час', en: '0 coins per hour' }, incomePerHour: 8000, priceIncreaseFactor: 1.55, incomeIncrease: 350 },
   ];
 
   const { language } = useLanguage();
@@ -91,7 +82,10 @@ const handlePurchase = (itemId: number) => {
           level: newLevel,
           price: Math.round(newPrice), // Обновляем цену
           incomePerHour: newIncome,
-          description: `${newIncome} монет в час.`, // Обновляем описание
+          description: {
+            ru: `${newIncome} монет в час`,
+            en: `${newIncome} coins per hour`,
+          },
         };
       }
       return item;
@@ -129,10 +123,8 @@ const handlePurchase = (itemId: number) => {
                 <div className="autofarm-item-level">Lvl {item.level}</div>
               </div>
               <div className="autofarm-item-info">
-              <h3>
-                {itemNames[item.name as keyof typeof itemNames][language]}
-              </h3>
-                <p>{item.description}</p>
+              <h3>{item.name}</h3>
+              <p>{item.description[language]}</p>
                 <button className="buy-button" onClick={() => handlePurchase(item.id)}>
                   <img src={coin} alt="Coin" width={16} height={16} />
                   {item.price}
