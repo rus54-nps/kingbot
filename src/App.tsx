@@ -129,7 +129,8 @@ function App() {
     setShowSettings(!showSettings);
   };
 
-  //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВЛ ТАБ)*//
+  //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВ
+  // Л ТАБ)*//
   const isAutoFarmUnlocked = pointsToAdd >= 10;
   const [showLockedMessage, setShowLockedMessage] = useState(false);
   const openAutoFarm = () => {
@@ -582,9 +583,9 @@ function App() {
         {/* Верхний блок с кнопками*/}
         <div className="fixed top-4 left-0 w-full px-4 flex justify-center z-3">
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
-            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('home')}>
+            <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('profil')}>
               <img src={hom} width={24} height={24} alt="Home" />
-              <span>Home</span>
+              <span>Profil</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('top')}>
@@ -705,12 +706,7 @@ function App() {
             onCollectReward={handleCollectReward} // Передаем функцию для обновления баланса
           />
         )}
-              {/*Кнопка Профиля*/}
-              <button
-                className="profile-button fixed  right-4" style={{ marginTop: '17px' }} onClick={() => setCurrentPage('profil')} // Переход на страницу профиля
-              >
-                <img src={selectedIcon} alt="Profile Icon" width={320} height={32} />
-              </button>
+
   
               {/* Отображение очков */}
               <button
