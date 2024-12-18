@@ -163,3 +163,18 @@
   transform: rotate(45deg); /* Вторая линия, повернута на 45 градусов */
 }
 
+.restart-button{
+    position: absolute;
+    bottom: 20px; /* Размещение относительно низа экрана */
+    left: 50%; /* Центрирование по горизонтали */
+    transform: translateX(-50%); /* Смещение для центрирования */
+    background-color: #862020;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
