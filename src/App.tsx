@@ -585,7 +585,7 @@ function App() {
           <div className="w-full max-w-md py-4 rounded-2xl flex justify-around">
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('profil')}>
               <img src={hom} width={24} height={24} alt="Home" />
-              <span>Profil</span>
+              <span>Profile</span>
             </button>
             <div className="h-[48px] w-[2px] bg-[#bf1515]"></div>
             <button className="flex flex-col items-center gap-1" onClick={() => setCurrentPage('top')}>
