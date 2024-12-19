@@ -208,17 +208,17 @@
 }
 
 .autofarm-back-button {
-    background-color: #f9c035;
-    color: #1f1f1f;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: block;
-    margin: 20px auto;
-    z-index: 2;
+  background-color: #f9c035;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+  font-weight: bold;
+  z-index: 2;
 }
 
 .autofarm-back-button:hover {

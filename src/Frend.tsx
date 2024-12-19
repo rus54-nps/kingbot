@@ -39,7 +39,7 @@ const FriendPage: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   const copyReferralLink = () => {
     navigator.clipboard.writeText(referralLink).then(() => {
-      alert('Ссылка скопирована!');
+      
     });
   };
 

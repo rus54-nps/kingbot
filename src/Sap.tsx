@@ -70,15 +70,16 @@ const generateField = (rows: number, cols: number, mineCount: number): Cell[][] 
 const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts, activateBuffSap }) => {
   const rows = 9;
   const cols = 7;
-  const mineCount = 7;
+  const mineCount = 1;
   const timeLimit = 100;
 
   const [field, setField] = useState<Cell[][]>(() => generateField(rows, cols, mineCount));
   const [gameOver, setGameOver] = useState(false);
-  const [victory, setVictory] = useState(false);
+  const [, setVictory] = useState(false);
   const [timeLeft, setTimeLeft] = useState(timeLimit);
   const [isFlagMode, setIsFlagMode] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false); // Для отслеживания взаимодействий
+  const [hasInteracted,] = useState(false);
+  const [showModal, setShowModal] = useState<'win' | 'lose' | null>(null);
 
   const { language } = useLanguage();
 
@@ -92,6 +93,7 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
         if (prev <= 1) {
           clearInterval(timerRef.current!);
           setGameOver(true);
+          setShowModal('lose');
           return 0;
         }
         return prev - 1;
@@ -111,31 +113,15 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
     );
   
     const cell = newField[row][col];
-  
     if (cell.isMine) {
       cell.isOpen = true;
       setGameOver(true);
-  
-      // Убираем флаги, открываем мины и помечаем ошибочные флаги
-      const updatedField = newField.map((r) =>
-        r.map((c) => ({
-          ...c,
-          isFlagged: false, // Убираем все флаги
-          isOpen: c.isMine ? true : c.isOpen, // Открываем все мины
-          isMistake: c.isFlagged && !c.isMine, // Помечаем ошибочные флаги
-        }))
-      );
-  
-      setField(updatedField); // Обновляем поле
+      setShowModal('lose');
     } else {
       revealCells(newField, row, col);
       checkVictory(newField);
-      setField(newField);
     }
-  
-    if (!hasInteracted) {
-      setHasInteracted(true); // Отмечаем первое взаимодействие
-    }
+    setField(newField);
   };
   
   
@@ -181,24 +167,18 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
   };
 
   const checkVictory = (field: Cell[][]) => {
-    let allNonMinesOpen = true;
-  
-    for (let row of field) {
-      for (let cell of row) {
-        if (!cell.isMine && !cell.isOpen) {
-          allNonMinesOpen = false;
-        }
-      }
-    }
-  
-    if (allNonMinesOpen) {
+    if (field.every(row => row.every(cell => cell.isMine || cell.isOpen))) {
       setVictory(true);
+      setShowModal('win');
       clearInterval(timerRef.current!);
-      activateBuffSap(); // Активируем баф только при победе
+      activateBuffSap();
     }
   };
   
-  
+  const closeModal = () => {
+    setShowModal(null);
+    handleExit();
+  };
 
   const handleExit = () => {
     if (hasInteracted && attemptsLeft > 0) {
@@ -210,10 +190,10 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
   // Если попытки закончились
   if (attemptsLeft <= 0) {
     return (
-      <div className="sap-game">
+      <div className="sapme">
         <h1>{language === 'ru' ? 'Сапёр' : 'Sapper'}</h1>
         <h2>{language === 'ru' ? 'У вас закончились попытки' : 'You run out of attempts'}!</h2>
-        <button onClick={() => setCurrentPage('home')}>Назад</button>
+        <button onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'Back'}</button>
       </div>
     );
   }
@@ -221,9 +201,8 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
   return (
     <div className="sap-game">
       <h1>{language === 'ru' ? 'Сапёр' : 'Sapper'}</h1>
-      <div>{language === 'ru' ? 'Оставшееся время' : 'Remaining time'}: {timeLeft} {language === 'ru' ? 'Секунд' : 'Second'}</div>
-      {gameOver && <div className="message">{language === 'ru' ? 'Проигрыш' : 'Loss'}</div>}
-      {victory && <div className="message">{language === 'ru' ? 'Победа' : 'Win'}!</div>}
+      <div>{language === 'ru' ? 'Оставшееся время' : 'Remaining time'}: {timeLeft} {language === 'ru' ? 'ceк' : 'sec'}</div>
+      
 
       <button className="flag-mode-button" onClick={() => setIsFlagMode(!isFlagMode)}>
         <img src={isFlagMode ? flg : mina} alt="Переключить режим" />
@@ -246,6 +225,14 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
       <button className="restart-button" onClick={handleExit}>
       {language === 'ru' ? 'Назад' : 'Back'}
       </button>
+      {showModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>{showModal === 'win' ? (language === 'ru' ? 'Победа!' : 'Victory!') : (language === 'ru' ? 'Проиграл!' : 'Defeat!')}</h2>
+            {showModal === 'win' && <p>{language === 'ru' ? 'Награда: Восстановление 60% энергии' : 'Reward: 60% energy recovery'}</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

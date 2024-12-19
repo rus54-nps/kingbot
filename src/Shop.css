@@ -124,11 +124,12 @@ z-index: 2;
   left: 50%;
   transform: translateX(-50%); /* Центрируем кнопку */
   background-color: #f9c035; /* Цвет фона кнопки */
-  color: #1f1f1f; /* Цвет текста кнопки */
+  color: #ffffff; /* Цвет текста кнопки */
   border-radius: 5px; /* Скругленные углы */
   padding: 10px 20px; /* Внутренние отступы кнопки */
   font-size: 1rem; /* Размер текста кнопки */
   cursor: pointer; /* Курсор в виде указателя */
+  font-weight: bold;
   transition: background-color 0.3s; /* Плавный переход цвета фона */
   z-index: 2; /* Обеспечим, чтобы кнопка была над другими элементами */
 }

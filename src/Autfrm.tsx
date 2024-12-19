@@ -131,7 +131,7 @@ const handlePurchase = (itemId: number) => {
           ))}
         </ul>
       </div>
-      <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'back'}</button>
+      <button className="autofarm-back-button" onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'Back'}</button>
     </div>
   );
 };

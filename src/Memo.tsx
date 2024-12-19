@@ -4,9 +4,9 @@ import { m1, m2, m3, m4, m5, m6 } from './images';
 import { useLanguage } from './LanguageContext';
 
 interface MemoProps {
-  setCurrentPage: (page: string) => void; // Функция для возврата на другие страницы
-  attemptsLeft: number; // Количество оставшихся попыток
-  updateAttempts: (newAttempts: number) => void; // Функция для обновления количества попыток
+  setCurrentPage: (page: string) => void;
+  attemptsLeft: number;
+  updateAttempts: (newAttempts: number) => void;
   activateBuff: () => void;
 }
 
@@ -16,19 +16,18 @@ const Memo: React.FC<MemoProps> = ({
   updateAttempts,
   activateBuff,
 }) => {
-  // Массив изображений
   const images = [m1, m2, m3, m4, m5, m6];
   const [cards, setCards] = useState<{ image: string; id: number }[]>([]);
   const [flipped, setFlipped] = useState<number[]>([]);
   const [matched, setMatched] = useState<number[]>([]);
   const [disableClick, setDisableClick] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(30); // Время игры в секундах
+  const [timeRemaining, setTimeRemaining] = useState(30);
   const [gameOver, setGameOver] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false); // Новое состояние
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [resultModal, setResultModal] = useState<'win' | 'lose' | null>(null);
 
   const { language } = useLanguage();
 
-  // Инициализация карточек
   useEffect(() => {
     const shuffledCards = [...images, ...images]
       .sort(() => Math.random() - 0.5)
@@ -36,7 +35,6 @@ const Memo: React.FC<MemoProps> = ({
     setCards(shuffledCards);
   }, []);
 
-  // Таймер для отсчета времени
   useEffect(() => {
     if (gameOver) return;
 
@@ -46,12 +44,10 @@ const Memo: React.FC<MemoProps> = ({
       }, 1000);
       return () => clearInterval(timer);
     } else {
-      alert(language === 'ru' ? 'Время вышло! Вы проиграли!' : 'Time up! You lost!');
-      handleEndGame();
+      handleEndGame('lose');
     }
   }, [timeRemaining, gameOver]);
 
-  // Логика сравнения
   useEffect(() => {
     if (flipped.length === 2) {
       setDisableClick(true);
@@ -66,44 +62,38 @@ const Memo: React.FC<MemoProps> = ({
     }
   }, [flipped, cards]);
 
-  // Проверка на победу
   useEffect(() => {
     if (matched.length === cards.length && cards.length > 0) {
       setGameOver(true);
       activateBuff();
-      setTimeout(() => {
-        alert(language === 'ru' ? 'Вы победили!' : 'You have win!');
-        handleEndGame();
-      }, 500);
+      setResultModal('win');
     }
   }, [matched, cards]);
 
- // Завершение игры
-const handleEndGame = () => {
-  if (hasInteracted && attemptsLeft > 0) {
-    updateAttempts(attemptsLeft - 1); // Уменьшаем попытки только если было взаимодействие
-  }
-  setCurrentPage('home'); // Возвращаемся на главную страницу
-};
-
-// Обработчик кликов по карточкам
-const handleCardClick = (index: number) => {
-  if (!flipped.includes(index) && !matched.includes(index) && !disableClick) {
-    setFlipped((prev) => [...prev, index]);
-    if (!hasInteracted) {
-      setHasInteracted(true); // Устанавливаем факт взаимодействия только при первом действии
+  const handleEndGame = (result: 'win' | 'lose') => {
+    if (hasInteracted && attemptsLeft > 0) {
+      updateAttempts(attemptsLeft - 1);
     }
-  }
-};
-// Обработчик кнопки "Назад"
-const handleExit = () => {
-  handleEndGame(); // Завершаем игру и проверяем попытки
-};
+    setResultModal(result);
+  };
 
-  // Проверка, есть ли оставшиеся попытки
+  const handleCardClick = (index: number) => {
+    if (!flipped.includes(index) && !matched.includes(index) && !disableClick) {
+      setFlipped((prev) => [...prev, index]);
+      if (!hasInteracted) {
+        setHasInteracted(true);
+      }
+    }
+  };
+
+  const closeModal = () => {
+    setResultModal(null);
+    setCurrentPage('home');
+  };
+
   if (attemptsLeft <= 0) {
     return (
-      <div className="memo-game">
+      <div className="memome">
         <h1>{language === 'ru' ? 'Мемо' : 'Memo'}</h1>
         <h2>{language === 'ru' ? 'У вас закончились попытки' : 'You run out of attempts'}</h2>
         <button onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'Back'}</button>
@@ -111,22 +101,23 @@ const handleExit = () => {
     );
   }
 
-
   return (
     <div className="memo-game">
       <h1>{language === 'ru' ? 'Мемо' : 'Memo'}</h1>
-      <button onClick={handleExit}>{language === 'ru' ? 'Назад' : 'Back'}</button>
+      <button onClick={() => setCurrentPage('home')}>{language === 'ru' ? 'Назад' : 'Back'}</button>
 
       <div className="timer">
-        <h2>{language === 'ru' ? 'Оставшееся время' : 'Remaining time'}: {timeRemaining} {language === 'ru' ? 'Секунд' : 'Seconds'}</h2>
+        <h2>
+          {language === 'ru' ? 'Оставшееся время' : 'Remaining time'}: {timeRemaining}{' '}
+          {language === 'ru' ? 'Секунд' : 'Seconds'}
+        </h2>
       </div>
+
       <div className="cards-grid">
         {cards.map((card, index) => (
           <div
             key={card.id}
-            className={`card ${
-              flipped.includes(index) || matched.includes(index) ? 'flipped' : ''
-            }`}
+            className={`card ${flipped.includes(index) || matched.includes(index) ? 'flipped' : ''}`}
             onClick={() => handleCardClick(index)}
           >
             <div className="card-front">
@@ -136,6 +127,15 @@ const handleExit = () => {
           </div>
         ))}
       </div>
+
+      {resultModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>{resultModal === 'win' ? (language === 'ru' ? 'Победа!' : 'Victory!') : (language === 'ru' ? 'Проиграл' : 'Defeat')}</h2>
+            {resultModal === 'win' && <p>{language === 'ru' ? 'Награда: Баф на х2 монет' : 'Reward: Buff on x2 coins'}</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
