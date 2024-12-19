@@ -113,10 +113,6 @@ const Shop: React.FC<{
       setItems(updatedItems);
       setPoints(points - itemToPurchase.price);
       localStorage.setItem('shop-items', JSON.stringify(updatedItems));
-
-      alert(`{language === 'ru' ? 'Вы купили' : 'You bought'} ${itemToPurchase.name}! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`);
-    } else {
-      alert(language === 'ru' ? 'Недостаточно очков для покупки!' : 'Not enough points to buy!');
     }
   };
 

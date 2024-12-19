@@ -93,9 +93,7 @@ const handlePurchase = (itemId: number) => {
     setItems(updatedItems);
     localStorage.setItem('autoFarmItems', JSON.stringify(updatedItems)); // Сохраняем обновленные данные
     setPoints(points - itemToPurchase.price);
-    alert(`{language === 'ru' ? 'Вы купили' : 'You bought'} ${itemToPurchase.name}! ${language === 'ru' ? 'Новый уровень' : 'New level'}: ${itemToPurchase.level + 1}`);
-  } else {
-    alert(language === 'ru' ? 'Недостаточно очков для покупки!' : 'Not enough points to buy!');
+
   }
 };
 
