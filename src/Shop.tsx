@@ -91,6 +91,26 @@ const Shop: React.FC<{
                 newPrice = 120000;
                 newRegenerationRate = 5;
                 break;
+              case 6:
+                newPrice = 240000;
+                newRegenerationRate = 5;
+                break;
+              case 7:
+                newPrice =480000;
+                newRegenerationRate = 5;
+                break;
+              case 8:
+                newPrice = 9600000;
+                newRegenerationRate = 5;
+                break;
+              case 9:
+                newPrice = 1920000;
+                newRegenerationRate = 5;
+                break;
+              case 10:
+                newPrice = 3840000;
+                newRegenerationRate = 5;
+                break;
               default:
                 break;
             }
