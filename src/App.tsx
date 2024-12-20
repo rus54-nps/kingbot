@@ -221,9 +221,9 @@ function App() {
   
   useEffect(() => {
     if (isBuffActiveSap) {
-      // Если баф активен, восстанавливаем 50% недостающей энергии за 20 секунд
+      // Если баф активен, восстанавливаем 35% недостающей энергии за 20 секунд
       const missingEnergy = maxEnergy - energy;
-      const energyPerTick = Math.floor((missingEnergy * 0.5) / 20); // Распределяем восстановление на 20 секунд
+      const energyPerTick = Math.floor((missingEnergy * 0.3) / 20); // Распределяем восстановление на 20 секунд
   
       const interval = setInterval(() => {
         setEnergy((prevEnergy) => {
