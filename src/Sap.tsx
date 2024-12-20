@@ -229,7 +229,7 @@ const Sap: React.FC<SapProps> = ({ setCurrentPage, attemptsLeft, updateAttempts,
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>{showModal === 'win' ? (language === 'ru' ? 'Победа!' : 'Victory!') : (language === 'ru' ? 'Проиграл!' : 'Defeat!')}</h2>
-            {showModal === 'win' && <p>{language === 'ru' ? 'Награда: Восстановление 60% энергии' : 'Reward: 60% energy recovery'}</p>}
+            {showModal === 'win' && <p>{language === 'ru' ? 'Награда: Восстановление 60% энергии от недостающей за 20 с' : 'Reward: Restore 60% of the missing energy in 20 s'}</p>}
           </div>
         </div>
       )}

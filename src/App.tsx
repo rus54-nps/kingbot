@@ -18,7 +18,7 @@ import { LanguageProvider } from './LanguageContext';
 function App() {
   const initialMaxEnergy = 500; // Старт энергия
   const energyToReduce = 1; // Энергия за нажатие
-  const recoveryInterval = 1000; // Интервал времени 1000 - 1 сек
+  const recoveryInterval = 60 * 1000; // Интервал времени 1000 - 1 сек
   
 
   const [maxEnergy, setMaxEnergy] = useState(() => {
@@ -131,7 +131,7 @@ function App() {
 
   //*АВТОФАРМ ЗАКРЫТ ДО 10МОНЕТ ЗА КЛИК (10ЛВ
   // Л ТАБ)*//
-  const isAutoFarmUnlocked = pointsToAdd >= 0;
+  const isAutoFarmUnlocked = pointsToAdd >= 10;
   const [showLockedMessage, setShowLockedMessage] = useState(false);
   const openAutoFarm = () => {
     if (isAutoFarmUnlocked) {

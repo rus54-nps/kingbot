@@ -68,26 +68,3 @@
   .profil-content .change-avatar-button:hover {
     background-color: #dba82c;
   }
-  
-  /* Футер с кнопкой "Назад" */
-  .profil-footer {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Центрирование кнопки */
-    margin-top: 16px;
-  }
-  
-  /* Кнопка закрытия профиля в верхнем правом углу вкладки */
-  .close-button {
-    position: absolute;
-    top: 10px;   /* Расположим кнопку немного от верхнего края */
-    right: 10px; /* Расположим кнопку немного от правого края */
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  
-  

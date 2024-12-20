@@ -132,7 +132,7 @@ const Memo: React.FC<MemoProps> = ({
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>{resultModal === 'win' ? (language === 'ru' ? 'Победа!' : 'Victory!') : (language === 'ru' ? 'Проиграл' : 'Defeat')}</h2>
-            {resultModal === 'win' && <p>{language === 'ru' ? 'Награда: Баф на х2 монет' : 'Reward: Buff on x2 coins'}</p>}
+            {resultModal === 'win' && <p>{language === 'ru' ? 'Награда: Баф на х2 монет на 10 мин' : 'Reward: Buff on x2 coins for 10 min'}</p>}
           </div>
         </div>
       )}
